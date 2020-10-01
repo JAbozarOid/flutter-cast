@@ -32,6 +32,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
           ],
         ),
+        // use ClipRRect for setting borders on a widget
         child: ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
