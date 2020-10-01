@@ -35,7 +35,25 @@ class _SearchScreenState extends State<SearchScreen> {
                           'From: Sobhan, Madani Street',
                           style: TextStyle(fontSize: 10),
                         ),
-                        Text('Where to?', style: TextStyle(fontSize: 18))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // create a green bullet
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: new BoxDecoration(
+                                color: Colors.green,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: Text('Where to?',
+                                    style: TextStyle(fontSize: 18)))
+                          ],
+                        ),
                       ],
                     ),
                   ),
