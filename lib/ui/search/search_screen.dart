@@ -2,6 +2,7 @@ import 'package:cast/ui/navigation/navigation_destination.dart';
 import 'package:cast/ui/search/search_category_widget.dart';
 import 'package:cast/ui/whereto/where_to_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_maps/flutter_google_maps.dart';
 
 class SearchScreen extends StatefulWidget {
   final NavigationDestination destination;
@@ -12,12 +13,16 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+
+  GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
+            Positioned(child: GoogleMap(key: _key,)),
             Positioned(
               top: 20,
               left: 25,

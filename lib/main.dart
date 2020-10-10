@@ -1,7 +1,10 @@
 import 'package:cast/ui/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_google_maps/flutter_google_maps.dart';
 
 void main() {
+  GoogleMap.init('AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18');
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
