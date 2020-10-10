@@ -13,7 +13,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
 
   @override
@@ -22,7 +21,23 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            Positioned(child: GoogleMap(key: _key,)),
+            // setup google map and properties
+            Positioned(
+                child: GoogleMap(
+              key: _key,
+              interactive: true,
+              mapType: MapType.roadmap,
+              initialPosition: GeoCoord(1.3521, 103.8198),
+              markers: {
+                Marker(GeoCoord(1.3521, 103.8198)),
+              },
+              mobilePreferences: MobileMapPreferences(
+                trafficEnabled: true,
+                scrollGesturesEnabled: true,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+              ),
+            )),
             Positioned(
               top: 20,
               left: 25,
