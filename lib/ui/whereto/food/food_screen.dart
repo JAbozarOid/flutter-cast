@@ -26,16 +26,15 @@ class _FoodScreenState extends State<FoodScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                InkWell(
-                  onTap: goToListOfItemSelected,
-                  child: FoodItems(
-                    title: 'Restaurant',
-                    icon: 'images/restaurant.png',
-                  ),
+                FoodItems(
+                  title: 'Restaurant',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
                 FoodItems(
                   title: 'FastFood',
-                  icon: 'images/restaurant.png',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
               ],
             ),
@@ -53,11 +52,13 @@ class _FoodScreenState extends State<FoodScreen> {
               children: [
                 FoodItems(
                   title: 'Restaurant',
-                  icon: 'images/restaurant.png',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
                 FoodItems(
                   title: 'FastFood',
-                  icon: 'images/restaurant.png',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
               ],
             ),
@@ -75,11 +76,13 @@ class _FoodScreenState extends State<FoodScreen> {
               children: [
                 FoodItems(
                   title: 'Services',
-                  icon: 'images/restaurant.png',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
                 FoodItems(
                   title: 'FastFood',
-                  icon: 'images/restaurant.png',
+                  icon: 'assets/restaurant.png',
+                  onTapped: goToListOfItemSelected,
                 ),
               ],
             )

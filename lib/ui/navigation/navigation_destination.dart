@@ -11,5 +11,5 @@ class NavigationDestination {
 List<NavigationDestination> allDestinations = <NavigationDestination>[
   NavigationDestination('Settings', Icons.settings, Colors.orange),
   NavigationDestination('Search', Icons.search, Colors.cyan),
-  NavigationDestination('Saved', Icons.save, Colors.teal),
+  NavigationDestination('Saved', Icons.bookmark, Colors.teal),
 ];
