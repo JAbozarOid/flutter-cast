@@ -1,4 +1,5 @@
 import 'package:cast/ui/splash/splash_screen.dart';
+import 'package:cast/ui/splash/xd/splash_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
 
@@ -19,7 +20,9 @@ class MyApp extends StatelessWidget {
         primaryColorDark: Colors.cyan,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: 
+      //SplashScreen(),
+      SplashScreenXD()
     );
   }
 }
