@@ -98,33 +98,36 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       // Adobe XD layer: 'Search_btn' (group)
                       Stack(
                     children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 64.0, 64.0),
-                        size: Size(64.0, 64.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            gradient: LinearGradient(
-                              begin: Alignment(0.0, 1.0),
-                              end: Alignment(0.0, -1.0),
-                              colors: [
-                                const Color(0xff44cac5),
-                                const Color(0xff44caab)
-                              ],
-                              stops: [0.0, 1.0],
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: const Color(0x29000000),
-                                offset: Offset(0, -1),
-                                blurRadius: 6,
+                      InkWell(
+                        onTap: _goToWhereToScreen,
+                        child: Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 64.0, 64.0),
+                          size: Size(64.0, 64.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.elliptical(9999.0, 9999.0)),
+                              gradient: LinearGradient(
+                                begin: Alignment(0.0, 1.0),
+                                end: Alignment(0.0, -1.0),
+                                colors: [
+                                  const Color(0xff44cac5),
+                                  const Color(0xff44caab)
+                                ],
+                                stops: [0.0, 1.0],
                               ),
-                            ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0x29000000),
+                                  offset: Offset(0, -1),
+                                  blurRadius: 6,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
