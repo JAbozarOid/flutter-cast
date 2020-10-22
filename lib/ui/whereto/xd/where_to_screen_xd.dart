@@ -318,7 +318,7 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
             ),
           ),
 
-          // *** food & drinks
+          // *** card items and titles of each category
           Pinned.fromSize(
             bounds: Rect.fromLTWH(25.0, 132.0, 310.0, 640.0),
             size: Size(360.0, 772.0),

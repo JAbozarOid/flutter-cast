@@ -1,5 +1,6 @@
 import 'package:cast/ui/navigation/xd/navigation_category_item_model.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
+import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
@@ -176,80 +177,82 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Saved' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
-                        size: Size(90.0, 80.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(26.0, 48.0, 38.0, 17.0),
-                        size: Size(90.0, 80.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'You' (text)
-                            Text(
-                          'Saved',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 14,
-                            color: const Color(0xff9ea1a6),
-                            fontWeight: FontWeight.w500,
+                      InkWell(onTap: _goToSavedScreen,
+                    child: Stack(
+                      children: <Widget>[
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
+                          size: Size(90.0, 80.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Base' (shape)
+                              Container(
+                            decoration: BoxDecoration(),
                           ),
-                          textAlign: TextAlign.left,
                         ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
-                        size: Size(90.0, 80.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Saved' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                              size: Size(24.0, 24.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Path' (shape)
-                                  Container(
-                                color: const Color(0x00000000),
-                              ),
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(26.0, 48.0, 38.0, 17.0),
+                          size: Size(90.0, 80.0),
+                          fixedWidth: true,
+                          fixedHeight: true,
+                          child:
+                              // Adobe XD layer: 'You' (text)
+                              Text(
+                            'Saved',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              color: const Color(0xff9ea1a6),
+                              fontWeight: FontWeight.w500,
                             ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(5.0, 3.0, 14.0, 18.0),
-                              size: Size(24.0, 24.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Icon feather-bookma…' (shape)
-                                  SvgPicture.string(
-                                _svg_rzrs7n,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ],
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                      ),
-                    ],
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
+                          size: Size(90.0, 80.0),
+                          fixedWidth: true,
+                          fixedHeight: true,
+                          child:
+                              // Adobe XD layer: 'Saved' (group)
+                              Stack(
+                            children: <Widget>[
+                              Pinned.fromSize(
+                                bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                size: Size(24.0, 24.0),
+                                pinLeft: true,
+                                pinRight: true,
+                                pinTop: true,
+                                pinBottom: true,
+                                child:
+                                    // Adobe XD layer: 'Path' (shape)
+                                    Container(
+                                  color: const Color(0x00000000),
+                                ),
+                              ),
+                              Pinned.fromSize(
+                                bounds: Rect.fromLTWH(5.0, 3.0, 14.0, 18.0),
+                                size: Size(24.0, 24.0),
+                                pinLeft: true,
+                                pinRight: true,
+                                pinTop: true,
+                                pinBottom: true,
+                                child:
+                                    // Adobe XD layer: 'Icon feather-bookma…' (shape)
+                                    SvgPicture.string(
+                                  _svg_rzrs7n,
+                                  allowDrawingOutsideViewBox: true,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -610,6 +613,11 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   void _goToWhereToScreen() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => WhereToScreenXD()));
+  }
+
+  void _goToSavedScreen() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SavedScreenXD()));
   }
 }
 
