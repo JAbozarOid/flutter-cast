@@ -89,6 +89,7 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
+          
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 261.0, 360.0, 91.0),
             size: Size(360.0, 800.0),
@@ -101,6 +102,7 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
+         
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 158.0, 360.0, 103.0),
             size: Size(360.0, 800.0),
@@ -122,217 +124,8 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 24.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Status bar' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 24.0),
-                  size: Size(360.0, 24.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Status bar bg' (shape)
-                      Container(
-                    decoration: BoxDecoration(),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(242.0, 0.0, 118.0, 24.0),
-                  size: Size(360.0, 24.0),
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  child:
-                      // Adobe XD layer: 'Status bar' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 118.0, 24.0),
-                        size: Size(118.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Bounds' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(74.5, 4.0, 36.0, 17.0),
-                        size: Size(118.0, 24.0),
-                        pinRight: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Time' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 36.0, 17.0),
-                              size: Size(36.0, 17.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child: Text(
-                                '12:30',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xe5ffffff),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(55.0, 4.0, 16.0, 16.0),
-                        size: Size(118.0, 24.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Battery' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 16.0, 16.0),
-                              size: Size(16.0, 16.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Bounds' (shape)
-                                  SvgPicture.string(
-                                _svg_ssx68n,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(2.9, 1.0, 9.1, 14.0),
-                              size: Size(16.0, 16.0),
-                              child:
-                                  // Adobe XD layer: 'Icon material-batte…' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  SvgPicture.string(
-                                    _svg_lza6zs,
-                                    allowDrawingOutsideViewBox: true,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(34.6, 4.0, 16.4, 16.0),
-                        size: Size(118.0, 24.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Cellular' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.4, 0.0, 16.0, 16.0),
-                              size: Size(16.4, 16.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Bounds' (shape)
-                                  SvgPicture.string(
-                                _svg_ssx68n,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.8, 14.2, 14.2),
-                              size: Size(16.4, 16.0),
-                              child:
-                                  // Adobe XD layer: 'Icon material-signa…' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  SvgPicture.string(
-                                    _svg_m4t4jx,
-                                    allowDrawingOutsideViewBox: true,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(15.0, 4.0, 17.6, 16.0),
-                        size: Size(118.0, 24.0),
-                        pinLeft: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Wifi' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(1.0, 0.0, 16.0, 16.0),
-                              size: Size(17.6, 16.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Bounds' (shape)
-                                  SvgPicture.string(
-                                _svg_cv83pv,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 1.8, 17.6, 12.3),
-                              size: Size(17.6, 16.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Icon awesome-wifi' (shape)
-                                  SvgPicture.string(
-                                _svg_vqonvn,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          
+          
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 158.0, 180.0, 482.0),
             size: Size(360.0, 800.0),
@@ -343,6 +136,8 @@ class SettingsScreenXD extends StatelessWidget {
               decoration: BoxDecoration(),
             ),
           ),
+          
+          // crowding
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 427.0, 360.0, 75.0),
             size: Size(360.0, 800.0),
@@ -376,10 +171,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 187.0, 17.0),
+                  bounds: Rect.fromLTWH(24.0, 40.0, 187.0, 20.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Number of people in the place',
@@ -393,10 +188,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 68.0, 19.0),
+                  bounds: Rect.fromLTWH(24.0, 19.0, 68.0, 25.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Crowding',
@@ -520,6 +315,8 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
+         
+          // average spending time
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 577.0, 360.0, 75.0),
             size: Size(360.0, 800.0),
@@ -553,10 +350,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 17.0),
+                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Average time of presence people',
@@ -570,10 +367,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 131.0, 19.0),
+                  bounds: Rect.fromLTWH(24.0, 19.0, 131.0, 25.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Avg spending time',
@@ -697,6 +494,8 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
+         
+          // user review
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 352.0, 360.0, 75.0),
             size: Size(360.0, 800.0),
@@ -730,10 +529,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 223.0, 17.0),
+                  bounds: Rect.fromLTWH(24.0, 40.0, 223.0, 20.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Analyze places based on user rating',
@@ -747,10 +546,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 82.0, 19.0),
+                  bounds: Rect.fromLTWH(24.0, 19.0, 82.0, 25.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'User review',
@@ -874,6 +673,8 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
+         
+          // area in use
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 502.0, 360.0, 75.0),
             size: Size(360.0, 800.0),
@@ -907,10 +708,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 17.0),
+                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'The area where people are inside',
@@ -924,10 +725,10 @@ class SettingsScreenXD extends StatelessWidget {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 79.0, 19.0),
+                  bounds: Rect.fromLTWH(24.0, 19.0, 79.0, 25.0),
                   size: Size(360.0, 75.0),
                   pinLeft: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
                     'Area in use',
@@ -1053,6 +854,7 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
+          
           Pinned.fromSize(
             bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
             size: Size(360.0, 800.0),
@@ -1340,12 +1142,13 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
+         
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 15.0),
+            bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 25.0),
             size: Size(360.0, 800.0),
             pinLeft: true,
             pinTop: true,
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
             child: Text(
               'Select range area for better result of analyzing',
@@ -1358,6 +1161,8 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
+          
+          // text below of customize criteria
           Pinned.fromSize(
             bounds: Rect.fromLTWH(24.0, 303.0, 296.0, 35.0),
             size: Size(360.0, 800.0),
@@ -1375,12 +1180,14 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
+         
+          // Analyze Range
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 104.0, 105.0, 19.0),
+            bounds: Rect.fromLTWH(24.0, 104.0, 105.0, 77.0),
             size: Size(360.0, 800.0),
             pinLeft: true,
             pinTop: true,
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
             child: Text(
               'Analyze Range',
@@ -1393,11 +1200,13 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
+          
+          // customize criteria
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 281.0, 131.0, 19.0),
+            bounds: Rect.fromLTWH(24.0, 281.0, 131.0, 91.0),
             size: Size(360.0, 800.0),
             pinLeft: true,
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
             child: Text(
               'Customize Criteria',
@@ -1410,6 +1219,8 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
+          
+          // header
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
             size: Size(360.0, 800.0),
@@ -1493,16 +1304,18 @@ class SettingsScreenXD extends StatelessWidget {
                   bounds: Rect.fromLTWH(141.0, 42.0, 80.0, 27.0),
                   size: Size(360.0, 80.0),
                   pinBottom: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
-                  child: Text(
-                    'Settings',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 22,
-                      color: const Color(0xffffffff),
+                  child: Center(
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 22,
+                        color: const Color(0xffffffff),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
               ],

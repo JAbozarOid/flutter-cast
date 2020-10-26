@@ -1,6 +1,8 @@
 import 'package:cast/ui/navigation/xd/navigation_category_item_model.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
+import 'package:cast/ui/search/xd/search_screen_type_xd.dart';
+import 'package:cast/ui/search/xd/search_screen_xd.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
@@ -177,7 +179,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Saved' (group)
-                      InkWell(onTap: _goToSavedScreen,
+                      InkWell(
+                    onTap: _goToSavedScreen,
                     child: Stack(
                       children: <Widget>[
                         Pinned.fromSize(
@@ -512,6 +515,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                 return NavigationCategoryItemXD(
                   title: itemModel.title,
                   icon: itemModel.icon,
+                  onCardTapped: _goToSearchScreenPanelType,
                 );
               },
             ),
@@ -527,77 +531,79 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'Search-bar' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 310.0, 55.0),
-                  size: Size(310.0, 55.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28.0),
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x1a000000),
-                          offset: Offset(0, 0),
-                          blurRadius: 24,
-                        ),
-                      ],
+                InkWell(onTap: _goToSearchPanelScreen,
+              child: Stack(
+                children: <Widget>[
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(0.0, 0.0, 310.0, 55.0),
+                    size: Size(310.0, 55.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28.0),
+                        color: const Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x1a000000),
+                            offset: Offset(0, 0),
+                            blurRadius: 24,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(41.0, 24.0, 85.0, 24.0),
-                  size: Size(310.0, 55.0),
-                  pinLeft: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child: Text(
-                    'Where to?',
-                    style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      fontSize: 18,
-                      color: const Color(0xff0d1724),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(23.0, 11.0, 136.0, 14.0),
-                  size: Size(310.0, 55.0),
-                  pinLeft: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child: Text(
-                    'From: Sobhan, Madani Street',
-                    style: TextStyle(
-                      fontFamily: 'Open Sans',
-                      fontSize: 10,
-                      color: const Color(0xff0d1724),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(23.0, 32.0, 8.0, 8.0),
-                  size: Size(310.0, 55.0),
-                  pinLeft: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                      color: const Color(0xff44cab1),
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(41.0, 24.0, 85.0, 24.0),
+                    size: Size(310.0, 55.0),
+                    pinLeft: true,
+                    pinBottom: true,
+                    fixedWidth: false,
+                    fixedHeight: true,
+                    child: Text(
+                      'Where to?',
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontSize: 18,
+                        color: const Color(0xff0d1724),
+                      ),
+                      textAlign: TextAlign.left,
                     ),
                   ),
-                ),
-              ],
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(23.0, 11.0, 136.0, 14.0),
+                    size: Size(310.0, 55.0),
+                    pinLeft: true,
+                    fixedWidth: false,
+                    fixedHeight: true,
+                    child: Text(
+                      'From: Sobhan, Madani Street',
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontSize: 10,
+                        color: const Color(0xff0d1724),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(23.0, 32.0, 8.0, 8.0),
+                    size: Size(310.0, 55.0),
+                    pinLeft: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                        color: const Color(0xff44cab1),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -618,6 +624,16 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   void _goToSavedScreen() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SavedScreenXD()));
+  }
+
+  void _goToSearchPanelScreen() {
+     Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SearchScreenXD()));
+  }
+
+  void _goToSearchScreenPanelType() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD()));
   }
 }
 

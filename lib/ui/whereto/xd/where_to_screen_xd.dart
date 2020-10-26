@@ -1,3 +1,4 @@
+import 'package:cast/ui/whereto/nearby/nearby_screen.dart';
 import 'package:cast/ui/whereto/xd/where_to_category_item_widget_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_category_model.dart';
 import 'package:flutter/material.dart';
@@ -139,7 +140,7 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                         bounds: Rect.fromLTWH(17.0, 20.0, 87.0, 17.0),
                         size: Size(545.0, 52.0),
                         pinLeft: true,
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Food & Drinks',
@@ -155,7 +156,7 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(151.0, 20.0, 59.0, 17.0),
                         size: Size(545.0, 52.0),
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Shopping',
@@ -170,7 +171,7 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(274.0, 20.0, 53.0, 17.0),
                         size: Size(545.0, 52.0),
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Services',
@@ -262,16 +263,18 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                   bounds: Rect.fromLTWH(131.0, 42.0, 98.0, 27.0),
                   size: Size(360.0, 80.0),
                   pinBottom: true,
-                  fixedWidth: true,
+                  fixedWidth: false,
                   fixedHeight: true,
-                  child: Text(
-                    'Where to?',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 22,
-                      color: const Color(0xffffffff),
+                  child: Center(
+                    child: Text(
+                      'Where to?',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 22,
+                        color: const Color(0xffffffff),
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
                   ),
                 ),
                 Pinned.fromSize(
@@ -334,7 +337,6 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                     whereToCategoryTitles[position];
                 return WhereToCategoryItemWidgetXD(
                   categoryTitle: itemModel,
-                  //icon: itemModel.icon,
                 );
               },
             ),
@@ -343,6 +345,8 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
       ),
     );
   }
+
+  
 }
 
 const String _svg_vqvflc =

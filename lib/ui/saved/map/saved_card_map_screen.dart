@@ -50,7 +50,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                 )),
             Positioned(
               height: 250,
-              bottom: 0,
+              bottom: -20,
               right: 0,
               left: 0,
               child: PageView(

@@ -11,6 +11,8 @@ class SavedCardModel {
 
   SavedCardModel(this.image, this.title, this.rateValue, this.rateCount,
       this.type, this.address, this.minutes, this.kilometers, this.badge);
+
+      
 }
 
 List<SavedCardModel> savedCardsValues = <SavedCardModel>[

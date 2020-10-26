@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:cast/ui/navigation/navigation_screen.dart';
 import 'package:cast/ui/navigation/xd/navigation_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
@@ -86,7 +85,7 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
           Pinned.fromSize(
             bounds: Rect.fromLTWH(104.0, 333.9, 153.0, 33.0),
             size: Size(360.0, 640.0),
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
             child: Text(
               'Find the best',

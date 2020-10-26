@@ -22,7 +22,12 @@ class SavedCardMapWidget extends StatelessWidget {
           children: [
             Text(
               savedCardModel.title,
-              style: TextStyle(fontSize: 22, color: HexColor('#000000')),
+              style: TextStyle(
+                fontSize: 22,
+                color: HexColor('#000000'),
+                fontFamily: 'Roboto',
+                fontWeight: FontWeight.w500,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 18),
@@ -63,9 +68,12 @@ class SavedCardMapWidget extends StatelessWidget {
                     child: Icon(
                       Icons.share,
                       size: 20,
+                      color: HexColor('#43C7AE'),
                     ),
                     decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: HexColor('#43C7AE')),
+                      border: Border.all(color: HexColor('#43C7AE')),
+                      shape: BoxShape.circle,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -75,9 +83,12 @@ class SavedCardMapWidget extends StatelessWidget {
                       child: Icon(
                         Icons.bookmark,
                         size: 20,
+                        color: HexColor('#43C7AE'),
                       ),
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: HexColor('#43C7AE')),
+                        border: Border.all(color: HexColor('#43C7AE')),
+                        shape: BoxShape.circle,
+                      ),
                     ),
                   ),
                 ],
