@@ -1,0 +1,78 @@
+### **********
+### Auth 
+### GetSessionToken - POST- Request Body
+POST {{baseUrl}}/Auth/GetSessionToken HTTP/1.1
+content-type: application/json
+
+{
+  "fireBaseToken": "123456789"
+}
+
+### AddFirebaseToken - POST - Request Body
+POST {{baseUrl}}/Auth/AddFirebaseToken HTTP/1.1
+content-type: application/json
+SessionToken: {{sessionToken}}
+
+{
+  "fireBaseToken": "123456789"
+}
+
+### **********
+### Category
+### GetMainCategoryList - GET
+GET {{baseUrl}}/Category/GetMainCategoryList HTTP/1.1
+Content-Type: application/json
+
+### GetCategoryListInDetail - GET
+GET {{baseUrl}}/Category/GetCategoryListInDetail HTTP/1.1
+Content-Type: application/json
+
+### **********
+### Venue
+### GetVenueListByLocation - POST - Request Body
+POST {{baseUrl}}/Venue/GetVenueListByLocation HTTP/1.1
+Content-Type: : application/json
+
+{
+  "latitude": 0,
+  "longitude": 0,
+  "filters": {
+    "radius": 0,
+    "userReview": true,
+    "crowding": true,
+    "areaInUse": true,
+    "avgSpendingTime": true
+  },
+  "categoryId": "93be718821a94835963e746af2f4de7b",
+  "text": "res"
+}
+
+### GetVenue - POST - Request Body
+POST {{baseUrl}}/Venue/GetVenue HTTP/1.1
+Content-Type: : application/json
+
+{
+  "venueId": "123456789"
+}
+
+### GetSavedVenueList - POST
+POST {{baseUrl}}/Venue/GetSavedVenueList HTTP/1.1
+Content-Type: : application/json
+
+{
+  "venueIdList": [
+    "123456789"
+  ]
+}
+
+### **********
+### TravelTimePredicator
+### GetTravelTimeInfo - POST - Request Body
+POST {{baseUrl}}/TravelTimePredictor/GetTravelTimeInfo HTTP/1.1
+Content-Type: application/json
+
+{
+  "latitude": 0,
+  "longitude": 0,
+  "venueId": "string"
+}
