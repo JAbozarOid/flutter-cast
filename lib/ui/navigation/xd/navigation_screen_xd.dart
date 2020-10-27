@@ -1,3 +1,4 @@
+import 'package:cast/location/location_state.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_model.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:location/location.dart';
+import 'package:rxdart/rxdart.dart';
 
 class NavigationScreenXD extends StatefulWidget {
   NavigationScreenXD({
@@ -22,33 +25,260 @@ class NavigationScreenXD extends StatefulWidget {
 class _NavigationScreenXDState extends State<NavigationScreenXD> {
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
 
+  // location properties
+  bool _serviceEnabled;
+  Location location = new Location();
+  PermissionStatus _permissionGranted;
+  var _onLocationState = PublishSubject<LocationState>();
+  LocationData _locationData;
+  double _lat;
+  double _lon;
+  // *******************
+
+  @override
+  void initState() {
+    super.initState();
+    getUserCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       body: Stack(
         children: <Widget>[
-          // *** impl google map
-          Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GoogleMap(
-                key: _key,
-                interactive: true,
-                mapType: MapType.roadmap,
-                initialPosition: GeoCoord(1.3521, 103.8198),
-                markers: {
-                  Marker(GeoCoord(1.3521, 103.8198)),
-                },
-                mobilePreferences: MobileMapPreferences(
-                  trafficEnabled: true,
-                  scrollGesturesEnabled: true,
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: true,
-                ),
-              )),
+          StreamBuilder<LocationState>(
+              stream: _onLocationState,
+              builder: (context, snapshot) {
+                switch (snapshot.data) {
+                  case LocationState.deny:
+                    return Stack(
+                      children: [
+                        // *** impl google map
+                        Positioned(
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: GoogleMap(
+                              key: _key,
+                              interactive: true,
+                              mapType: MapType.roadmap,
+                              //initialPosition: GeoCoord(1.3521, 103.8198),
+                              /* markers: {
+                                Marker(GeoCoord(1.3521, 103.8198)),
+                              }, */
+                              mobilePreferences: MobileMapPreferences(
+                                trafficEnabled: true,
+                                scrollGesturesEnabled: true,
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false,
+                              ),
+                            )),
+                        Center(
+                          child: InkWell(
+                            onTap: getUserCurrentLocation,
+                            child: Text(
+                              'give your location',
+                              style: TextStyle(fontSize: 22, color: Colors.red),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                    break;
+                  case LocationState.granted:
+                    return Stack(
+                      children: [
+                        Positioned(
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: GoogleMap(
+                              key: _key,
+                              interactive: true,
+                              mapType: MapType.roadmap,
+                              initialPosition: GeoCoord(_lat, _lon),
+                              markers: {
+                                Marker(GeoCoord(_lat, _lon)),
+                              },
+                              mobilePreferences: MobileMapPreferences(
+                                trafficEnabled: true,
+                                scrollGesturesEnabled: true,
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false,
+                              ),
+                            )),
+
+                        // *** category item
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(25.0, 95.0, 318.0, 40.0),
+                          size: Size(360.0, 640.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          fixedHeight: true,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: navigationCategoryItemsValues.length,
+                            itemBuilder: (context, position) {
+                              NavigationCategoryItemModel itemModel =
+                                  navigationCategoryItemsValues[position];
+                              return NavigationCategoryItemXD(
+                                title: itemModel.title,
+                                icon: itemModel.icon,
+                                onCardTapped: _goToSearchScreenPanelType,
+                              );
+                            },
+                          ),
+                        ),
+
+                        // *** gps current location
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(283.0, 484.0, 52.0, 52.0),
+                          size: Size(360.0, 640.0),
+                          pinRight: true,
+                          fixedWidth: true,
+                          fixedHeight: true,
+                          child:
+                              // Adobe XD layer: 'Locate_currentLoc' (group)
+                              InkWell(
+                            onTap: _goToUserCurrentLocation,
+                            child: Stack(
+                              children: <Widget>[
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(0.0, 0.0, 52.0, 52.0),
+                                  size: Size(52.0, 52.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(45.0),
+                                      color: const Color(0xffffffff),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0x330d1724),
+                                          offset: Offset(0, 0),
+                                          blurRadius: 10,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
+                                  size: Size(52.0, 52.0),
+                                  fixedWidth: true,
+                                  fixedHeight: true,
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(11.7, 0.0, 1.0, 6.9),
+                                        size: Size(23.4, 23.4),
+                                        pinTop: true,
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: SvgPicture.string(
+                                          _svg_dyx0i8,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(11.7, 16.5, 1.0, 6.9),
+                                        size: Size(23.4, 23.4),
+                                        pinBottom: true,
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: SvgPicture.string(
+                                          _svg_2wkjyo,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(0.0, 11.7, 6.9, 1.0),
+                                        size: Size(23.4, 23.4),
+                                        pinLeft: true,
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: SvgPicture.string(
+                                          _svg_ame8e,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(16.5, 11.7, 6.9, 1.0),
+                                        size: Size(23.4, 23.4),
+                                        pinRight: true,
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: SvgPicture.string(
+                                          _svg_t68j0u,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(1.7, 1.7, 20.0, 20.0),
+                                        size: Size(23.4, 23.4),
+                                        pinLeft: true,
+                                        pinRight: true,
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.elliptical(
+                                                    9999.0, 9999.0)),
+                                            color: const Color(0xffffffff),
+                                            border: Border.all(
+                                                width: 3.0,
+                                                color: const Color(0xff9ea1a6)),
+                                          ),
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(8.7, 8.7, 6.0, 6.0),
+                                        size: Size(23.4, 23.4),
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.elliptical(
+                                                    9999.0, 9999.0)),
+                                            color: const Color(0xff44caab),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                    break;
+                  case LocationState.loading:
+                    return Container();
+                    break;
+                }
+                return Container();
+              }),
 
           // *** impl navigation bottom
           Pinned.fromSize(
@@ -375,152 +605,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             ),
           ),
 
-          // *** gps current location
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(283.0, 484.0, 52.0, 52.0),
-            size: Size(360.0, 640.0),
-            pinRight: true,
-            fixedWidth: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Locate_currentLoc' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 52.0, 52.0),
-                  size: Size(52.0, 52.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(45.0),
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x330d1724),
-                          offset: Offset(0, 0),
-                          blurRadius: 10,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
-                  size: Size(52.0, 52.0),
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child: Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(11.7, 0.0, 1.0, 6.9),
-                        size: Size(23.4, 23.4),
-                        pinTop: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child: SvgPicture.string(
-                          _svg_dyx0i8,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(11.7, 16.5, 1.0, 6.9),
-                        size: Size(23.4, 23.4),
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child: SvgPicture.string(
-                          _svg_2wkjyo,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 11.7, 6.9, 1.0),
-                        size: Size(23.4, 23.4),
-                        pinLeft: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child: SvgPicture.string(
-                          _svg_ame8e,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(16.5, 11.7, 6.9, 1.0),
-                        size: Size(23.4, 23.4),
-                        pinRight: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child: SvgPicture.string(
-                          _svg_t68j0u,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(1.7, 1.7, 20.0, 20.0),
-                        size: Size(23.4, 23.4),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xffffffff),
-                            border: Border.all(
-                                width: 3.0, color: const Color(0xff9ea1a6)),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(8.7, 8.7, 6.0, 6.0),
-                        size: Size(23.4, 23.4),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff44caab),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // *** category item
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 95.0, 318.0, 40.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: navigationCategoryItemsValues.length,
-              itemBuilder: (context, position) {
-                NavigationCategoryItemModel itemModel =
-                    navigationCategoryItemsValues[position];
-                return NavigationCategoryItemXD(
-                  title: itemModel.title,
-                  icon: itemModel.icon,
-                  onCardTapped: _goToSearchScreenPanelType,
-                );
-              },
-            ),
-          ),
-
           // *** where to card
           Pinned.fromSize(
             bounds: Rect.fromLTWH(25.0, 44.0, 310.0, 55.0),
@@ -531,7 +615,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'Search-bar' (group)
-                InkWell(onTap: _goToSearchPanelScreen,
+                InkWell(
+              onTap: _goToSearchPanelScreen,
               child: Stack(
                 children: <Widget>[
                   Pinned.fromSize(
@@ -627,13 +712,57 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   }
 
   void _goToSearchPanelScreen() {
-     Navigator.of(context)
+    Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SearchScreenXD()));
   }
 
   void _goToSearchScreenPanelType() {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD()));
+  }
+
+  // from every where on the map go to user current location
+  void _goToUserCurrentLocation() {
+    _key.currentState
+        .moveCamera(GeoCoord(_lat, _lon), animated: true, waitUntilReady: true);
+  }
+
+  // get user current location
+  void getUserCurrentLocation() async {
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        _onLocationState.add(LocationState.deny);
+      } else {
+        _locationData = await location.getLocation();
+        _lat = _locationData.latitude;
+        _lon = _locationData.longitude;
+        // TODO: call get main category
+        _onLocationState.add(LocationState.granted);
+
+        _key.currentState.moveCamera(GeoCoord(_lat, _lon),
+            animated: true, waitUntilReady: true);
+      }
+    } else {
+      _locationData = await location.getLocation();
+      _lat = _locationData.latitude;
+      _lon = _locationData.longitude;
+      // TODO: call get main category
+      _onLocationState.add(LocationState.granted);
+
+      _key.currentState
+        .moveCamera(GeoCoord(_lat, _lon), animated: true, waitUntilReady: true);
+    }
   }
 }
 
