@@ -41,56 +41,159 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
     getUserCurrentLocation();
   }
 
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget buildNeedLocationButton() {
+    return SizedBox(
+      width: 180,
+      height: 50,
+      child: Stack(
+        children: <Widget>[
+          // white card color
+          Pinned.fromSize(
+            bounds: Rect.fromLTWH(0.0, 0.0, 100.0, 40.0),
+            size: Size(100.0, 40.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28.0),
+                color: const Color(0xffffffff),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x1a000000),
+                    offset: Offset(0, 0),
+                    blurRadius: 24,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // card icon
+          Pinned.fromSize(
+            bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+            size: Size(24.0, 24.0),
+            pinLeft: true,
+            pinTop: true,
+            pinBottom: true,
+            fixedWidth: true,
+            child: Stack(
+              children: <Widget>[
+                Pinned.fromSize(
+                  bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                  size: Size(24.0, 24.0),
+                  pinLeft: true,
+                  pinRight: true,
+                  pinTop: true,
+                  pinBottom: true,
+                  child:
+                      // Adobe XD layer: 'Path' (shape)
+                      Container(
+                    color: const Color(0x00000000),
+                  ),
+                ),
+                Pinned.fromSize(
+                  bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
+                  size: Size(24.0, 24.0),
+                  pinLeft: true,
+                  pinRight: true,
+                  pinTop: true,
+                  pinBottom: true,
+                  child: Icon(Icons.location_on,color: Color(0xff44cab1),)
+                      
+                ),
+              ],
+            ),
+          ),
+
+          // card title
+          Pinned.fromSize(
+            bounds: Rect.fromLTWH(5.0, 0.0, 80.0, 20.0),
+            size: Size(80.0, 20.0),
+            // *** title of category
+            child: Center(
+              child: Text(
+                'Need your Location',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff202020),
+                ),
+                textAlign: TextAlign.center,
+                
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       body: Stack(
         children: <Widget>[
+          // *** impl google map
+          Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: GoogleMap(
+                key: _key,
+                interactive: true,
+                mapType: MapType.roadmap,
+                //initialPosition: GeoCoord(1.3521, 103.8198),
+                /* markers: {
+                                Marker(GeoCoord(1.3521, 103.8198)),
+                              }, */
+                mobilePreferences: MobileMapPreferences(
+                  trafficEnabled: true,
+                  scrollGesturesEnabled: true,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: false,
+                  zoomControlsEnabled: false,
+                ),
+              )),
+
           StreamBuilder<LocationState>(
               stream: _onLocationState,
               builder: (context, snapshot) {
                 switch (snapshot.data) {
                   case LocationState.deny:
-                    return Stack(
-                      children: [
-                        // *** impl google map
-                        Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: GoogleMap(
-                              key: _key,
-                              interactive: true,
-                              mapType: MapType.roadmap,
-                              //initialPosition: GeoCoord(1.3521, 103.8198),
-                              /* markers: {
-                                Marker(GeoCoord(1.3521, 103.8198)),
-                              }, */
-                              mobilePreferences: MobileMapPreferences(
-                                trafficEnabled: true,
-                                scrollGesturesEnabled: true,
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: false,
-                                zoomControlsEnabled: false,
-                              ),
-                            )),
-                        Center(
+                    return
+                        // Stream builder for we need your location button
+                        StreamBuilder<LocationState>(
+                      builder: (context, snapshot) {
+                        switch (snapshot.data) {
+                          case LocationState.deny:
+                            //
+                            break;
+                          case LocationState.granted:
+                            //
+                            break;
+                          case LocationState.loading:
+                            buildLoading();
+                            break;
+                        }
+                        return Center(
                           child: InkWell(
-                            onTap: getUserCurrentLocation,
-                            child: Text(
-                              'give your location',
-                              style: TextStyle(fontSize: 22, color: Colors.red),
-                            ),
-                          ),
-                        )
-                      ],
+                              onTap: getUserCurrentLocation,
+                              child: buildNeedLocationButton()),
+                        );
+                      },
                     );
+
                     break;
                   case LocationState.granted:
                     return Stack(
                       children: [
+                        // *** impl google map
                         Positioned(
                             top: 0,
                             bottom: 0,
@@ -274,10 +377,10 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                     );
                     break;
                   case LocationState.loading:
-                    return Container();
+                    return buildLoading();
                     break;
                 }
-                return Container();
+                return buildLoading();
               }),
 
           // *** impl navigation bottom
@@ -729,6 +832,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
   // get user current location
   void getUserCurrentLocation() async {
+    _onLocationState.add(LocationState.loading);
+
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
       _serviceEnabled = await location.requestService();
@@ -752,6 +857,10 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
             animated: true, waitUntilReady: true);
+
+        _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
+
+        setState(() {});
       }
     } else {
       _locationData = await location.getLocation();
@@ -760,8 +869,12 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
       // TODO: call get main category
       _onLocationState.add(LocationState.granted);
 
-      _key.currentState
-        .moveCamera(GeoCoord(_lat, _lon), animated: true, waitUntilReady: true);
+      _key.currentState.moveCamera(GeoCoord(_lat, _lon),
+          animated: true, waitUntilReady: true);
+
+      _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
+
+      setState(() {});
     }
   }
 }
