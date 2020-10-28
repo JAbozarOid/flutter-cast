@@ -79,20 +79,24 @@ class NavigationCategoryItemXD extends StatelessWidget {
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(3.0, 2.0, 18.0, 20.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Icon' (shape)
-                            SvgPicture.string(
+                          bounds: Rect.fromLTWH(3.0, 2.0, 18.0, 20.0),
+                          size: Size(24.0, 24.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Icon' (shape)
+                              /* SvgPicture.string(
                           icon,
                           allowDrawingOutsideViewBox: true,
                           fit: BoxFit.fill,
-                        ),
-                      ),
+                        ), */
+                              SvgPicture.network(
+                            icon,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          )),
                     ],
                   ),
                 ),

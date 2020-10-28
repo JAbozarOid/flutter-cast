@@ -1,8 +1,13 @@
 import 'dart:async';
 
+import 'package:cast/app/repository/data_repository.dart';
+import 'package:cast/app/service/api.dart';
+import 'package:cast/app/service/api_service.dart';
+import 'package:cast/bloc/main_category/main_category_bloc.dart';
 import 'package:cast/ui/navigation/xd/navigation_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreenXD extends StatefulWidget {
@@ -27,12 +32,19 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
   }
 
   void goToNavigationScreen() async {
-    Navigator.of(context).pushReplacement(
+    /* Navigator.of(context).pushReplacement(
       MaterialPageRoute(
           builder: (_) =>
               //NavigationScreen()
               NavigationScreenXD()),
-    );
+    ); */
+
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) =>
+                  MainCategoryBloc(DataRepository(APIService(API.sandbox()))),
+              child: NavigationScreenXD(),
+            )));
   }
 
   @override

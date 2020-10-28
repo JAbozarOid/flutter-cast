@@ -1,5 +1,7 @@
+import 'package:cast/bloc/main_category/main_category_bloc.dart';
+import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/location/location_state.dart';
-import 'package:cast/ui/navigation/xd/navigation_category_item_model.dart';
+import 'package:cast/bloc/main_category/model/navigation_category_item_model.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_type_xd.dart';
@@ -8,6 +10,7 @@ import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
@@ -95,15 +98,16 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                  size: Size(24.0, 24.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Icon(Icons.location_on,color: Color(0xff44cab1),)
-                      
-                ),
+                    bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
+                    size: Size(24.0, 24.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child: Icon(
+                      Icons.location_on,
+                      color: Color(0xff44cab1),
+                    )),
               ],
             ),
           ),
@@ -123,7 +127,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                   color: const Color(0xff202020),
                 ),
                 textAlign: TextAlign.center,
-                
               ),
             ),
           ),
@@ -132,412 +135,542 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
     );
   }
 
+  void getMainCategoryList() async {
+    final mainCategoryBloc = BlocProvider.of<MainCategoryBloc>(context);
+    mainCategoryBloc.add(GetMainCategoryList());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
-      body: Stack(
-        children: <Widget>[
-          // *** impl google map
-          Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: GoogleMap(
-                key: _key,
-                interactive: true,
-                mapType: MapType.roadmap,
-                //initialPosition: GeoCoord(1.3521, 103.8198),
-                /* markers: {
-                                Marker(GeoCoord(1.3521, 103.8198)),
-                              }, */
-                mobilePreferences: MobileMapPreferences(
-                  trafficEnabled: true,
-                  scrollGesturesEnabled: true,
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                ),
-              )),
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            // *** impl google map
+            // *** this google map created before user granted or deny location
+            Positioned(
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: GoogleMap(
+                  key: _key,
+                  interactive: true,
+                  mapType: MapType.roadmap,
+                  //initialPosition: GeoCoord(1.3521, 103.8198),
+                  /* markers: {
+                                  Marker(GeoCoord(1.3521, 103.8198)),
+                                }, */
+                  mobilePreferences: MobileMapPreferences(
+                    trafficEnabled: true,
+                    scrollGesturesEnabled: true,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                  ),
+                )),
 
-          StreamBuilder<LocationState>(
-              stream: _onLocationState,
-              builder: (context, snapshot) {
-                switch (snapshot.data) {
-                  case LocationState.deny:
-                    return
-                        // Stream builder for we need your location button
-                        StreamBuilder<LocationState>(
-                      builder: (context, snapshot) {
-                        switch (snapshot.data) {
-                          case LocationState.deny:
-                            //
-                            break;
-                          case LocationState.granted:
-                            //
-                            break;
-                          case LocationState.loading:
-                            buildLoading();
-                            break;
-                        }
-                        return Center(
-                          child: InkWell(
-                              onTap: getUserCurrentLocation,
-                              child: buildNeedLocationButton()),
-                        );
-                      },
-                    );
+            // this stream builder handle build screen base on user location permission
+            StreamBuilder<LocationState>(
+                stream: _onLocationState,
+                builder: (context, snapshot) {
+                  switch (snapshot.data) {
+                    // build screen if user deny the permission location
+                    case LocationState.deny:
+                      return
+                          // Stream builder for we need your location button
+                          StreamBuilder<LocationState>(
+                        builder: (context, snapshot) {
+                          switch (snapshot.data) {
+                            case LocationState.deny:
+                              //
+                              break;
+                            case LocationState.granted:
+                              //
+                              break;
+                            case LocationState.loading:
+                              buildLoading();
+                              break;
+                          }
+                          return Center(
+                            child: InkWell(
+                                onTap: getUserCurrentLocation,
+                                child: buildNeedLocationButton()),
+                          );
+                        },
+                      );
 
-                    break;
-                  case LocationState.granted:
-                    return Stack(
-                      children: [
-                        // *** impl google map
-                        Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: GoogleMap(
-                              key: _key,
-                              interactive: true,
-                              mapType: MapType.roadmap,
-                              initialPosition: GeoCoord(_lat, _lon),
-                              markers: {
-                                Marker(GeoCoord(_lat, _lon)),
+                      break;
+                    // build screen if user granted the permission location
+                    case LocationState.granted:
+                      return Stack(
+                        children: [
+                          // *** impl google map
+                          Positioned(
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: GoogleMap(
+                                key: _key,
+                                interactive: true,
+                                mapType: MapType.roadmap,
+                                initialPosition: GeoCoord(_lat, _lon),
+                                markers: {
+                                  Marker(GeoCoord(_lat, _lon)),
+                                },
+                                mobilePreferences: MobileMapPreferences(
+                                  trafficEnabled: true,
+                                  scrollGesturesEnabled: true,
+                                  myLocationEnabled: true,
+                                  myLocationButtonEnabled: false,
+                                  zoomControlsEnabled: false,
+                                ),
+                              )),
+
+                          // *** category item
+                          // *** handle response of GetMainCategoryList
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(25.0, 95.0, 318.0, 40.0),
+                            size: Size(360.0, 640.0),
+                            pinLeft: true,
+                            pinRight: true,
+                            fixedHeight: true,
+                            child:
+                                BlocBuilder<MainCategoryBloc, MainCategoryState>(
+                              builder: (context, state) {
+                                if (state is MainCategoryInitial) {
+                                  return Container();
+                                } else if (state is MainCategoryLoading) {
+                                  return buildLoading();
+                                } else if (state is MainCategoryLoaded) {
+                                  if (state.mainCategoryListRes.length > 0) {
+                                    return ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: state.mainCategoryListRes.length,
+                                      itemBuilder: (context, position) {
+                                        MainCategoryListResponse itemModel =
+                                            state.mainCategoryListRes[position];
+                                        return NavigationCategoryItemXD(
+                                          title: itemModel.name,
+                                          icon: itemModel.iconUrl,
+                                          onCardTapped:
+                                              _goToSearchScreenPanelType,
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    return Center(
+                                      child:
+                                          Text('There are no items nearby you!'),
+                                    );
+                                  }
+                                } else if (state is MainCategoryError) {
+                                  return Center(
+                                    child: Text(
+                                      state.message,
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  );
+                                }
                               },
-                              mobilePreferences: MobileMapPreferences(
-                                trafficEnabled: true,
-                                scrollGesturesEnabled: true,
-                                myLocationEnabled: true,
-                                myLocationButtonEnabled: false,
-                                zoomControlsEnabled: false,
-                              ),
-                            )),
-
-                        // *** category item
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(25.0, 95.0, 318.0, 40.0),
-                          size: Size(360.0, 640.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          fixedHeight: true,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: navigationCategoryItemsValues.length,
-                            itemBuilder: (context, position) {
-                              NavigationCategoryItemModel itemModel =
-                                  navigationCategoryItemsValues[position];
-                              return NavigationCategoryItemXD(
-                                title: itemModel.title,
-                                icon: itemModel.icon,
-                                onCardTapped: _goToSearchScreenPanelType,
-                              );
-                            },
+                            ),
                           ),
-                        ),
 
-                        // *** gps current location
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(283.0, 484.0, 52.0, 52.0),
-                          size: Size(360.0, 640.0),
-                          pinRight: true,
-                          fixedWidth: true,
-                          fixedHeight: true,
-                          child:
-                              // Adobe XD layer: 'Locate_currentLoc' (group)
-                              InkWell(
-                            onTap: _goToUserCurrentLocation,
-                            child: Stack(
-                              children: <Widget>[
-                                Pinned.fromSize(
-                                  bounds: Rect.fromLTWH(0.0, 0.0, 52.0, 52.0),
-                                  size: Size(52.0, 52.0),
-                                  pinLeft: true,
-                                  pinRight: true,
-                                  pinTop: true,
-                                  pinBottom: true,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(45.0),
-                                      color: const Color(0xffffffff),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color(0x330d1724),
-                                          offset: Offset(0, 0),
-                                          blurRadius: 10,
+                          // *** gps current location
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(283.0, 484.0, 52.0, 52.0),
+                            size: Size(360.0, 640.0),
+                            pinRight: true,
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'Locate_currentLoc' (group)
+                                InkWell(
+                              onTap: _goToUserCurrentLocation,
+                              child: Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds: Rect.fromLTWH(0.0, 0.0, 52.0, 52.0),
+                                    size: Size(52.0, 52.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(45.0),
+                                        color: const Color(0xffffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x330d1724),
+                                            offset: Offset(0, 0),
+                                            blurRadius: 10,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds: Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
+                                    size: Size(52.0, 52.0),
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(11.7, 0.0, 1.0, 6.9),
+                                          size: Size(23.4, 23.4),
+                                          pinTop: true,
+                                          fixedWidth: true,
+                                          fixedHeight: true,
+                                          child: SvgPicture.string(
+                                            _svg_dyx0i8,
+                                            allowDrawingOutsideViewBox: true,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(11.7, 16.5, 1.0, 6.9),
+                                          size: Size(23.4, 23.4),
+                                          pinBottom: true,
+                                          fixedWidth: true,
+                                          fixedHeight: true,
+                                          child: SvgPicture.string(
+                                            _svg_2wkjyo,
+                                            allowDrawingOutsideViewBox: true,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(0.0, 11.7, 6.9, 1.0),
+                                          size: Size(23.4, 23.4),
+                                          pinLeft: true,
+                                          fixedWidth: true,
+                                          fixedHeight: true,
+                                          child: SvgPicture.string(
+                                            _svg_ame8e,
+                                            allowDrawingOutsideViewBox: true,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(16.5, 11.7, 6.9, 1.0),
+                                          size: Size(23.4, 23.4),
+                                          pinRight: true,
+                                          fixedWidth: true,
+                                          fixedHeight: true,
+                                          child: SvgPicture.string(
+                                            _svg_t68j0u,
+                                            allowDrawingOutsideViewBox: true,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(1.7, 1.7, 20.0, 20.0),
+                                          size: Size(23.4, 23.4),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.elliptical(
+                                                      9999.0, 9999.0)),
+                                              color: const Color(0xffffffff),
+                                              border: Border.all(
+                                                  width: 3.0,
+                                                  color: const Color(0xff9ea1a6)),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds:
+                                              Rect.fromLTWH(8.7, 8.7, 6.0, 6.0),
+                                          size: Size(23.4, 23.4),
+                                          fixedWidth: true,
+                                          fixedHeight: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.elliptical(
+                                                      9999.0, 9999.0)),
+                                              color: const Color(0xff44caab),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ),
-                                Pinned.fromSize(
-                                  bounds: Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
-                                  size: Size(52.0, 52.0),
-                                  fixedWidth: true,
-                                  fixedHeight: true,
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(11.7, 0.0, 1.0, 6.9),
-                                        size: Size(23.4, 23.4),
-                                        pinTop: true,
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: SvgPicture.string(
-                                          _svg_dyx0i8,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(11.7, 16.5, 1.0, 6.9),
-                                        size: Size(23.4, 23.4),
-                                        pinBottom: true,
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: SvgPicture.string(
-                                          _svg_2wkjyo,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(0.0, 11.7, 6.9, 1.0),
-                                        size: Size(23.4, 23.4),
-                                        pinLeft: true,
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: SvgPicture.string(
-                                          _svg_ame8e,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(16.5, 11.7, 6.9, 1.0),
-                                        size: Size(23.4, 23.4),
-                                        pinRight: true,
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: SvgPicture.string(
-                                          _svg_t68j0u,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(1.7, 1.7, 20.0, 20.0),
-                                        size: Size(23.4, 23.4),
-                                        pinLeft: true,
-                                        pinRight: true,
-                                        pinTop: true,
-                                        pinBottom: true,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.elliptical(
-                                                    9999.0, 9999.0)),
-                                            color: const Color(0xffffffff),
-                                            border: Border.all(
-                                                width: 3.0,
-                                                color: const Color(0xff9ea1a6)),
-                                          ),
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(8.7, 8.7, 6.0, 6.0),
-                                        size: Size(23.4, 23.4),
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.elliptical(
-                                                    9999.0, 9999.0)),
-                                            color: const Color(0xff44caab),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                    break;
-                  case LocationState.loading:
-                    return buildLoading();
-                    break;
-                }
-                return buildLoading();
-              }),
+                        ],
+                      );
+                      break;
+                    case LocationState.loading:
+                      return buildLoading();
+                      break;
+                  }
+                  return buildLoading();
+                }),
 
-          // *** impl navigation bottom
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 544.0, 360.0, 96.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinBottom: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'BN' (group)
-                Stack(
-              children: <Widget>[
-                // container of bottom navigation
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 16.0, 360.0, 80.0),
-                  size: Size(360.0, 96.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Base' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32.0),
-                        topRight: Radius.circular(32.0),
-                      ),
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x1a000000),
-                          offset: Offset(0, -1),
-                          blurRadius: 24,
+            // *** impl navigation bottom
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(0.0, 544.0, 360.0, 96.0),
+              size: Size(360.0, 640.0),
+              pinLeft: true,
+              pinRight: true,
+              pinBottom: true,
+              fixedHeight: true,
+              child:
+                  // Adobe XD layer: 'BN' (group)
+                  Stack(
+                children: <Widget>[
+                  // container of bottom navigation
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(0.0, 16.0, 360.0, 80.0),
+                    size: Size(360.0, 96.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child:
+                        // Adobe XD layer: 'Base' (shape)
+                        Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32.0),
+                          topRight: Radius.circular(32.0),
                         ),
-                      ],
+                        color: const Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x1a000000),
+                            offset: Offset(0, -1),
+                            blurRadius: 24,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
-                // search button
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(148.0, 0.0, 64.0, 64.0),
-                  size: Size(360.0, 96.0),
-                  pinTop: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Search_btn' (group)
-                      Stack(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: _goToWhereToScreen,
-                        child: Pinned.fromSize(
-                          bounds: Rect.fromLTWH(0.0, 0.0, 64.0, 64.0),
-                          size: Size(64.0, 64.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                  Radius.elliptical(9999.0, 9999.0)),
-                              gradient: LinearGradient(
-                                begin: Alignment(0.0, 1.0),
-                                end: Alignment(0.0, -1.0),
-                                colors: [
-                                  const Color(0xff44cac5),
-                                  const Color(0xff44caab)
-                                ],
-                                stops: [0.0, 1.0],
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: const Color(0x29000000),
-                                  offset: Offset(0, -1),
-                                  blurRadius: 6,
+                  // search button
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(148.0, 0.0, 64.0, 64.0),
+                    size: Size(360.0, 96.0),
+                    pinTop: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child:
+                        // Adobe XD layer: 'Search_btn' (group)
+                        Stack(
+                      children: <Widget>[
+                        InkWell(
+                          onTap: _goToWhereToScreen,
+                          child: Pinned.fromSize(
+                            bounds: Rect.fromLTWH(0.0, 0.0, 64.0, 64.0),
+                            size: Size(64.0, 64.0),
+                            pinLeft: true,
+                            pinRight: true,
+                            pinTop: true,
+                            pinBottom: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.elliptical(9999.0, 9999.0)),
+                                gradient: LinearGradient(
+                                  begin: Alignment(0.0, 1.0),
+                                  end: Alignment(0.0, -1.0),
+                                  colors: [
+                                    const Color(0xff44cac5),
+                                    const Color(0xff44caab)
+                                  ],
+                                  stops: [0.0, 1.0],
                                 ),
-                              ],
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0x29000000),
+                                    offset: Offset(0, -1),
+                                    blurRadius: 6,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(26.0, 90.0, 96.0, 17.0),
-                        size: Size(90.0, 80.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'You' (text)
-                            Text(
-                          'Search',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 14,
-                            color: const Color(0xff9ea1a6),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(16.7, 17.0, 30.0, 30.0),
-                        size: Size(64.0, 64.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Icon awesome-search…' (shape)
-                            SvgPicture.string(
-                          _svg_7rozqs,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // saved button
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(238.0, 16.0, 90.0, 80.0),
-                  size: Size(360.0, 96.0),
-                  pinRight: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Saved' (group)
-                      InkWell(
-                    onTap: _goToSavedScreen,
-                    child: Stack(
-                      children: <Widget>[
                         Pinned.fromSize(
-                          bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
-                          size: Size(90.0, 80.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child:
-                              // Adobe XD layer: 'Base' (shape)
-                              Container(
-                            decoration: BoxDecoration(),
-                          ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(26.0, 48.0, 38.0, 17.0),
+                          bounds: Rect.fromLTWH(26.0, 90.0, 96.0, 17.0),
                           size: Size(90.0, 80.0),
                           fixedWidth: true,
                           fixedHeight: true,
                           child:
                               // Adobe XD layer: 'You' (text)
                               Text(
-                            'Saved',
+                            'Search',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              color: const Color(0xff9ea1a6),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(16.7, 17.0, 30.0, 30.0),
+                          size: Size(64.0, 64.0),
+                          fixedWidth: true,
+                          fixedHeight: true,
+                          child:
+                              // Adobe XD layer: 'Icon awesome-search…' (shape)
+                              SvgPicture.string(
+                            _svg_7rozqs,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // saved button
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(238.0, 16.0, 90.0, 80.0),
+                    size: Size(360.0, 96.0),
+                    pinRight: true,
+                    pinBottom: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child:
+                        // Adobe XD layer: 'Saved' (group)
+                        InkWell(
+                      onTap: _goToSavedScreen,
+                      child: Stack(
+                        children: <Widget>[
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
+                            size: Size(90.0, 80.0),
+                            pinLeft: true,
+                            pinRight: true,
+                            pinTop: true,
+                            pinBottom: true,
+                            child:
+                                // Adobe XD layer: 'Base' (shape)
+                                Container(
+                              decoration: BoxDecoration(),
+                            ),
+                          ),
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(26.0, 48.0, 38.0, 17.0),
+                            size: Size(90.0, 80.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'You' (text)
+                                Text(
+                              'Saved',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                color: const Color(0xff9ea1a6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
+                            size: Size(90.0, 80.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'Saved' (group)
+                                Stack(
+                              children: <Widget>[
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                  size: Size(24.0, 24.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Path' (shape)
+                                      Container(
+                                    color: const Color(0x00000000),
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(5.0, 3.0, 14.0, 18.0),
+                                  size: Size(24.0, 24.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Icon feather-bookma…' (shape)
+                                      SvgPicture.string(
+                                    _svg_rzrs7n,
+                                    allowDrawingOutsideViewBox: true,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  // setting button
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(32.0, 16.0, 90.0, 80.0),
+                    size: Size(360.0, 96.0),
+                    pinLeft: true,
+                    pinBottom: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child:
+                        // Adobe XD layer: 'Settings_btn' (group)
+                        Stack(
+                      children: <Widget>[
+                        InkWell(
+                          onTap: _goToSettingsScreenXD,
+                          child: Pinned.fromSize(
+                            bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
+                            size: Size(90.0, 80.0),
+                            pinLeft: true,
+                            pinRight: true,
+                            pinTop: true,
+                            pinBottom: true,
+                            child:
+                                // Adobe XD layer: 'Base' (shape)
+                                Container(
+                              decoration: BoxDecoration(),
+                            ),
+                          ),
+                        ),
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(19.0, 48.0, 52.0, 17.0),
+                          size: Size(90.0, 80.0),
+                          fixedWidth: true,
+                          fixedHeight: true,
+                          child:
+                              // Adobe XD layer: 'Program' (text)
+                              Text(
+                            'Settings',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
@@ -553,7 +686,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                           fixedWidth: true,
                           fixedHeight: true,
                           child:
-                              // Adobe XD layer: 'Saved' (group)
+                              // Adobe XD layer: 'settings' (group)
                               Stack(
                             children: <Widget>[
                               Pinned.fromSize(
@@ -570,18 +703,41 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                 ),
                               ),
                               Pinned.fromSize(
-                                bounds: Rect.fromLTWH(5.0, 3.0, 14.0, 18.0),
+                                bounds: Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
                                 size: Size(24.0, 24.0),
                                 pinLeft: true,
                                 pinRight: true,
                                 pinTop: true,
                                 pinBottom: true,
                                 child:
-                                    // Adobe XD layer: 'Icon feather-bookma…' (shape)
-                                    SvgPicture.string(
-                                  _svg_rzrs7n,
-                                  allowDrawingOutsideViewBox: true,
-                                  fit: BoxFit.fill,
+                                    // Adobe XD layer: 'Icon feather-settin…' (group)
+                                    Stack(
+                                  children: <Widget>[
+                                    Pinned.fromSize(
+                                      bounds: Rect.fromLTWH(6.5, 6.5, 4.9, 4.9),
+                                      size: Size(18.0, 18.0),
+                                      fixedWidth: true,
+                                      fixedHeight: true,
+                                      child: SvgPicture.string(
+                                        _svg_mi2s4g,
+                                        allowDrawingOutsideViewBox: true,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Pinned.fromSize(
+                                      bounds: Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
+                                      size: Size(18.0, 18.0),
+                                      pinLeft: true,
+                                      pinRight: true,
+                                      pinTop: true,
+                                      pinBottom: true,
+                                      child: SvgPicture.string(
+                                        _svg_d9bj5t,
+                                        allowDrawingOutsideViewBox: true,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -590,211 +746,98 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       ],
                     ),
                   ),
-                ),
+                ],
+              ),
+            ),
 
-                // setting button
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(32.0, 16.0, 90.0, 80.0),
-                  size: Size(360.0, 96.0),
-                  pinLeft: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Settings_btn' (group)
-                      Stack(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: _goToSettingsScreenXD,
-                        child: Pinned.fromSize(
-                          bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
-                          size: Size(90.0, 80.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child:
-                              // Adobe XD layer: 'Base' (shape)
-                              Container(
-                            decoration: BoxDecoration(),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(19.0, 48.0, 52.0, 17.0),
-                        size: Size(90.0, 80.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Program' (text)
-                            Text(
-                          'Settings',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 14,
-                            color: const Color(0xff9ea1a6),
-                            fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
-                        size: Size(90.0, 80.0),
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'settings' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                              size: Size(24.0, 24.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Path' (shape)
-                                  Container(
-                                color: const Color(0x00000000),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
-                              size: Size(24.0, 24.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Icon feather-settin…' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  Pinned.fromSize(
-                                    bounds: Rect.fromLTWH(6.5, 6.5, 4.9, 4.9),
-                                    size: Size(18.0, 18.0),
-                                    fixedWidth: true,
-                                    fixedHeight: true,
-                                    child: SvgPicture.string(
-                                      _svg_mi2s4g,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                  Pinned.fromSize(
-                                    bounds: Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
-                                    size: Size(18.0, 18.0),
-                                    pinLeft: true,
-                                    pinRight: true,
-                                    pinTop: true,
-                                    pinBottom: true,
-                                    child: SvgPicture.string(
-                                      _svg_d9bj5t,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ],
-                              ),
+            // *** where to card
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(25.0, 44.0, 310.0, 55.0),
+              size: Size(360.0, 640.0),
+              pinLeft: true,
+              pinRight: true,
+              pinTop: true,
+              fixedHeight: true,
+              child:
+                  // Adobe XD layer: 'Search-bar' (group)
+                  InkWell(
+                onTap: _goToSearchPanelScreen,
+                child: Stack(
+                  children: <Widget>[
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(0.0, 0.0, 310.0, 55.0),
+                      size: Size(310.0, 55.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(28.0),
+                          color: const Color(0xffffffff),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x1a000000),
+                              offset: Offset(0, 0),
+                              blurRadius: 24,
                             ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(41.0, 24.0, 85.0, 24.0),
+                      size: Size(310.0, 55.0),
+                      pinLeft: true,
+                      pinBottom: true,
+                      fixedWidth: false,
+                      fixedHeight: true,
+                      child: Text(
+                        'Where to?',
+                        style: TextStyle(
+                          fontFamily: 'Open Sans',
+                          fontSize: 18,
+                          color: const Color(0xff0d1724),
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(23.0, 11.0, 136.0, 14.0),
+                      size: Size(310.0, 55.0),
+                      pinLeft: true,
+                      fixedWidth: false,
+                      fixedHeight: true,
+                      child: Text(
+                        'From: Sobhan, Madani Street',
+                        style: TextStyle(
+                          fontFamily: 'Open Sans',
+                          fontSize: 10,
+                          color: const Color(0xff0d1724),
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(23.0, 32.0, 8.0, 8.0),
+                      size: Size(310.0, 55.0),
+                      pinLeft: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                          color: const Color(0xff44cab1),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-
-          // *** where to card
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 44.0, 310.0, 55.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Search-bar' (group)
-                InkWell(
-              onTap: _goToSearchPanelScreen,
-              child: Stack(
-                children: <Widget>[
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(0.0, 0.0, 310.0, 55.0),
-                    size: Size(310.0, 55.0),
-                    pinLeft: true,
-                    pinRight: true,
-                    pinTop: true,
-                    pinBottom: true,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(28.0),
-                        color: const Color(0xffffffff),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0x1a000000),
-                            offset: Offset(0, 0),
-                            blurRadius: 24,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(41.0, 24.0, 85.0, 24.0),
-                    size: Size(310.0, 55.0),
-                    pinLeft: true,
-                    pinBottom: true,
-                    fixedWidth: false,
-                    fixedHeight: true,
-                    child: Text(
-                      'Where to?',
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontSize: 18,
-                        color: const Color(0xff0d1724),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(23.0, 11.0, 136.0, 14.0),
-                    size: Size(310.0, 55.0),
-                    pinLeft: true,
-                    fixedWidth: false,
-                    fixedHeight: true,
-                    child: Text(
-                      'From: Sobhan, Madani Street',
-                      style: TextStyle(
-                        fontFamily: 'Open Sans',
-                        fontSize: 10,
-                        color: const Color(0xff0d1724),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Pinned.fromSize(
-                    bounds: Rect.fromLTWH(23.0, 32.0, 8.0, 8.0),
-                    size: Size(310.0, 55.0),
-                    pinLeft: true,
-                    fixedWidth: true,
-                    fixedHeight: true,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                        color: const Color(0xff44cab1),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -852,7 +895,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         _locationData = await location.getLocation();
         _lat = _locationData.latitude;
         _lon = _locationData.longitude;
-        // TODO: call get main category
+
         _onLocationState.add(LocationState.granted);
 
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
@@ -860,13 +903,14 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
 
-        setState(() {});
+        // call main category list api
+        getMainCategoryList();
       }
     } else {
       _locationData = await location.getLocation();
       _lat = _locationData.latitude;
       _lon = _locationData.longitude;
-      // TODO: call get main category
+
       _onLocationState.add(LocationState.granted);
 
       _key.currentState.moveCamera(GeoCoord(_lat, _lon),
@@ -874,7 +918,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
       _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
 
-      setState(() {});
+      // call main category list api
+      getMainCategoryList();
     }
   }
 }

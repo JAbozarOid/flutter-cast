@@ -15,19 +15,20 @@ class APIService {
       @required String path,
       @required Map<String, String> queryParameters}) async {
     final fullURL =
-        Uri.https(API.host, apiVersion + path, queryParameters ?? {});
+        Uri.http(API.host, apiVersion + path, queryParameters ?? {});
 
     print("request for the api $fullURL");
     print("the api key is ${api.apiKey}");
     try {
       var response = await http.get(fullURL, headers: {
-        'user-key': '${api.apiKey}'
+        //'user-key': '${api.apiKey}'
+        'content-type': 'application/json'
       }).timeout(Duration(seconds: 15));
       print(
           "the response for the api $fullURL is ${json.decode(response.body)} with status code ${response.statusCode} and reason phrase is ${response.reasonPhrase}");
 
       return Future.value(BaseHttpResponse(
-          json: json.decode(
+          jsonList: json.decode(
             response.body,
           ),
           statusCode: response.statusCode));

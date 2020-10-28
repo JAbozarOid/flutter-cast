@@ -1,3 +1,5 @@
+import 'package:cast/app/repository/endpoints_data.dart';
+import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
 import 'package:http/http.dart';
 
@@ -26,5 +28,20 @@ class DataRepository {
     }
   }
 
+  Future<EndpointsData> callGetMainCategoryListAPI() async =>
+      await _getData<EndpointsData>(
+          onGetData: () => _getMainCategoryListData());
 
+  Future<EndpointsData> _getMainCategoryListData() async {
+    final values = await Future.wait([
+      apiService.getAPI(
+          apiVersion: API.apiVersion[APIVersions.version],
+          path: PathApi.getApiPath(Path.getMainCategoryList),
+          queryParameters: {}),
+    ]);
+
+    return EndpointsData(values: {
+      APIVersions.version: values[0],
+    });
+  }
 }
