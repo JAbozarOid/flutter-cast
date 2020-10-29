@@ -100,7 +100,12 @@ class WhereToCardItems extends StatelessWidget {
                     pinBottom: true,
                     child:
                         // Adobe XD layer: 'Icon' (shape)
-                        SvgPicture.string(
+                        /* SvgPicture.string(
+                      icon,
+                      allowDrawingOutsideViewBox: true,
+                      fit: BoxFit.fill,
+                    ), */
+                    SvgPicture.network(
                       icon,
                       allowDrawingOutsideViewBox: true,
                       fit: BoxFit.fill,

@@ -1,3 +1,7 @@
+import 'package:cast/app/repository/data_repository.dart';
+import 'package:cast/app/service/api.dart';
+import 'package:cast/app/service/api_service.dart';
+import 'package:cast/bloc/category_list_detail/category_list_detail_bloc.dart';
 import 'package:cast/bloc/main_category/main_category_bloc.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/location/location_state.dart';
@@ -237,8 +241,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             pinLeft: true,
                             pinRight: true,
                             fixedHeight: true,
-                            child:
-                                BlocBuilder<MainCategoryBloc, MainCategoryState>(
+                            child: BlocBuilder<MainCategoryBloc,
+                                MainCategoryState>(
                               builder: (context, state) {
                                 if (state is MainCategoryInitial) {
                                   return Container();
@@ -248,7 +252,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                   if (state.mainCategoryListRes.length > 0) {
                                     return ListView.builder(
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: state.mainCategoryListRes.length,
+                                      itemCount:
+                                          state.mainCategoryListRes.length,
                                       itemBuilder: (context, position) {
                                         MainCategoryListResponse itemModel =
                                             state.mainCategoryListRes[position];
@@ -262,8 +267,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                     );
                                   } else {
                                     return Center(
-                                      child:
-                                          Text('There are no items nearby you!'),
+                                      child: Text(
+                                          'There are no items nearby you!'),
                                     );
                                   }
                                 } else if (state is MainCategoryError) {
@@ -302,7 +307,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                     pinBottom: true,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(45.0),
+                                        borderRadius:
+                                            BorderRadius.circular(45.0),
                                         color: const Color(0xffffffff),
                                         boxShadow: [
                                           BoxShadow(
@@ -315,15 +321,16 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                     ),
                                   ),
                                   Pinned.fromSize(
-                                    bounds: Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
+                                    bounds:
+                                        Rect.fromLTWH(14.3, 14.3, 23.4, 23.4),
                                     size: Size(52.0, 52.0),
                                     fixedWidth: true,
                                     fixedHeight: true,
                                     child: Stack(
                                       children: <Widget>[
                                         Pinned.fromSize(
-                                          bounds:
-                                              Rect.fromLTWH(11.7, 0.0, 1.0, 6.9),
+                                          bounds: Rect.fromLTWH(
+                                              11.7, 0.0, 1.0, 6.9),
                                           size: Size(23.4, 23.4),
                                           pinTop: true,
                                           fixedWidth: true,
@@ -335,8 +342,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           ),
                                         ),
                                         Pinned.fromSize(
-                                          bounds:
-                                              Rect.fromLTWH(11.7, 16.5, 1.0, 6.9),
+                                          bounds: Rect.fromLTWH(
+                                              11.7, 16.5, 1.0, 6.9),
                                           size: Size(23.4, 23.4),
                                           pinBottom: true,
                                           fixedWidth: true,
@@ -348,8 +355,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           ),
                                         ),
                                         Pinned.fromSize(
-                                          bounds:
-                                              Rect.fromLTWH(0.0, 11.7, 6.9, 1.0),
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 11.7, 6.9, 1.0),
                                           size: Size(23.4, 23.4),
                                           pinLeft: true,
                                           fixedWidth: true,
@@ -361,8 +368,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           ),
                                         ),
                                         Pinned.fromSize(
-                                          bounds:
-                                              Rect.fromLTWH(16.5, 11.7, 6.9, 1.0),
+                                          bounds: Rect.fromLTWH(
+                                              16.5, 11.7, 6.9, 1.0),
                                           size: Size(23.4, 23.4),
                                           pinRight: true,
                                           fixedWidth: true,
@@ -374,8 +381,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           ),
                                         ),
                                         Pinned.fromSize(
-                                          bounds:
-                                              Rect.fromLTWH(1.7, 1.7, 20.0, 20.0),
+                                          bounds: Rect.fromLTWH(
+                                              1.7, 1.7, 20.0, 20.0),
                                           size: Size(23.4, 23.4),
                                           pinLeft: true,
                                           pinRight: true,
@@ -389,7 +396,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                               color: const Color(0xffffffff),
                                               border: Border.all(
                                                   width: 3.0,
-                                                  color: const Color(0xff9ea1a6)),
+                                                  color:
+                                                      const Color(0xff9ea1a6)),
                                             ),
                                           ),
                                         ),
@@ -474,11 +482,11 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                     fixedHeight: true,
                     child:
                         // Adobe XD layer: 'Search_btn' (group)
-                        Stack(
-                      children: <Widget>[
                         InkWell(
-                          onTap: _goToWhereToScreen,
-                          child: Pinned.fromSize(
+                      onTap: _goToWhereToScreen,
+                      child: Stack(
+                        children: <Widget>[
+                          Pinned.fromSize(
                             bounds: Rect.fromLTWH(0.0, 0.0, 64.0, 64.0),
                             size: Size(64.0, 64.0),
                             pinLeft: true,
@@ -508,39 +516,39 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                               ),
                             ),
                           ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(26.0, 90.0, 96.0, 17.0),
-                          size: Size(90.0, 80.0),
-                          fixedWidth: true,
-                          fixedHeight: true,
-                          child:
-                              // Adobe XD layer: 'You' (text)
-                              Text(
-                            'Search',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              color: const Color(0xff9ea1a6),
-                              fontWeight: FontWeight.w500,
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(26.0, 90.0, 96.0, 17.0),
+                            size: Size(90.0, 80.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'You' (text)
+                                Text(
+                              'Search',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                color: const Color(0xff9ea1a6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
                           ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(16.7, 17.0, 30.0, 30.0),
-                          size: Size(64.0, 64.0),
-                          fixedWidth: true,
-                          fixedHeight: true,
-                          child:
-                              // Adobe XD layer: 'Icon awesome-search…' (shape)
-                              SvgPicture.string(
-                            _svg_7rozqs,
-                            allowDrawingOutsideViewBox: true,
-                            fit: BoxFit.fill,
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(16.7, 17.0, 30.0, 30.0),
+                            size: Size(64.0, 64.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'Icon awesome-search…' (shape)
+                                SvgPicture.string(
+                              _svg_7rozqs,
+                              allowDrawingOutsideViewBox: true,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
 
@@ -725,7 +733,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                       ),
                                     ),
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
+                                      bounds:
+                                          Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
                                       size: Size(18.0, 18.0),
                                       pinLeft: true,
                                       pinRight: true,
@@ -826,8 +835,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       fixedHeight: true,
                       child: Container(
                         decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
+                          borderRadius: BorderRadius.all(
+                              Radius.elliptical(9999.0, 9999.0)),
                           color: const Color(0xff44cab1),
                         ),
                       ),
@@ -848,8 +857,21 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   }
 
   void _goToWhereToScreen() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => WhereToScreenXD()));
+    /* Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => WhereToScreenXD())); */
+
+    /*  Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+              value: BlocProvider.of<CategoryListDetailBloc>(context),
+              child: WhereToScreenXD(),
+            ))); */
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => CategoryListDetailBloc(
+                  DataRepository(APIService(API.sandbox()))),
+              child: WhereToScreenXD(),
+            )));
   }
 
   void _goToSavedScreen() {

@@ -1,4 +1,5 @@
 import 'package:adobe_xd/adobe_xd.dart';
+import 'package:cast/bloc/category_list_detail/model/category_list_detail_res.dart';
 import 'package:cast/ui/whereto/nearby/nearby_screen.dart';
 import 'package:cast/ui/whereto/nearby/xd/nearby_screen_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_card_items_xd.dart';
@@ -6,16 +7,19 @@ import 'package:cast/ui/whereto/xd/where_to_category_model.dart';
 import 'package:flutter/material.dart';
 
 class WhereToCategoryItemWidgetXD extends StatefulWidget {
-  final WhereToCategoryModel categoryTitle;
+  //final WhereToCategoryModel categoryTitle;
+  final CategoryListDetailResponse categoryListDetailResponse;
 
-  const WhereToCategoryItemWidgetXD({Key key, this.categoryTitle})
+  const WhereToCategoryItemWidgetXD({Key key, this.categoryListDetailResponse})
       : super(key: key);
 
   @override
-  _WhereToCategoryItemWidgetXDState createState() => _WhereToCategoryItemWidgetXDState();
+  _WhereToCategoryItemWidgetXDState createState() =>
+      _WhereToCategoryItemWidgetXDState();
 }
 
-class _WhereToCategoryItemWidgetXDState extends State<WhereToCategoryItemWidgetXD> {
+class _WhereToCategoryItemWidgetXDState
+    extends State<WhereToCategoryItemWidgetXD> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -33,7 +37,7 @@ class _WhereToCategoryItemWidgetXDState extends State<WhereToCategoryItemWidgetX
             // title
             child: Center(
               child: Text(
-                widget.categoryTitle.title,
+                widget.categoryListDetailResponse.categoryName,
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 18,
@@ -49,16 +53,17 @@ class _WhereToCategoryItemWidgetXDState extends State<WhereToCategoryItemWidgetX
             padding: EdgeInsets.only(top: 108.0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 70 * (widget.categoryTitle.values.length).toDouble(),
+              height: 70 * (widget.categoryListDetailResponse.categoryList.length).toDouble(),
               child: GridView.builder(
                 // physics means touch scroll on grid is disable -> with this property the lag of scrolling is improved
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: widget.categoryTitle.values.length,
+                itemCount: widget.categoryListDetailResponse.categoryList.length,
                 itemBuilder: (context, position) {
                   return WhereToCardItems(
-                      icon: widget.categoryTitle.values[position].icon,
-                      title: widget.categoryTitle.values[position].title,
-                      onCardTapped: _goToListOfItemSelected,);
+                    icon: widget.categoryListDetailResponse.categoryList[position].iconUrl,
+                    title: widget.categoryListDetailResponse.categoryList[position].name,
+                    onCardTapped: _goToListOfItemSelected,
+                  );
                 },
                 padding: const EdgeInsets.all(4.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

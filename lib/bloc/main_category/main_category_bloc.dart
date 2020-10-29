@@ -24,9 +24,9 @@ class MainCategoryBloc extends Bloc<MainCategoryEvent, MainCategoryState> {
         final mainCategory =
             await dataRepository.callGetMainCategoryListAPI();
         if (mainCategory.getEndpointsData.statusCode == 200) {
-          var res = mainCategory.getEndpointsData.jsonList;
+          var res = mainCategory.getEndpointsData.json['result'];
           List<MainCategoryListResponse> list =
-              (res).map((e) => MainCategoryListResponse.fromJson(e)).toList();
+              (res as List).map((e) => MainCategoryListResponse.fromJson(e)).toList();
 
           yield MainCategoryLoaded(list);
 

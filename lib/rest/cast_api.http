@@ -43,8 +43,8 @@ Content-Type: : application/json
     "areaInUse": true,
     "avgSpendingTime": true
   },
-  "categoryId": "93be718821a94835963e746af2f4de7b",
-  "text": "res"
+  "categoryId": "6cbdbdf48d8b406fabafd92a49a091a3",
+  "text": "Services"
 }
 
 ### GetVenue - POST - Request Body

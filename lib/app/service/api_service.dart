@@ -28,7 +28,7 @@ class APIService {
           "the response for the api $fullURL is ${json.decode(response.body)} with status code ${response.statusCode} and reason phrase is ${response.reasonPhrase}");
 
       return Future.value(BaseHttpResponse(
-          jsonList: json.decode(
+          json: json.decode(
             response.body,
           ),
           statusCode: response.statusCode));

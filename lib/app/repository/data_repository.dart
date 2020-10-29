@@ -44,4 +44,21 @@ class DataRepository {
       APIVersions.version: values[0],
     });
   }
+
+  Future<EndpointsData> callGetCategoryListDetailAPI() async =>
+      await _getData<EndpointsData>(
+          onGetData: () => _getCategoryListDetailData());
+
+  Future<EndpointsData> _getCategoryListDetailData() async {
+    final values = await Future.wait([
+      apiService.getAPI(
+          apiVersion: API.apiVersion[APIVersions.version],
+          path: PathApi.getApiPath(Path.getCategoryListInDetail),
+          queryParameters: {}),
+    ]);
+
+    return EndpointsData(values: {
+      APIVersions.version: values[0],
+    });
+  }
 }
