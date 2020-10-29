@@ -31,37 +31,40 @@ Content-Type: application/json
 ### Venue
 ### GetVenueListByLocation - POST - Request Body
 POST {{baseUrl}}/Venue/GetVenueListByLocation HTTP/1.1
-Content-Type: : application/json
+Accept: application/json
+Content-Type: application/json
 
 {
-  "latitude": 0,
-  "longitude": 0,
+  "latitude": 35.760739, 
+  "longitude": 51.472668,
   "filters": {
-    "radius": 0,
-    "userReview": true,
-    "crowding": true,
-    "areaInUse": true,
-    "avgSpendingTime": true
+    "radius": 10000,
+    "userReview": false,
+    "crowding": false,
+    "areaInUse": false,
+    "avgSpendingTime": false
   },
-  "categoryId": "6cbdbdf48d8b406fabafd92a49a091a3",
-  "text": "Services"
+  "categoryId": "1811e3f9af8b49ac80f10d210cd31e79",
+  "text": ""
 }
 
 ### GetVenue - POST - Request Body
 POST {{baseUrl}}/Venue/GetVenue HTTP/1.1
-Content-Type: : application/json
+Accept: application/json
+Content-Type: application/json
 
 {
-  "venueId": "123456789"
+  "venueId": "4867e0b3ef644318a05d877f9f85069c"
 }
 
 ### GetSavedVenueList - POST
 POST {{baseUrl}}/Venue/GetSavedVenueList HTTP/1.1
-Content-Type: : application/json
+Accept: application/json
+Content-Type: application/json
 
 {
   "venueIdList": [
-    "123456789"
+    "4867e0b3ef644318a05d877f9f85069c"
   ]
 }
 
@@ -69,10 +72,11 @@ Content-Type: : application/json
 ### TravelTimePredicator
 ### GetTravelTimeInfo - POST - Request Body
 POST {{baseUrl}}/TravelTimePredictor/GetTravelTimeInfo HTTP/1.1
+Accept: application/json
 Content-Type: application/json
 
 {
   "latitude": 0,
   "longitude": 0,
-  "venueId": "string"
+  "venueId": "4867e0b3ef644318a05d877f9f85069c"
 }
