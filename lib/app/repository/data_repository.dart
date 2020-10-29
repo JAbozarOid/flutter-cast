@@ -61,4 +61,6 @@ class DataRepository {
       APIVersions.version: values[0],
     });
   }
+
+  callGetVenueListByLocation() {}
 }

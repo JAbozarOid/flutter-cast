@@ -18,6 +18,8 @@ class NearbyScreenXD extends StatefulWidget {
 }
 
 class _NearbyScreenXDState extends State<NearbyScreenXD> {
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
