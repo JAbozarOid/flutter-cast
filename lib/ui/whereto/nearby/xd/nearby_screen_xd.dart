@@ -1,3 +1,5 @@
+import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
+import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
@@ -5,21 +7,39 @@ import 'package:cast/ui/whereto/nearby/xd/model/nearby_card_model.dart';
 import 'package:cast/ui/whereto/nearby/xd/nearby_card_item_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyScreenXD extends StatefulWidget {
-  NearbyScreenXD({
-    Key key,
-  }) : super(key: key);
+  final String categoryId;
+  NearbyScreenXD({Key key, @required this.categoryId}) : super(key: key);
 
   @override
   _NearbyScreenXDState createState() => _NearbyScreenXDState();
 }
 
 class _NearbyScreenXDState extends State<NearbyScreenXD> {
-  
-  
+  String get categoryId => widget.categoryId;
+
+  void getVenueListByLocation() {
+    final venueListBloc = BlocProvider.of<GetVenueListBloc>(context);
+    venueListBloc.add(GetVenueListbyLocation(categoryId: categoryId));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getVenueListByLocation();
+  }
+
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +64,41 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                   fixedHeight: false,
                   child:
                       // card item of nearby
-                      ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: nearbyCardValues.length,
-                    itemBuilder: (context, position) {
-                      NearbyCardModel nearbyCardModel =
-                          nearbyCardValues[position];
-                      return NearbyCardItemXD(
-                        nearbyCardModel: nearbyCardModel,
-                        onCardTapped: _onCardTapped,
-                      );
+                      BlocBuilder<GetVenueListBloc, GetVenueListState>(
+                    builder: (context, state) {
+                      if (state is GetVenueListInitial) {
+                        return Container();
+                      } else if (state is GetVenueListByLocationLoading) {
+                        return buildLoading();
+                      } else if (state is GetVenueListByLocationLoaded) {
+                        if (state.venueListByLocationRes.length > 0) {
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: state.venueListByLocationRes.length,
+                            itemBuilder: (context, position) {
+                              VenueListByLocationResponse resModel =
+                                  state.venueListByLocationRes[position];
+
+                              return NearbyCardItemXD(
+                                venueListByLocationResponse: resModel,
+                                onCardTapped: () => _onCardTapped(resModel),
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: Text('There are no items in this category!'),
+                          );
+                        }
+                      } else if (state is GetVenueListByLocationError) {
+                        return Center(
+                          child: Text(
+                            state.message,
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w900),
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),
@@ -429,10 +474,11 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     );
   }
 
-  void _onCardTapped() {
+  void _onCardTapped(VenueListByLocationResponse venueModel) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
               savedCardModel: null,
+              venueModel: venueModel,
               savedType: 'Food',
             )));
   }

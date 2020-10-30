@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cast/app/repository/data_repository.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 part 'get_venue_list_event.dart';
 part 'get_venue_list_state.dart';
@@ -22,11 +23,12 @@ class GetVenueListBloc extends Bloc<GetVenueListEvent, GetVenueListState> {
     if (event is GetVenueListbyLocation) {
       try {
         final venueList =
-            await dataRepository.callGetVenueListByLocation();
+            await dataRepository.callGetVenueListByLocation(event.categoryId);
         if (venueList.getEndpointsData.statusCode == 200) {
           var res = venueList.getEndpointsData.json['result'];
-          List<VenueListByLocationResponse> list =
-              (res as List).map((e) => VenueListByLocationResponse.fromJson(e)).toList();
+          List<VenueListByLocationResponse> list = (res as List)
+              .map((e) => VenueListByLocationResponse.fromJson(e))
+              .toList();
 
           yield GetVenueListByLocationLoaded(list);
         } else {

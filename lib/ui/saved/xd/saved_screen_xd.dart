@@ -7,7 +7,6 @@ import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SavedScreenXD extends StatefulWidget {
-  
   SavedScreenXD({
     Key key,
   }) : super(key: key);
@@ -355,11 +354,13 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
 
   void _onCardTapped(SavedCardModel savedCardModel) async {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => SavedCardMapScreen(savedCardModel: savedCardModel, savedType: 'Food',)));
+        builder: (_) => SavedCardMapScreen(
+              savedCardModel: savedCardModel,
+              savedType: 'Food',
+              venueModel: null,
+            )));
   }
 }
-
-
 
 const String _svg_4joujt =
     '<svg viewBox="16.0 48.1 9.0 15.7" ><path transform="translate(8.5, 44.0)" d="M 10.21406269073486 12 L 16.171875 6.046875 C 16.61249923706055 5.606249809265137 16.61249923706055 4.893750190734863 16.171875 4.457812309265137 C 15.73124980926514 4.017187118530273 15.01875019073486 4.021874904632568 14.578125 4.457812309265137 L 7.828125 11.203125 C 7.401562690734863 11.62968730926514 7.392187595367432 12.31406211853027 7.795312404632568 12.75468730926514 L 14.57343769073486 19.546875 C 14.79374980926514 19.76718711853027 15.08437538146973 19.875 15.37031269073486 19.875 C 15.65625 19.875 15.94687557220459 19.76718711853027 16.16718673706055 19.546875 C 16.60781097412109 19.10625076293945 16.60781097412109 18.39374923706055 16.16718673706055 17.95781326293945 L 10.21406269073486 12 Z" fill="#ffffff" stroke="none" stroke-width="1" stroke-miterlimit="4" stroke-linecap="butt" /></svg>';

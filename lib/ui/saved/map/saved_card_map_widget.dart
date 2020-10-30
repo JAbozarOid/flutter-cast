@@ -1,3 +1,4 @@
+import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class SavedCardMapWidget extends StatelessWidget {
   final SavedCardModel savedCardModel;
+  final VenueListByLocationResponse venueModel;
 
-  const SavedCardMapWidget({Key key, @required this.savedCardModel})
+  const SavedCardMapWidget(
+      {Key key, @required this.savedCardModel, @required this.venueModel})
       : super(key: key);
 
   @override
@@ -21,7 +24,7 @@ class SavedCardMapWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              savedCardModel.title,
+              venueModel == null ? savedCardModel.title : venueModel.name,
               style: TextStyle(
                 fontSize: 22,
                 color: HexColor('#000000'),
@@ -99,7 +102,9 @@ class SavedCardMapWidget extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
-                    savedCardModel.minutes,
+                    venueModel == null
+                        ? '${savedCardModel.minutes}'
+                        : '${venueModel.avgSpendingTime} Minutes',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 26,
@@ -107,7 +112,7 @@ class SavedCardMapWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  savedCardModel.kilometers,
+                  venueModel == null ? savedCardModel.kilometers : '2.3 Km',
                   style: TextStyle(color: HexColor('757575'), fontSize: 14),
                 )
               ],
@@ -117,7 +122,9 @@ class SavedCardMapWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    savedCardModel.rateValue,
+                    venueModel == null
+                        ? savedCardModel.rateValue
+                        : '${venueModel.rate}',
                     style: TextStyle(fontSize: 14, color: HexColor('#757575')),
                   ),
                   Padding(
@@ -136,12 +143,16 @@ class SavedCardMapWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Text('(${savedCardModel.rateCount})')
+                  Text(venueModel == null
+                      ? '(${savedCardModel.rateCount})'
+                      : '${venueModel.reviewCount}')
                 ],
               ),
             ),
             Text(
-              savedCardModel.type,
+              venueModel == null
+                  ? savedCardModel.type
+                  : venueModel.categoryName,
               style: TextStyle(fontSize: 14, color: HexColor('#757575')),
             ),
           ],

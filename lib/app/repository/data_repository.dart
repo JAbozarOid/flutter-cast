@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cast/app/repository/endpoints_data.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
@@ -62,5 +64,35 @@ class DataRepository {
     });
   }
 
-  callGetVenueListByLocation() {}
+  Future<EndpointsData> callGetVenueListByLocation(String categoryId) async =>
+      await _getData<EndpointsData>(
+          onGetData: () => _getVenueListByLocation(categoryId));
+
+  Future<EndpointsData> _getVenueListByLocation(String categoryId) async {
+    var body = json.encode({
+      "latitude": 35.760739,
+      "longitude": 51.472668,
+      "filters": {
+        "radius": 10000,
+        "userReview": false,
+        "crowding": false,
+        "areaInUse": false,
+        "avgSpendingTime": false
+      },
+      "categoryId": categoryId,
+      "text": ""
+    });
+
+    final values = await Future.wait([
+      apiService.postAPI(
+          apiVersion: API.apiVersion[APIVersions.version],
+          path: PathApi.getApiPath(Path.getVenueListByLocation),
+          queryParameters: {},
+          body: body),
+    ]);
+
+    return EndpointsData(values: {
+      APIVersions.version: values[0],
+    });
+  }
 }

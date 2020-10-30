@@ -1,14 +1,17 @@
 import 'package:adobe_xd/adobe_xd.dart';
+import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/ui/whereto/nearby/xd/model/nearby_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyCardItemXD extends StatelessWidget {
-  final NearbyCardModel nearbyCardModel;
+  //final NearbyCardModel nearbyCardModel;
+  final VenueListByLocationResponse venueListByLocationResponse;
   final Function onCardTapped;
 
-  const NearbyCardItemXD({Key key, this.nearbyCardModel, this.onCardTapped})
+  const NearbyCardItemXD(
+      {Key key, this.venueListByLocationResponse, this.onCardTapped})
       : super(key: key);
 
   @override
@@ -19,14 +22,16 @@ class NearbyCardItemXD extends StatelessWidget {
       child: Stack(
         children: [
           // Adobe XD layer: 'Item#1' (group)
-          InkWell(onTap: onCardTapped,
+          InkWell(
+            onTap: onCardTapped,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Stack(
                 children: <Widget>[
                   // container of card bedign
                   // best suggestion green background
-                  nearbyCardModel.badge
+                  //nearbyCardModel.badge
+                  venueListByLocationResponse.badgeModel != null
                       ? Pinned.fromSize(
                           bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 334.0),
                           size: Size(328.0, 334.0),
@@ -108,7 +113,8 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      nearbyCardModel.titleOfPlace,
+                      //nearbyCardModel.titleOfPlace,
+                      venueListByLocationResponse.name,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 16,
@@ -126,7 +132,8 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      nearbyCardModel.rateValue,
+                      //nearbyCardModel.rateValue,
+                      '${venueListByLocationResponse.rate}',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -143,7 +150,8 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      nearbyCardModel.typeOfPlace,
+                      //nearbyCardModel.typeOfPlace,
+                      venueListByLocationResponse.categoryName,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -191,34 +199,39 @@ class NearbyCardItemXD extends StatelessWidget {
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13.0),
-                              color: nearbyCardModel.typeOfSafety == 'Clear'
+                              color: venueListByLocationResponse.safetyStatus ==
+                                      2
                                   ? Color(0xff43c7ae)
-                                  : nearbyCardModel.typeOfSafety == 'Caution'
-                                      ? HexColor(nearbyCardModel.colorOfSafety)
-                                      : nearbyCardModel.typeOfSafety ==
-                                              'Risk Level'
-                                          ? HexColor(
-                                              nearbyCardModel.colorOfSafety)
-                                          : nearbyCardModel.typeOfSafety ==
-                                                  'High Risk'
-                                              ? HexColor(
-                                                  nearbyCardModel.colorOfSafety)
+                                  : venueListByLocationResponse.safetyStatus ==
+                                          1
+                                      ? HexColor('#F4CD29')
+                                      : venueListByLocationResponse
+                                                  .safetyStatus ==
+                                              0
+                                          ? HexColor('#F49E29')
+                                          : venueListByLocationResponse
+                                                      .safetyStatus ==
+                                                  -1
+                                              ? HexColor('#F45029')
                                               : Color(0xff43c7ae),
                               border: Border.all(
                                   width: 1.0,
-                                  color: nearbyCardModel.typeOfSafety == 'Clear'
+                                  color: venueListByLocationResponse
+                                              .safetyStatus ==
+                                          2
                                       ? Color(0xff43c7ae)
-                                      : nearbyCardModel.typeOfSafety == 'Caution'
-                                          ? HexColor(
-                                              nearbyCardModel.colorOfSafety)
-                                          : nearbyCardModel.typeOfSafety ==
-                                                  'Risk Level'
-                                              ? HexColor(
-                                                  nearbyCardModel.colorOfSafety)
-                                              : nearbyCardModel.typeOfSafety ==
-                                                      'High Risk'
-                                                  ? HexColor(nearbyCardModel
-                                                      .colorOfSafety)
+                                      : venueListByLocationResponse
+                                                  .safetyStatus ==
+                                              1
+                                          ? HexColor('#F4CD29')
+                                          : venueListByLocationResponse
+                                                      .safetyStatus ==
+                                                  0
+                                              ? HexColor('#F49E29')
+                                              : venueListByLocationResponse
+                                                          .safetyStatus ==
+                                                      -1
+                                                  ? HexColor('#F45029')
                                                   : Color(0xff43c7ae)),
                             ),
                           ),
@@ -232,7 +245,10 @@ class NearbyCardItemXD extends StatelessWidget {
                           pinBottom: true,
                           child: Center(
                             child: Text(
-                              nearbyCardModel.typeOfSafety,
+                              //nearbyCardModel.typeOfSafety,
+                              venueListByLocationResponse.safetyStatus == 2
+                                  ? 'Clear'
+                                  : '',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 14,
@@ -255,7 +271,8 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      '${nearbyCardModel.timeToPlace} Minutes',
+                      //'${nearbyCardModel.timeToPlace} Minutes',
+                      '${venueListByLocationResponse.avgSpendingTime} Minutes',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 24,
@@ -273,7 +290,8 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      '${nearbyCardModel.kmToPlace} Km',
+                      //'${nearbyCardModel.kmToPlace} Km',
+                      '2.3 Km',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -285,12 +303,13 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // rate count
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(223.0, 123.0, 25.0, 17.0),
+                    bounds: Rect.fromLTWH(223.0, 123.0, 26.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
-                      '(${nearbyCardModel.rateCount})',
+                      //'(${nearbyCardModel.rateCount})',
+                      '(${venueListByLocationResponse.reviewCount})',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -386,7 +405,8 @@ class NearbyCardItemXD extends StatelessWidget {
                           fixedWidth: false,
                           fixedHeight: true,
                           child: Text(
-                            '${nearbyCardModel.crowding} People',
+                            //'${nearbyCardModel.crowding} People',
+                            '${venueListByLocationResponse.crowding} People',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
@@ -543,7 +563,8 @@ class NearbyCardItemXD extends StatelessWidget {
                           fixedWidth: false,
                           fixedHeight: true,
                           child: Text(
-                            '${nearbyCardModel.areaInUse} m²',
+                            //'${nearbyCardModel.areaInUse} m²',
+                            '${venueListByLocationResponse.areaInUse} m²',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
@@ -586,7 +607,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                 child: Stack(
                                   children: <Widget>[
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
+                                      bounds:
+                                          Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
                                       size: Size(18.0, 18.0),
                                       pinLeft: true,
                                       pinRight: true,
@@ -625,7 +647,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                       ),
                                     ),
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(13.1, 10.1, 1.0, 3.0),
+                                      bounds:
+                                          Rect.fromLTWH(13.1, 10.1, 1.0, 3.0),
                                       size: Size(18.0, 18.0),
                                       fixedWidth: true,
                                       fixedHeight: true,
@@ -647,7 +670,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                       ),
                                     ),
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(10.1, 13.1, 3.0, 1.0),
+                                      bounds:
+                                          Rect.fromLTWH(10.1, 13.1, 3.0, 1.0),
                                       size: Size(18.0, 18.0),
                                       fixedWidth: true,
                                       fixedHeight: true,
@@ -712,7 +736,8 @@ class NearbyCardItemXD extends StatelessWidget {
                           fixedWidth: false,
                           fixedHeight: true,
                           child: Text(
-                            '${nearbyCardModel.areaInUse} min',
+                            //'${nearbyCardModel.areaInUse} min',
+                            '${venueListByLocationResponse.avgSpendingTime} min',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,
@@ -755,7 +780,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                 child: Stack(
                                   children: <Widget>[
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                      bounds:
+                                          Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
                                       size: Size(24.0, 24.0),
                                       pinLeft: true,
                                       pinRight: true,
@@ -768,7 +794,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                       ),
                                     ),
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
+                                      bounds:
+                                          Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
                                       size: Size(24.0, 24.0),
                                       pinLeft: true,
                                       pinRight: true,
@@ -777,7 +804,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
-                                              Radius.elliptical(9999.0, 9999.0)),
+                                              Radius.elliptical(
+                                                  9999.0, 9999.0)),
                                           border: Border.all(
                                               width: 1.5,
                                               color: const Color(0xff707070)),
@@ -785,7 +813,8 @@ class NearbyCardItemXD extends StatelessWidget {
                                       ),
                                     ),
                                     Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(12.0, 7.0, 3.0, 8.0),
+                                      bounds:
+                                          Rect.fromLTWH(12.0, 7.0, 3.0, 8.0),
                                       size: Size(24.0, 24.0),
                                       fixedWidth: true,
                                       fixedHeight: true,
@@ -806,7 +835,8 @@ class NearbyCardItemXD extends StatelessWidget {
                   ),
 
                   // best suggestion
-                  nearbyCardModel.badge
+                  //nearbyCardModel.badge
+                  venueListByLocationResponse.badgeModel != null
                       ? Pinned.fromSize(
                           bounds: Rect.fromLTWH(44.0, 12.0, 116.0, 19.0),
                           size: Size(328.0, 334.0),
@@ -815,7 +845,8 @@ class NearbyCardItemXD extends StatelessWidget {
                           fixedWidth: false,
                           fixedHeight: true,
                           child: Text(
-                            'Best suggestion',
+                            //'Best suggestion',
+                            venueListByLocationResponse.badgeModel.title,
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 16,
@@ -828,7 +859,8 @@ class NearbyCardItemXD extends StatelessWidget {
                       : Container(),
 
                   // star icon of best suggestion
-                  nearbyCardModel.badge
+                  //nearbyCardModel.badge
+                  venueListByLocationResponse.badgeModel != null
                       ? Pinned.fromSize(
                           bounds: Rect.fromLTWH(18.1, 13.0, 18.0, 18.0),
                           size: Size(328.0, 334.0),

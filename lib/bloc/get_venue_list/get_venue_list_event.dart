@@ -5,8 +5,9 @@ abstract class GetVenueListEvent extends Equatable {
 }
 
 class GetVenueListbyLocation extends GetVenueListEvent {
-  const GetVenueListbyLocation();
+  final String categoryId;
+  const GetVenueListbyLocation({@required this.categoryId});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [categoryId];
 }
