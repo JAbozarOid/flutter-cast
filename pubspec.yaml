@@ -29,6 +29,7 @@ dependencies:
   equatable: ^1.2.5
   flutter_bloc: ^6.0.6
   flutter_google_maps: ^4.0.0
+  flutter_google_places: ^0.2.6
   flutter_rating_bar: ^3.0.1+1
   flutter_svg: ^0.18.1
   http: ^0.12.2

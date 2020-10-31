@@ -29,7 +29,7 @@ class _WhereToCategoryItemWidgetXDState
   Widget build(BuildContext context) {
     return SizedBox(
       width: 310,
-      height: MediaQuery.of(context).size.height,
+      height: 120 * (widget.categoryListDetailResponse.categoryList.length).toDouble(),
       child: Stack(
         children: [
           // category title widget

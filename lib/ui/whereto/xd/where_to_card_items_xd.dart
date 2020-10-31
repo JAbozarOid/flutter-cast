@@ -54,19 +54,21 @@ class WhereToCardItems extends StatelessWidget {
               ),
             ),
             Pinned.fromSize(
-              bounds: Rect.fromLTWH(17.0, 49.0, 58.0, 14.0),
+              bounds: Rect.fromLTWH(17.0, 49.0, 58.0, 21.0),
               size: Size(92.0, 82.0),
               fixedWidth: false,
-              fixedHeight: true,
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 12,
-                  color: const Color(0xff0d1724),
-                  fontWeight: FontWeight.w500,
+              fixedHeight: false,
+              child: Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 12,
+                    color: const Color(0xff0d1724),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
             Pinned.fromSize(

@@ -72,230 +72,235 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
-      body: Stack(
-        children: <Widget>[
-          // *** Tab views
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 80.0, 360.0, 52.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child: Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 52.0),
-                  size: Size(360.0, 52.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Base' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xffffffff),
+      body: Container(
+        color: Color(0x0f000000),
+        child: Stack(
+          children: <Widget>[
+            // *** Tab views
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(0.0, 80.0, 360.0, 52.0),
+              size: Size(360.0, 640.0),
+              pinLeft: true,
+              pinRight: true,
+              pinTop: true,
+              fixedHeight: true,
+              child: Stack(
+                children: <Widget>[
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 52.0),
+                    size: Size(360.0, 52.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child:
+                        // Adobe XD layer: 'Base' (shape)
+                        Container(
+                      decoration: BoxDecoration(
+                        color: const Color(0xffffffff),
+                      ),
                     ),
                   ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(33.0, 0.0, 360.0, 52.0),
-                  size: Size(360.0, 52.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Tab Bar' (group)
-                      StreamBuilder<TabsState>(
-                          stream: _onTabsState,
-                          builder: (context, snapshot) {
-                            switch (snapshot.data) {
-                              case TabsState.empty:
-                                return Container();
-                                break;
-                              case TabsState.full:
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _categoryListDetailResponse.length,
-                                  itemBuilder: (context, position) {
-                                    CategoryListDetailResponse itemModel =
-                                        _categoryListDetailResponse[position];
-                                    return WhereToTabsWidget(
-                                      tabTitles: itemModel.categoryName,
-                                      onTabsTapped: () =>
-                                          _scrollToIndex(position),
-                                    );
-                                  },
-                                );
-                                break;
-                              case TabsState.loading:
-                                return Container();
-                                break;
-                            }
-                            return Container();
-                          }),
-                ),
-              ],
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(33.0, 0.0, 360.0, 52.0),
+                    size: Size(360.0, 52.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child:
+                        // Adobe XD layer: 'Tab Bar' (group)
+                        StreamBuilder<TabsState>(
+                            stream: _onTabsState,
+                            builder: (context, snapshot) {
+                              switch (snapshot.data) {
+                                case TabsState.empty:
+                                  return Container();
+                                  break;
+                                case TabsState.full:
+                                  return ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount:
+                                        _categoryListDetailResponse.length,
+                                    itemBuilder: (context, position) {
+                                      CategoryListDetailResponse itemModel =
+                                          _categoryListDetailResponse[position];
+                                      return WhereToTabsWidget(
+                                        tabTitles: itemModel.categoryName,
+                                        onTabsTapped: () =>
+                                            _scrollToIndex(position),
+                                      );
+                                    },
+                                  );
+                                  break;
+                                case TabsState.loading:
+                                  return Container();
+                                  break;
+                              }
+                              return Container();
+                            }),
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // *** headers
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Header' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
-                  size: Size(360.0, 80.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(0.0, 1.0),
-                        end: Alignment(0.0, -1.0),
-                        colors: [
-                          const Color(0xff44cac5),
-                          const Color(0xff44caab)
+            // *** headers
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
+              size: Size(360.0, 640.0),
+              pinLeft: true,
+              pinRight: true,
+              pinTop: true,
+              fixedHeight: true,
+              child:
+                  // Adobe XD layer: 'Header' (group)
+                  Stack(
+                children: <Widget>[
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
+                    size: Size(360.0, 80.0),
+                    pinLeft: true,
+                    pinRight: true,
+                    pinTop: true,
+                    pinBottom: true,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(0.0, 1.0),
+                          end: Alignment(0.0, -1.0),
+                          colors: [
+                            const Color(0xff44cac5),
+                            const Color(0xff44caab)
+                          ],
+                          stops: [0.0, 1.0],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0x29000000),
+                            offset: Offset(0, 3),
+                            blurRadius: 6,
+                          ),
                         ],
-                        stops: [0.0, 1.0],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
+                    ),
+                  ),
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(131.0, 42.0, 98.0, 27.0),
+                    size: Size(360.0, 80.0),
+                    pinBottom: true,
+                    fixedWidth: false,
+                    fixedHeight: true,
+                    child: Center(
+                      child: Text(
+                        'Where to?',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 22,
+                          color: const Color(0xffffffff),
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
+                  Pinned.fromSize(
+                    bounds: Rect.fromLTWH(9.0, 44.0, 24.0, 24.0),
+                    size: Size(360.0, 80.0),
+                    pinLeft: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child:
+                        // Adobe XD layer: 'Back' (group)
+                        Stack(
+                      children: <Widget>[
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                          size: Size(24.0, 24.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Base' (shape)
+                              Container(
+                            decoration: BoxDecoration(),
+                          ),
+                        ),
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                          size: Size(24.0, 24.0),
+                          pinTop: true,
+                          pinBottom: true,
+                          fixedWidth: true,
+                          child:
+                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                              SvgPicture.string(
+                            _svg_4joujt,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(131.0, 42.0, 98.0, 27.0),
-                  size: Size(360.0, 80.0),
-                  pinBottom: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Center(
-                    child: Text(
-                      'Where to?',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 22,
-                        color: const Color(0xffffffff),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(9.0, 44.0, 24.0, 24.0),
-                  size: Size(360.0, 80.0),
-                  pinLeft: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Back' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                        size: Size(24.0, 24.0),
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                            SvgPicture.string(
-                          _svg_4joujt,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
 
-          // *** card items and titles of each category
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 132.0, 310.0, 640.0),
-            size: Size(360.0, 772.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
-            child: BlocBuilder<CategoryListDetailBloc, CategoryListDetailState>(
-              builder: (context, state) {
-                if (state is CategoryListDetailInitial) {
-                  return Container();
-                } else if (state is CategoryListDetailLoading) {
-                  return buildLoading();
-                } else if (state is CategoryListDetailLoaded) {
-                  if (state.categoryListDetailRes.length > 0) {
-                    _categoryListDetailResponse = state.categoryListDetailRes;
-                    _onTabsState.add(TabsState.full);
-                    return ListView.builder(
-                      scrollDirection: scrollDirection,
-                      controller: controller,
-                      itemCount: state.categoryListDetailRes.length,
-                      itemBuilder: (context, position) {
-                        CategoryListDetailResponse itemModel =
-                            state.categoryListDetailRes[position];
-                        return AutoScrollTag(
-                          controller: controller,
-                          index: state.categoryListDetailRes.length,
-                          key: ValueKey(state.categoryListDetailRes.length),
-                          child: WhereToCategoryItemWidgetXD(
-                            categoryListDetailResponse: itemModel,
-                          ),
-                        );
-                      },
-                    );
-                  } else {
+            // *** card items and titles of each category
+            Pinned.fromSize(
+              bounds: Rect.fromLTWH(25.0, 132.0, 310.0, 640.0),
+              size: Size(360.0, 772.0),
+              pinLeft: true,
+              pinRight: true,
+              pinTop: true,
+              pinBottom: true,
+              child:
+                  BlocBuilder<CategoryListDetailBloc, CategoryListDetailState>(
+                builder: (context, state) {
+                  if (state is CategoryListDetailInitial) {
+                    return Container();
+                  } else if (state is CategoryListDetailLoading) {
+                    return buildLoading();
+                  } else if (state is CategoryListDetailLoaded) {
+                    if (state.categoryListDetailRes.length > 0) {
+                      _categoryListDetailResponse = state.categoryListDetailRes;
+                      _onTabsState.add(TabsState.full);
+                      return ListView.builder(
+                        scrollDirection: scrollDirection,
+                        controller: controller,
+                        itemCount: state.categoryListDetailRes.length,
+                        itemBuilder: (context, position) {
+                          CategoryListDetailResponse itemModel =
+                              state.categoryListDetailRes[position];
+                          return AutoScrollTag(
+                            controller: controller,
+                            index: state.categoryListDetailRes.length,
+                            key: ValueKey(state.categoryListDetailRes.length),
+                            child: WhereToCategoryItemWidgetXD(
+                              categoryListDetailResponse: itemModel,
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(
+                        child: Text('There are no items nearby you!'),
+                      );
+                    }
+                  } else if (state is CategoryListDetailError) {
                     return Center(
-                      child: Text('There are no items nearby you!'),
+                      child: Text(
+                        state.message,
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w900),
+                      ),
                     );
                   }
-                } else if (state is CategoryListDetailError) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      style: TextStyle(
-                          color: Colors.red, fontWeight: FontWeight.w900),
-                    ),
-                  );
-                }
-              },
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

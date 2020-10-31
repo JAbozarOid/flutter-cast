@@ -29,6 +29,6 @@ class _SavedShoppingScreenState extends State<SavedShoppingScreen> {
 
   void _onCardTapped(SavedCardModel savedCardModel) async {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => SavedCardMapScreen(savedCardModel: savedCardModel, savedType: 'Shopping',)));
+        builder: (_) => SavedCardMapScreen(savedCardModel: savedCardModel, savedType: 'Shopping', venueModel: null,)));
   }
 }

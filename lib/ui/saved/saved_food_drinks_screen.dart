@@ -29,6 +29,8 @@ class _SavedFoodDrinksState extends State<SavedFoodDrinksScreen> {
 
   void _onCardTapped(SavedCardModel savedCardModel) async {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => SavedCardMapScreen(savedCardModel: savedCardModel, savedType: 'Food',)));
+        builder: (_) => SavedCardMapScreen(savedCardModel: savedCardModel, savedType: 'Food', venueModel: null,)));
+
+
   }
 }

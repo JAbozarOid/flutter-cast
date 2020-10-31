@@ -5,7 +5,6 @@ import 'package:cast/bloc/category_list_detail/category_list_detail_bloc.dart';
 import 'package:cast/bloc/main_category/main_category_bloc.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/location/location_state.dart';
-import 'package:cast/bloc/main_category/model/navigation_category_item_model.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_type_xd.dart';
@@ -19,6 +18,10 @@ import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:google_maps_webservice/places.dart' as webservice;
+import 'package:flutter_google_places/flutter_google_places.dart'
+    as google_place;
+import "package:google_maps_webservice/geocoding.dart" as geoCode;
 
 class NavigationScreenXD extends StatefulWidget {
   NavigationScreenXD({
@@ -46,6 +49,15 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   void initState() {
     super.initState();
     getUserCurrentLocation();
+    //getUserAddress();
+  }
+
+  void getUserAddress() async {
+    // ChIJd8BlQ2BZwokRAFUEcm_qrcA -> a place in united states
+    webservice.GoogleMapsPlaces _places = webservice.GoogleMapsPlaces(
+        apiKey: 'AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18');
+    webservice.PlacesDetailsResponse response = await _places.getDetailsByPlaceId("ChIJd8BlQ2BZwokRAFUEcm_qrcA");
+    print('${response.result.formattedAddress}');
   }
 
   Widget buildLoading() {
@@ -927,6 +939,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         // call main category list api
         getMainCategoryList();
+
+
       }
     } else {
       _locationData = await location.getLocation();
@@ -942,6 +956,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
       // call main category list api
       getMainCategoryList();
+
+
     }
   }
 }

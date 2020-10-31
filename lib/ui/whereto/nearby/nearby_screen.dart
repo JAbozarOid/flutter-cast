@@ -84,7 +84,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
               savedCardModel: savedCardModel,
-              savedType: 'Food',
+              savedType: 'Food', venueModel: null,
             )));
   }
 }

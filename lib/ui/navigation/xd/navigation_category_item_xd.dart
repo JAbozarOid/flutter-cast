@@ -111,7 +111,7 @@ class NavigationCategoryItemXD extends StatelessWidget {
                   fixedWidth: true,
                   // *** title of category
                   child: Text(
-                    title,
+                    title.length >= 15 ? title.substring(0, 15) + "..." : title,
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 16,
