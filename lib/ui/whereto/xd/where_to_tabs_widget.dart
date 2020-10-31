@@ -5,8 +5,15 @@ import 'package:flutter_svg/flutter_svg.dart';
 class WhereToTabsWidget extends StatelessWidget {
   final String tabTitles;
   final Function onTabsTapped;
+  final int position;
+  final int tappedIndex;
 
-  const WhereToTabsWidget({Key key, this.tabTitles, this.onTabsTapped})
+  const WhereToTabsWidget(
+      {Key key,
+      this.tabTitles,
+      this.onTabsTapped,
+      this.position,
+      this.tappedIndex})
       : super(key: key);
 
   @override
@@ -44,26 +51,29 @@ class WhereToTabsWidget extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 14,
-                  color: const Color(0xff30b79e),
+                  color: tappedIndex == position
+                      ? Color(0xff30b79e)
+                      : Color(0xff9EA1A6),
                   fontWeight: FontWeight.w500,
                 ),
                 textAlign: TextAlign.left,
               ),
             ),
-
-            /* Pinned.fromSize(
-              bounds: Rect.fromLTWH(0.5, 50.5, 120.0, 1.0),
-              size: Size(545.0, 52.0),
-              pinLeft: true,
-              pinBottom: true,
-              fixedWidth: true,
-              fixedHeight: true,
-              child: SvgPicture.string(
-                _svg_vqvflc,
-                allowDrawingOutsideViewBox: true,
-                fit: BoxFit.fill,
-              ),
-            ), */
+            tappedIndex == position
+                ? Pinned.fromSize(
+                    bounds: Rect.fromLTWH(0.5, 50.5, 120.0, 1.0),
+                    size: Size(545.0, 52.0),
+                    pinLeft: true,
+                    pinBottom: true,
+                    fixedWidth: true,
+                    fixedHeight: true,
+                    child: SvgPicture.string(
+                      _svg_vqvflc,
+                      allowDrawingOutsideViewBox: true,
+                      fit: BoxFit.fill,
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),

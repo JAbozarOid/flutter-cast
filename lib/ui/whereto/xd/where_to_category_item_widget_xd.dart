@@ -4,10 +4,8 @@ import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
 import 'package:cast/bloc/category_list_detail/model/category_list_detail_res.dart';
 import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
-import 'package:cast/ui/whereto/nearby/nearby_screen.dart';
 import 'package:cast/ui/whereto/nearby/xd/nearby_screen_xd.dart';
 import 'package:cast/ui/whereto/xd/where_to_card_items_xd.dart';
-import 'package:cast/ui/whereto/xd/where_to_category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +27,8 @@ class _WhereToCategoryItemWidgetXDState
   Widget build(BuildContext context) {
     return SizedBox(
       width: 310,
-      height: 120 * (widget.categoryListDetailResponse.categoryList.length).toDouble(),
+      height: 220 *
+          (widget.categoryListDetailResponse.categoryList.length).toDouble(),
       child: Stack(
         children: [
           // category title widget
@@ -78,7 +77,7 @@ class _WhereToCategoryItemWidgetXDState
                         .categoryId),
                   );
                 },
-                padding: const EdgeInsets.all(4.0),
+                padding: const EdgeInsets.all(0.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
               ),

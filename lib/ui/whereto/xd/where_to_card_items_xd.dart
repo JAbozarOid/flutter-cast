@@ -13,7 +13,7 @@ class WhereToCardItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 17),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
       child: InkWell(
         onTap: onCardTapped,
         child: Stack(
@@ -54,11 +54,16 @@ class WhereToCardItems extends StatelessWidget {
               ),
             ),
             Pinned.fromSize(
-              bounds: Rect.fromLTWH(17.0, 49.0, 58.0, 21.0),
+              bounds: Rect.fromLTWH(
+                  0.0, 49.0, MediaQuery.of(context).size.width, 30.0),
               size: Size(92.0, 82.0),
-              fixedWidth: false,
+              fixedWidth: true,
               fixedHeight: false,
-              child: Expanded(
+              pinLeft: false,
+              pinRight: false,
+              pinTop: true,
+              pinBottom: true,
+              child: Center(
                 child: Text(
                   title,
                   style: TextStyle(
@@ -103,11 +108,11 @@ class WhereToCardItems extends StatelessWidget {
                     child:
                         // Adobe XD layer: 'Icon' (shape)
                         /* SvgPicture.string(
-                      icon,
-                      allowDrawingOutsideViewBox: true,
-                      fit: BoxFit.fill,
-                    ), */
-                    SvgPicture.network(
+                        icon,
+                        allowDrawingOutsideViewBox: true,
+                        fit: BoxFit.fill,
+                      ), */
+                        SvgPicture.network(
                       icon,
                       allowDrawingOutsideViewBox: true,
                       fit: BoxFit.fill,

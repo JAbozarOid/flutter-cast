@@ -29,16 +29,36 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
 
   var _onTabsState = PublishSubject<TabsState>();
 
+  int tappedIndex;
+
   @override
   void initState() {
     super.initState();
+
+    tappedIndex = 0;
 
     _onTabsState.add(TabsState.empty);
 
     controller = AutoScrollController(
         viewportBoundaryGetter: () =>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-        axis: scrollDirection);
+        axis: scrollDirection)
+      ..addListener(() {
+        // when scrolling down goes to the next tabs
+        if (tappedIndex == 0) {
+          if (controller.offset > 220) {
+            tappedIndex += 1;
+          }
+        }
+        // when scrolling up goes back one step in tabs
+        if (tappedIndex != 0) {
+          if (controller.offset < 220) {
+            tappedIndex -= 1;
+          }
+        }
+        print('the current tab is ${controller.offset}');
+        setState(() {});
+      });
 
     getCategoryListDetail();
   }
@@ -125,11 +145,16 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                                     itemBuilder: (context, position) {
                                       CategoryListDetailResponse itemModel =
                                           _categoryListDetailResponse[position];
+
                                       return WhereToTabsWidget(
-                                        tabTitles: itemModel.categoryName,
-                                        onTabsTapped: () =>
-                                            _scrollToIndex(position),
-                                      );
+                                          tabTitles: itemModel.categoryName,
+                                          position: position,
+                                          tappedIndex: tappedIndex,
+                                          onTabsTapped: () => {
+                                                _scrollToIndex(position),
+                                                setState(() =>
+                                                    tappedIndex = position),
+                                              });
                                     },
                                   );
                                   break;
@@ -210,36 +235,39 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                     fixedHeight: true,
                     child:
                         // Adobe XD layer: 'Back' (group)
-                        Stack(
-                      children: <Widget>[
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                          size: Size(24.0, 24.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child:
-                              // Adobe XD layer: 'Base' (shape)
-                              Container(
-                            decoration: BoxDecoration(),
+                        InkWell(
+                      onTap: _onBackTapped,
+                      child: Stack(
+                        children: <Widget>[
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                            size: Size(24.0, 24.0),
+                            pinLeft: true,
+                            pinRight: true,
+                            pinTop: true,
+                            pinBottom: true,
+                            child:
+                                // Adobe XD layer: 'Base' (shape)
+                                Container(
+                              decoration: BoxDecoration(),
+                            ),
                           ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                          size: Size(24.0, 24.0),
-                          pinTop: true,
-                          pinBottom: true,
-                          fixedWidth: true,
-                          child:
-                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                              SvgPicture.string(
-                            _svg_4joujt,
-                            allowDrawingOutsideViewBox: true,
-                            fit: BoxFit.fill,
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                            size: Size(24.0, 24.0),
+                            pinTop: true,
+                            pinBottom: true,
+                            fixedWidth: true,
+                            child:
+                                // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                                SvgPicture.string(
+                              _svg_4joujt,
+                              allowDrawingOutsideViewBox: true,
+                              fit: BoxFit.fill,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -303,6 +331,10 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
         ),
       ),
     );
+  }
+
+  void _onBackTapped() {
+    Navigator.of(context).pop();
   }
 }
 
