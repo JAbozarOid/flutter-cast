@@ -22,8 +22,8 @@ class GetVenueListBloc extends Bloc<GetVenueListEvent, GetVenueListState> {
 
     if (event is GetVenueListbyLocation) {
       try {
-        final venueList =
-            await dataRepository.callGetVenueListByLocation(event.categoryId);
+        final venueList = await dataRepository.callGetVenueListByLocation(
+            categoryId: event.categoryId, inputedTextSearch: '');
         if (venueList.getEndpointsData.statusCode == 200) {
           var res = venueList.getEndpointsData.json['result'];
           List<VenueListByLocationResponse> list = (res as List)

@@ -4,6 +4,7 @@ import 'package:cast/app/service/api_service.dart';
 import 'package:cast/bloc/category_list_detail/category_list_detail_bloc.dart';
 import 'package:cast/bloc/main_category/main_category_bloc.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
+import 'package:cast/bloc/search/search_bloc.dart';
 import 'package:cast/location/location_state.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
@@ -56,7 +57,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
     // ChIJd8BlQ2BZwokRAFUEcm_qrcA -> a place in united states
     webservice.GoogleMapsPlaces _places = webservice.GoogleMapsPlaces(
         apiKey: 'AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18');
-    webservice.PlacesDetailsResponse response = await _places.getDetailsByPlaceId("ChIJd8BlQ2BZwokRAFUEcm_qrcA");
+    webservice.PlacesDetailsResponse response =
+        await _places.getDetailsByPlaceId("ChIJd8BlQ2BZwokRAFUEcm_qrcA");
     print('${response.result.formattedAddress}');
   }
 
@@ -830,7 +832,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       fixedWidth: false,
                       fixedHeight: true,
                       child: Text(
-                        'From: Sobhan, Madani Street',
+                        'From: ',
                         style: TextStyle(
                           fontFamily: 'Open Sans',
                           fontSize: 10,
@@ -891,9 +893,17 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         .push(MaterialPageRoute(builder: (_) => SavedScreenXD()));
   }
 
+  // tapped on the top of the card which named Where to?
   void _goToSearchPanelScreen() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SearchScreenXD()));
+    /* Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SearchScreenXD())); */
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => SearchBloc(
+                  DataRepository(APIService(API.sandbox()))),
+              child: SearchScreenXD(),
+            )));
   }
 
   void _goToSearchScreenPanelType() {
@@ -939,8 +949,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         // call main category list api
         getMainCategoryList();
-
-
       }
     } else {
       _locationData = await location.getLocation();
@@ -956,8 +964,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
       // call main category list api
       getMainCategoryList();
-
-
     }
   }
 }

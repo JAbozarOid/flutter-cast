@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cast/app/repository/endpoints_data.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 class DataRepository {
@@ -64,11 +65,15 @@ class DataRepository {
     });
   }
 
-  Future<EndpointsData> callGetVenueListByLocation(String categoryId) async =>
+  Future<EndpointsData> callGetVenueListByLocation(
+          {@required String categoryId,
+          @required String inputedTextSearch}) async =>
       await _getData<EndpointsData>(
-          onGetData: () => _getVenueListByLocation(categoryId));
+          onGetData: () =>
+              _getVenueListByLocation(categoryId, inputedTextSearch));
 
-  Future<EndpointsData> _getVenueListByLocation(String categoryId) async {
+  Future<EndpointsData> _getVenueListByLocation(
+      String categoryId, String inputedTextSearch) async {
     var body = json.encode({
       "latitude": 35.760739,
       "longitude": 51.472668,
@@ -80,7 +85,7 @@ class DataRepository {
         "avgSpendingTime": false
       },
       "categoryId": categoryId,
-      "text": ""
+      "text": inputedTextSearch
     });
 
     final values = await Future.wait([

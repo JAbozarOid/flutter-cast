@@ -1,4 +1,5 @@
 import 'package:adobe_xd/adobe_xd.dart';
+import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,8 +7,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SavedCardItemXD extends StatelessWidget {
   final SavedCardModel savedCardModel;
   final Function onCardTapped;
+  final VenueListByLocationResponse venueModel;
 
-  const SavedCardItemXD({Key key, this.savedCardModel, this.onCardTapped})
+  const SavedCardItemXD(
+      {Key key, this.savedCardModel, this.venueModel, this.onCardTapped})
       : super(key: key);
 
   @override
@@ -19,184 +22,366 @@ class SavedCardItemXD extends StatelessWidget {
           Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: InkWell(
-          onTap: () => onCardTapped(savedCardModel),
-          child: Stack(
-            children: <Widget>[
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
-                size: Size(328.0, 128.0),
-                pinLeft: true,
-                pinRight: true,
-                pinTop: true,
-                pinBottom: true,
-                child:
-                    // Adobe XD layer: 'Base' (shape)
-                    Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.0),
-                    color: const Color(0xffffffff),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x29000000),
-                        offset: Offset(0, 3),
-                        blurRadius: 24,
+            onTap: () => onCardTapped(savedCardModel),
+            child: savedCardModel != null
+                ? Stack(
+                    children: <Widget>[
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
+                        size: Size(328.0, 128.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child:
+                            // Adobe XD layer: 'Base' (shape)
+                            Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: const Color(0xffffffff),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x29000000),
+                                offset: Offset(0, 3),
+                                blurRadius: 24,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
+                        size: Size(328.0, 128.0),
+                        pinLeft: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        fixedWidth: false,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            image: DecorationImage(
+                              image: AssetImage(savedCardModel.image),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          savedCardModel.title,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            color: const Color(0xff202020),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          savedCardModel.rateValue,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          savedCardModel.type,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(223.0, 47.0, 25.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          '(${savedCardModel.rateCount})',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
+                        size: Size(328.0, 128.0),
+                        child:
+                            // Adobe XD layer: 'Rate' (group)
+                            Stack(
+                          children: <Widget>[
+                            SvgPicture.string(
+                              _svg_cvz5lm,
+                              allowDrawingOutsideViewBox: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
+                        size: Size(328.0, 128.0),
+                        pinRight: true,
+                        fixedWidth: true,
+                        fixedHeight: true,
+                        child:
+                            // Adobe XD layer: 'arrow' (group)
+                            Stack(
+                          children: <Widget>[
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                              size: Size(24.0, 24.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              pinTop: true,
+                              pinBottom: true,
+                              child:
+                                  // Adobe XD layer: 'Base' (shape)
+                                  Container(
+                                decoration: BoxDecoration(),
+                              ),
+                            ),
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
+                              size: Size(24.0, 24.0),
+                              pinTop: true,
+                              pinBottom: true,
+                              fixedWidth: true,
+                              child:
+                                  // Adobe XD layer: 'Icon material-keybo…' (shape)
+                                  SvgPicture.string(
+                                _svg_48h7a4,
+                                allowDrawingOutsideViewBox: true,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
+                        size: Size(328.0, 128.0),
+                        pinRight: true,
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: SingleChildScrollView(
+                            child: Text(
+                          savedCardModel.address,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        )),
                       ),
                     ],
-                  ),
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
-                size: Size(328.0, 128.0),
-                pinLeft: true,
-                pinTop: true,
-                pinBottom: true,
-                fixedWidth: false,
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4.0),
-                    image: DecorationImage(
+                  )
+                : Stack(
+                    children: <Widget>[
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
+                        size: Size(328.0, 128.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child:
+                            // Adobe XD layer: 'Base' (shape)
+                            Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.0),
+                            color: const Color(0xffffffff),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x29000000),
+                                offset: Offset(0, 3),
+                                blurRadius: 24,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
+                        size: Size(328.0, 128.0),
+                        pinLeft: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        fixedWidth: false,
+                        child: Container(
+                          child: Image.network(
+                            venueModel.imageUrlThumbnail.toString(),
+                            fit: BoxFit.cover,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.0),
+                            /* image: 
+                    DecorationImage(
                       image: AssetImage(savedCardModel.image),
                       fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
-                size: Size(328.0, 128.0),
-                fixedWidth: false,
-                fixedHeight: true,
-                child: Text(
-                  savedCardModel.title,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                    color: const Color(0xff202020),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
-                size: Size(328.0, 128.0),
-                fixedWidth: false,
-                fixedHeight: true,
-                child: Text(
-                  savedCardModel.rateValue,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: const Color(0xff757575),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
-                size: Size(328.0, 128.0),
-                fixedWidth: false,
-                fixedHeight: true,
-                child: Text(
-                  savedCardModel.type,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: const Color(0xff757575),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(223.0, 47.0, 25.0, 17.0),
-                size: Size(328.0, 128.0),
-                fixedWidth: false,
-                fixedHeight: true,
-                child: Text(
-                  '(${savedCardModel.rateCount})',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: const Color(0xff757575),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                size: Size(328.0, 128.0),
-                child:
-                    // Adobe XD layer: 'Rate' (group)
-                    Stack(
-                  children: <Widget>[
-                    SvgPicture.string(
-                      _svg_cvz5lm,
-                      allowDrawingOutsideViewBox: true,
-                    ),
-                  ],
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
-                size: Size(328.0, 128.0),
-                pinRight: true,
-                fixedWidth: true,
-                fixedHeight: true,
-                child:
-                    // Adobe XD layer: 'arrow' (group)
-                    Stack(
-                  children: <Widget>[
-                    Pinned.fromSize(
-                      bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                      size: Size(24.0, 24.0),
-                      pinLeft: true,
-                      pinRight: true,
-                      pinTop: true,
-                      pinBottom: true,
-                      child:
-                          // Adobe XD layer: 'Base' (shape)
-                          Container(
-                        decoration: BoxDecoration(),
+                    ), */
+                          ),
+                        ),
                       ),
-                    ),
-                    Pinned.fromSize(
-                      bounds: Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
-                      size: Size(24.0, 24.0),
-                      pinTop: true,
-                      pinBottom: true,
-                      fixedWidth: true,
-                      child:
-                          // Adobe XD layer: 'Icon material-keybo…' (shape)
-                          SvgPicture.string(
-                        _svg_48h7a4,
-                        allowDrawingOutsideViewBox: true,
-                        fit: BoxFit.fill,
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          venueModel.name,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            color: const Color(0xff202020),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Pinned.fromSize(
-                bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
-                size: Size(328.0, 128.0),
-                pinRight: true,
-                fixedWidth: false,
-                fixedHeight: true,
-                child: SingleChildScrollView(
-                    child: Text(
-                  savedCardModel.address,
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 14,
-                    color: const Color(0xff757575),
-                  ),
-                  textAlign: TextAlign.left,
-                )),
-              ),
-            ],
-          ),
-        ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          '${venueModel.rate}',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          venueModel.categoryName,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(223.0, 47.0, 25.0, 17.0),
+                        size: Size(328.0, 128.0),
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: Text(
+                          '(${venueModel.reviewCount})',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
+                        size: Size(328.0, 128.0),
+                        child:
+                            // Adobe XD layer: 'Rate' (group)
+                            Stack(
+                          children: <Widget>[
+                            SvgPicture.string(
+                              _svg_cvz5lm,
+                              allowDrawingOutsideViewBox: true,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
+                        size: Size(328.0, 128.0),
+                        pinRight: true,
+                        fixedWidth: true,
+                        fixedHeight: true,
+                        child:
+                            // Adobe XD layer: 'arrow' (group)
+                            Stack(
+                          children: <Widget>[
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                              size: Size(24.0, 24.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              pinTop: true,
+                              pinBottom: true,
+                              child:
+                                  // Adobe XD layer: 'Base' (shape)
+                                  Container(
+                                decoration: BoxDecoration(),
+                              ),
+                            ),
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
+                              size: Size(24.0, 24.0),
+                              pinTop: true,
+                              pinBottom: true,
+                              fixedWidth: true,
+                              child:
+                                  // Adobe XD layer: 'Icon material-keybo…' (shape)
+                                  SvgPicture.string(
+                                _svg_48h7a4,
+                                allowDrawingOutsideViewBox: true,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
+                        size: Size(328.0, 128.0),
+                        pinRight: true,
+                        fixedWidth: false,
+                        fixedHeight: true,
+                        child: SingleChildScrollView(
+                            child: Text(
+                          //savedCardModel.address,
+                          'No.21,eshraghi st,vanak',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            color: const Color(0xff757575),
+                          ),
+                          textAlign: TextAlign.left,
+                        )),
+                      ),
+                    ],
+                  )),
       ),
     );
   }

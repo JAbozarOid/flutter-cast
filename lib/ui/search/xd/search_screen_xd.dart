@@ -1,11 +1,43 @@
+import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/bloc/search/search_bloc.dart';
+import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
+import 'package:cast/ui/saved/model/saved_card_model.dart';
+import 'package:cast/ui/saved/xd/saved_card_item_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-class SearchScreenXD extends StatelessWidget {
+enum InputedTextState { textEmpty, text }
+
+class SearchScreenXD extends StatefulWidget {
   SearchScreenXD({
     Key key,
   }) : super(key: key);
+
+  @override
+  _SearchScreenXDState createState() => _SearchScreenXDState();
+}
+
+class _SearchScreenXDState extends State<SearchScreenXD> {
+  List<VenueListByLocationResponse> historyList = [];
+
+  var _inputedTextSearchController;
+  var _inputedTextState = PublishSubject<InputedTextState>();
+
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _inputedTextSearchController = TextEditingController(text: '');
+    _inputedTextState.add(InputedTextState.textEmpty);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +275,8 @@ class SearchScreenXD extends StatelessWidget {
                           ],
                         ),
                       ),
+
+                      // where to
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(22.5, 60.0, 257.0, 50.0),
                         size: Size(279.5, 110.0),
@@ -268,14 +302,34 @@ class SearchScreenXD extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16.0),
                                   color: const Color(0x32ffffff),
                                 ),
+                                child: Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(10.5, 60.0, 257.0, 50.0),
+                                  size: Size(279.5, 110.0),
+                                  child: TextFormField(
+                                    onChanged: (text) => {_onTextChanged(text)},
+                                    keyboardType: TextInputType.text,
+                                    controller: _inputedTextSearchController,
+                                    maxLines: 1,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: 'Enter a search term',
+                                        hintStyle: TextStyle(
+                                          fontSize: 12,
+                                          color: const Color(0xffffffff),
+                                        )),
+                                  ),
+                                ),
                               ),
                             ),
+
+                            // where to
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(10.0, 0.0, 50.0, 14.0),
                               size: Size(257.0, 50.0),
                               pinLeft: true,
                               pinTop: true,
-                              fixedWidth: true,
+                              fixedWidth: false,
                               fixedHeight: true,
                               child: Text(
                                 'Where to:',
@@ -287,21 +341,27 @@ class SearchScreenXD extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                             ),
+
+                            //caret sign when typing
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(15.5, 26.5, 1.0, 16.0),
-                              size: Size(257.0, 50.0),
-                              pinLeft: true,
-                              fixedWidth: true,
-                              fixedHeight: true,
-                              child: SvgPicture.string(
-                                _svg_npm1o5,
-                                allowDrawingOutsideViewBox: true,
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                                bounds: Rect.fromLTWH(15.5, 26.5, 1.0, 16.0),
+                                size: Size(257.0, 50.0),
+                                pinLeft: true,
+                                fixedWidth: true,
+                                fixedHeight: true,
+                                child: Container()
+                                /* SvgPicture.string(
+                                  _svg_npm1o5,
+                                  allowDrawingOutsideViewBox: true,
+                                  fit: BoxFit.fill,
+                                ), */
+
+                                ),
                           ],
                         ),
                       ),
+
+                      // from
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(22.5, 0.0, 257.0, 50.0),
                         size: Size(279.5, 110.0),
@@ -337,7 +397,8 @@ class SearchScreenXD extends StatelessWidget {
                               fixedWidth: true,
                               fixedHeight: true,
                               child: Text(
-                                'Sobhan, Madani Street',
+                                '',
+                                //'Sobhan, Madani Street',
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontSize: 16,
@@ -351,7 +412,7 @@ class SearchScreenXD extends StatelessWidget {
                               size: Size(257.0, 50.0),
                               pinLeft: true,
                               pinTop: true,
-                              fixedWidth: true,
+                              fixedWidth: false,
                               fixedHeight: true,
                               child: Text(
                                 'From:',
@@ -369,7 +430,7 @@ class SearchScreenXD extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // back icon
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(16.0, 64.0, 24.0, 24.0),
@@ -379,36 +440,39 @@ class SearchScreenXD extends StatelessWidget {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Back' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
+                      InkWell(
+                    onTap: _onBackTapped,
+                    child: Stack(
+                      children: <Widget>[
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                          size: Size(24.0, 24.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Base' (shape)
+                              Container(
+                            decoration: BoxDecoration(),
+                          ),
                         ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                        size: Size(24.0, 24.0),
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                            SvgPicture.string(
-                          _svg_4joujt,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                          size: Size(24.0, 24.0),
+                          pinTop: true,
+                          pinBottom: true,
+                          fixedWidth: true,
+                          child:
+                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                              SvgPicture.string(
+                            _svg_4joujt,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -417,7 +481,7 @@ class SearchScreenXD extends StatelessWidget {
 
           // history recent title
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 224.0, 95.0, 18.0),
+            bounds: Rect.fromLTWH(25.0, 200.0, 95.0, 18.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: false,
@@ -435,193 +499,100 @@ class SearchScreenXD extends StatelessWidget {
 
           // recent card items
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(16.0, 260.0, 328.0, 128.0),
+            bounds: Rect.fromLTWH(16.0, 150.0, 328.0, 485.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinRight: true,
             fixedHeight: true,
             child:
                 // Adobe XD layer: 'Item#2' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
-                  size: Size(328.0, 128.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Base' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: const Color(0xffffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 24,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
-                  size: Size(328.0, 128.0),
-                  pinLeft: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: const AssetImage('assets/restaurant.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(120.0, 24.0, 131.0, 19.0),
-                  size: Size(328.0, 128.0),
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Rogaw Restaurant',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      color: const Color(0xff202020),
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
-                  size: Size(328.0, 128.0),
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    '4.1',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0xff757575),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
-                  size: Size(328.0, 128.0),
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Restaurant',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0xff757575),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(223.0, 47.0, 25.0, 17.0),
-                  size: Size(328.0, 128.0),
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    '(23)',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0xff757575),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                  size: Size(328.0, 128.0),
-                  child:
-                      // Adobe XD layer: 'Rate' (group)
-                      Stack(
-                    children: <Widget>[
-                      SvgPicture.string(
-                        _svg_cvz5lm,
-                        allowDrawingOutsideViewBox: true,
-                      ),
-                    ],
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
-                  size: Size(328.0, 128.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'arrow' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
-                        size: Size(24.0, 24.0),
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Icon material-keybo…' (shape)
-                            SvgPicture.string(
-                          _svg_48h7a4,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
-                  size: Size(328.0, 128.0),
-                  pinRight: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: SingleChildScrollView(
-                      child: Text(
-                    'No.21, eshraghi.st, vanak',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0xff757575),
-                    ),
-                    textAlign: TextAlign.left,
-                  )),
-                ),
-              ],
-            ),
+                StreamBuilder<InputedTextState>(
+                    stream: _inputedTextState,
+                    builder: (context, snapshot) {
+                      switch (snapshot.data) {
+                        case InputedTextState.textEmpty:
+                          break;
+
+                        case InputedTextState.text:
+                          return BlocBuilder<SearchBloc, SearchState>(
+                            builder: (context, state) {
+                              if (state is SearchInitial) {
+                                return Container();
+                              } else if (state is SearchLoading) {
+                                return buildLoading();
+                              } else if (state is SearchLoaded) {
+                                if (state.searchResultRes.length > 0) {
+                                  return ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: state.searchResultRes.length,
+                                    itemBuilder: (context, position) {
+                                      VenueListByLocationResponse venueModel =
+                                          state.searchResultRes[position];
+                                      return SavedCardItemXD(
+                                        savedCardModel: null,
+                                        //onCardTapped: _onCardTapped,
+                                        venueModel: venueModel,
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return Center(
+                                    child: Text(
+                                        'Your Search result is empty!, Try Again'),
+                                  );
+                                }
+                              } else if (state is SearchError) {
+                                return Center(
+                                  child: Text(
+                                    state.message,
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w900),
+                                  ),
+                                );
+                              } else
+                                return (state is TextInputedState)
+                                    ? Center(
+                                        child: Text(state.message),
+                                      )
+                                    : Container();
+                            },
+                          );
+                          break;
+                      }
+                      return historyList.length > 0
+                          ? Center(
+                              child: Text('the history list is full'),
+                            )
+                          : Center(
+                              child: Text('There are no recent history'),
+                            );
+                    }),
           ),
         ],
       ),
     );
+  }
+
+  void _onBackTapped() {
+    Navigator.of(context).pop();
+  }
+
+  void _onCardTapped(SavedCardModel savedCardModel) async {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => SavedCardMapScreen(
+              savedCardModel: savedCardModel,
+              savedType: 'Food',
+              venueModel: null,
+            )));
+  }
+
+  void _onTextChanged(String text) {
+    print('<<<<<<<<<<<<<<<the inputed text is $text>>>>>>>>>>>>>>>');
+    _inputedTextState.add(InputedTextState.text);
+    final searchBloc = BlocProvider.of<SearchBloc>(context);
+    searchBloc.add(GetInputedTextSearch(
+        categoryId: '1811e3f9af8b49ac80f10d210cd31e79', inputTextSearch: text));
   }
 }
 

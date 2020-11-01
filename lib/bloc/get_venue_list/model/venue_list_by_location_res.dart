@@ -12,6 +12,7 @@ class VenueListByLocationResponse {
   int safetyStatus;
   double latitude;
   double longitude;
+  String imageUrlThumbnail;
 
   VenueListByLocationResponse.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -25,6 +26,7 @@ class VenueListByLocationResponse {
     safetyStatus = json['safetyStatus'];
     latitude = json['latitude'];
     longitude = json['longitude'];
+    imageUrlThumbnail = json['imageUrlThumbnail'];
   }
 
   String errorMessage;
