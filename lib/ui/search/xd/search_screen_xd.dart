@@ -43,6 +43,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
+      // this property avoid screen to resize when keyboard is open
+      resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
           // search bar
@@ -481,7 +483,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
           // history recent title
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 200.0, 95.0, 18.0),
+            bounds: Rect.fromLTWH(25.0, 255.0, 95.0, 18.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: false,
@@ -499,7 +501,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
           // recent card items
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(16.0, 150.0, 328.0, 485.0),
+            bounds: Rect.fromLTWH(16.0, 95.0, 328.0, 485.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinRight: true,
