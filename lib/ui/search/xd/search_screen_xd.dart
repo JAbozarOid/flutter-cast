@@ -1,5 +1,8 @@
+import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
+import 'package:cast/db/config.dart';
+import 'package:cast/db/history/history.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/saved/xd/saved_card_item_xd.dart';
@@ -7,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 enum InputedTextState { textEmpty, text }
 
@@ -21,8 +26,6 @@ class SearchScreenXD extends StatefulWidget {
 }
 
 class _SearchScreenXDState extends State<SearchScreenXD> {
-  List<VenueListByLocationResponse> historyList = [];
-
   var _inputedTextSearchController;
   var _inputedTextState = PublishSubject<InputedTextState>();
 
@@ -506,74 +509,126 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
             pinLeft: true,
             pinRight: true,
             fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Item#2' (group)
-                StreamBuilder<InputedTextState>(
-                    stream: _inputedTextState,
-                    builder: (context, snapshot) {
-                      switch (snapshot.data) {
-                        case InputedTextState.textEmpty:
-                          break;
+            child: StreamBuilder<InputedTextState>(
+                stream: _inputedTextState,
+                builder: (context, snapshot) {
+                  switch (snapshot.data) {
+                    case InputedTextState.textEmpty:
+                      break;
 
-                        case InputedTextState.text:
-                          return BlocBuilder<SearchBloc, SearchState>(
-                            builder: (context, state) {
-                              if (state is SearchInitial) {
-                                return Container();
-                              } else if (state is SearchLoading) {
-                                return buildLoading();
-                              } else if (state is SearchLoaded) {
-                                if (state.searchResultRes.length > 0) {
-                                  return ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: state.searchResultRes.length,
-                                    itemBuilder: (context, position) {
-                                      VenueListByLocationResponse venueModel =
-                                          state.searchResultRes[position];
-                                      return SavedCardItemXD(
+                    case InputedTextState.text:
+                      return BlocBuilder<SearchBloc, SearchState>(
+                        builder: (context, state) {
+                          if (state is SearchInitial) {
+                            return Container();
+                          } else if (state is SearchLoading) {
+                            return buildLoading();
+                          } else if (state is SearchLoaded) {
+                            if (state.searchResultRes.length > 0) {
+                              return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: state.searchResultRes.length,
+                                itemBuilder: (context, position) {
+                                  VenueListByLocationResponse venueModel =
+                                      state.searchResultRes[position];
+
+                                  addHistory(state.searchResultRes[position]);
+
+                                  return SavedCardItemXD(
+                                    savedCardModel: null,
+                                    //onCardTapped: _onCardTapped,
+                                    venueModel: venueModel,
+                                  );
+                                },
+                              );
+                            } else {
+                              return Center(
+                                child: Text(
+                                    'Your Search result is empty!, Try Again'),
+                              );
+                            }
+                          } else if (state is SearchError) {
+                            return Center(
+                              child: Text(
+                                state.message,
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                            );
+                          } else
+                            return (state is TextInputedState)
+                                ? Center(
+                                    child: Text(state.message),
+                                  )
+                                : Container();
+                        },
+                      );
+                      break;
+                  }
+                  return FutureBuilder(
+                    future: Hive.openBox(historiesBox),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.hasError)
+                          return Text(snapshot.error.toString());
+                        else
+                          return ValueListenableBuilder(
+                            valueListenable:
+                                Hive.box(historiesBox).listenable(),
+                            builder: (context, box, _) {
+                              if (box.values.isEmpty) {
+                                return Center(child: Text('data is empty'));
+                              } else {
+                                return ListView.builder(
+                                  itemCount: box.values.length,
+                                  itemBuilder: (context, index) {
+                                    var historyModel = box.getAt(index);
+
+                                    return SavedCardItemXD(
                                         savedCardModel: null,
                                         //onCardTapped: _onCardTapped,
-                                        venueModel: venueModel,
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  return Center(
-                                    child: Text(
-                                        'Your Search result is empty!, Try Again'),
-                                  );
-                                }
-                              } else if (state is SearchError) {
-                                return Center(
-                                  child: Text(
-                                    state.message,
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w900),
-                                  ),
+                                        venueModel: null,
+                                        historyModel: historyModel);
+                                  },
                                 );
-                              } else
-                                return (state is TextInputedState)
-                                    ? Center(
-                                        child: Text(state.message),
-                                      )
-                                    : Container();
+                              }
                             },
                           );
-                          break;
-                      }
-                      return historyList.length > 0
-                          ? Center(
-                              child: Text('the history list is full'),
-                            )
-                          : Center(
-                              child: Text('There are no recent history'),
-                            );
-                    }),
+                      } else
+                        return Scaffold();
+                    },
+                  );
+                }),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    Hive.box(historiesBox).close();
+    super.dispose();
+  }
+
+  void addHistory(VenueListByLocationResponse venuModel) {
+    final history = History(
+        venuModel.name,
+        null,
+        venuModel.categoryName,
+        venuModel.avgSpendingTime,
+        venuModel.reviewCount,
+        venuModel.crowding,
+        venuModel.areaInUse,
+        venuModel.safetyStatus,
+        venuModel.latitude,
+        venuModel.longitude,
+        venuModel.imageUrlThumbnail);
+
+    final histories = Hive.box(historiesBox);
+
+    histories.add(history);
   }
 
   void _onBackTapped() {

@@ -8,4 +8,6 @@ class BadgeModel {
     color = json['color'];
     iconUrl = json['iconUrl'];
   }
+
+  BadgeModel(this.title,this.color,this.iconUrl);
 }
