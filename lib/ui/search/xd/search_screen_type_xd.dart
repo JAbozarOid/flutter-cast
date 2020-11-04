@@ -244,6 +244,7 @@ class SearchScreenTypeXD extends StatelessWidget {
                           ],
                         ),
                       ),
+                      
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(22.5, 60.0, 257.0, 50.0),
                         size: Size(279.5, 110.0),
@@ -323,6 +324,7 @@ class SearchScreenTypeXD extends StatelessWidget {
                           ],
                         ),
                       ),
+                      
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(22.5, 0.0, 257.0, 50.0),
                         size: Size(279.5, 110.0),

@@ -1,5 +1,6 @@
 import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
 import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
@@ -15,10 +16,13 @@ import 'package:rxdart/rxdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 enum InputedTextState { textEmpty, text }
+enum HistoryLoader { loading, loaded }
 
 class SearchScreenXD extends StatefulWidget {
+  final MainCategoryListResponse typeModelSearch;
   SearchScreenXD({
     Key key,
+    @required this.typeModelSearch,
   }) : super(key: key);
 
   @override
@@ -28,6 +32,7 @@ class SearchScreenXD extends StatefulWidget {
 class _SearchScreenXDState extends State<SearchScreenXD> {
   var _inputedTextSearchController;
   var _inputedTextState = PublishSubject<InputedTextState>();
+  MainCategoryListResponse get typeModelSearch => widget.typeModelSearch;
 
   Widget buildLoading() {
     return Center(
@@ -40,6 +45,12 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     super.initState();
     _inputedTextSearchController = TextEditingController(text: '');
     _inputedTextState.add(InputedTextState.textEmpty);
+  }
+
+  @override
+  void dispose() {
+    Hive.box(historiesBox).close();
+    super.dispose();
   }
 
   @override
@@ -347,6 +358,55 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                               ),
                             ),
 
+                            // this card shows the type of history or search
+                            typeModelSearch != null
+                                ? Stack(
+                                    children: [
+                                      Pinned.fromSize(
+                                        bounds: Rect.fromLTWH(
+                                            65.0, 0.0, 80.0, 17.0),
+                                        size: Size(257.0, 50.0),
+                                        pinRight: false,
+                                        fixedWidth: false,
+                                        fixedHeight: true,
+                                        child: Center(
+                                          child: Text(
+                                            typeModelSearch.name.length >= 15
+                                                ? typeModelSearch.name
+                                                        .substring(0, 15) +
+                                                    "..."
+                                                : typeModelSearch.name,
+                                            style: TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 14,
+                                              color: const Color(0xffffffff),
+                                            ),
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds: Rect.fromLTWH(
+                                            70.0, 0.0, 90.0, 19.0),
+                                        size: Size(257.0, 50.0),
+                                        pinLeft: true,
+                                        pinBottom: true,
+                                        fixedWidth: false,
+                                        fixedHeight: true,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12.0),
+                                            border: Border.all(
+                                                width: 1.0,
+                                                color: const Color(0xffffffff)),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Container(),
+
                             //caret sign when typing
                             Pinned.fromSize(
                                 bounds: Rect.fromLTWH(15.5, 26.5, 1.0, 16.0),
@@ -486,13 +546,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
           // history recent title
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(25.0, 255.0, 95.0, 18.0),
+            bounds: Rect.fromLTWH(25.0, 200.0, 95.0, 18.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             fixedWidth: false,
             fixedHeight: true,
             child: Text(
-              'Recent history',
+              typeModelSearch == null ? 'Recent history' : 'Search result',
               style: TextStyle(
                 fontFamily: 'Roboto',
                 fontSize: 15,
@@ -504,7 +564,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
           // recent card items
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(16.0, 95.0, 328.0, 485.0),
+            bounds: Rect.fromLTWH(0.0, 130.0, 360.0, 510.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinRight: true,
@@ -522,7 +582,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                           if (state is SearchInitial) {
                             return Container();
                           } else if (state is SearchLoading) {
-                            return buildLoading();
+                            return
+                                //buildLoading();
+                                Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 150, right: 150),
+                              child: Text('Searching...'),
+                            );
                           } else if (state is SearchLoaded) {
                             if (state.searchResultRes.length > 0) {
                               return ListView.builder(
@@ -558,7 +624,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                             );
                           } else
                             return (state is TextInputedState)
-                                ? Center(
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 150, right: 150),
                                     child: Text(state.message),
                                   )
                                 : Container();
@@ -578,7 +646,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 Hive.box(historiesBox).listenable(),
                             builder: (context, box, _) {
                               if (box.values.isEmpty) {
-                                return Center(child: Text('data is empty'));
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 150, right: 150),
+                                  child: Text(typeModelSearch == null
+                                      ? 'History list is empty'
+                                      : 'Search list is empty'),
+                                );
                               } else {
                                 return ListView.builder(
                                   itemCount: box.values.length,
@@ -596,7 +670,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                             },
                           );
                       } else
-                        return Scaffold();
+                        return buildLoading();
                     },
                   );
                 }),
@@ -604,12 +678,6 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    Hive.box(historiesBox).close();
-    super.dispose();
   }
 
   void addHistory(VenueListByLocationResponse venuModel) {

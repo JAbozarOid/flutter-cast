@@ -274,8 +274,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                         return NavigationCategoryItemXD(
                                           title: itemModel.name,
                                           icon: itemModel.iconUrl,
-                                          onCardTapped:
-                                              _goToSearchScreenPanelType,
+                                          onCardTapped: () => 
+                                              _goToSearchScreenPanelType(itemModel),
                                         );
                                       },
                                     );
@@ -902,13 +902,20 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         builder: (_) => BlocProvider(
               create: (context) => SearchBloc(
                   DataRepository(APIService(API.sandbox()))),
-              child: SearchScreenXD(),
+              child: SearchScreenXD(typeModelSearch: null,),
             )));
   }
 
-  void _goToSearchScreenPanelType() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD()));
+  void _goToSearchScreenPanelType(MainCategoryListResponse model) {
+    /* Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD())); */
+
+        Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => SearchBloc(
+                  DataRepository(APIService(API.sandbox()))),
+              child: SearchScreenXD(typeModelSearch: model,),
+            )));
   }
 
   // from every where on the map go to user current location
