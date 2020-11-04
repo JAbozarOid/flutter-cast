@@ -1,5 +1,7 @@
 import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/ui/saved/map/draggable_scrollable_sheet.dart';
+import 'package:cast/ui/saved/map/loading_7.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
@@ -146,6 +148,8 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                     ),
                   ),
                 ),
+
+                // back button
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(16.0, 44.0, 24.0, 24.0),
                   size: Size(360.0, 80.0),
@@ -154,38 +158,42 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Back' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
+                      InkWell(onTap: _onBackTapped,
+                    child: Stack(
+                      children: <Widget>[
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                          size: Size(24.0, 24.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Base' (shape)
+                              Container(
+                            decoration: BoxDecoration(),
+                          ),
                         ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                        size: Size(24.0, 24.0),
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                            SvgPicture.string(
-                          _svg_4joujt,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                          size: Size(24.0, 24.0),
+                          pinTop: true,
+                          pinBottom: true,
+                          fixedWidth: true,
+                          child:
+                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                              SvgPicture.string(
+                            _svg_4joujt,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
+
+                // cast title
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(158.0, 42.0, 45.0, 27.0),
                   size: Size(360.0, 80.0),
@@ -204,6 +212,8 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                     ),
                   ),
                 ),
+
+                // setting icon
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(320.0, 44.0, 24.0, 24.0),
                   size: Size(360.0, 80.0),
@@ -474,6 +484,10 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     );
   }
 
+  void _onBackTapped() {
+    Navigator.of(context).pop();
+  }
+
   void _onCardTapped(VenueListByLocationResponse venueModel) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
@@ -481,6 +495,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
               venueModel: venueModel,
               savedType: 'Food',
             )));
+    //Navigator.of(context).push(MaterialPageRoute(builder: (_) => Loading7()));
   }
 
   void _goToSettingPage() {

@@ -93,15 +93,16 @@ class NearbyCardItemXD extends StatelessWidget {
                     bounds: Rect.fromLTWH(24.0, 100.0, 80.0, 80.0),
                     size: Size(328.0, 334.0),
                     pinLeft: true,
-                    fixedWidth: true,
+                    fixedWidth: false,
                     fixedHeight: true,
                     child: Container(
+                      child: Image.network(venueListByLocationResponse.imageUrlThumbnail.toString(),fit: BoxFit.cover,),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.0),
-                        image: DecorationImage(
+                        /* image: DecorationImage(
                           image: const AssetImage('assets/restaurant.png'),
                           fit: BoxFit.cover,
-                        ),
+                        ), */
                       ),
                     ),
                   ),

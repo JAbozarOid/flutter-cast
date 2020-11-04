@@ -75,8 +75,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
             Positioned(
               height: 250,
               bottom: -20,
-              right: 0,
-              left: 0,
+              right: 16,
+              left:16,
               child: PageView(
                 controller: pageController,
                 scrollDirection: Axis.horizontal,

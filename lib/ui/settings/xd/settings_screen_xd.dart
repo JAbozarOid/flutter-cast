@@ -3,10 +3,26 @@ import 'package:adobe_xd/pinned.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SettingsScreenXD extends StatelessWidget {
+class SettingsScreenXD extends StatefulWidget {
   SettingsScreenXD({
     Key key,
   }) : super(key: key);
+
+  @override
+  _SettingsScreenXDState createState() => _SettingsScreenXDState();
+}
+
+class _SettingsScreenXDState extends State<SettingsScreenXD> {
+  bool isSwitchedAvgSpendingTime = true;
+  bool isSwitchedUserReview = true;
+  bool isSwitchedCrowding = true;
+  bool isSwitchedAreaInUse = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +105,7 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
-          
+
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 261.0, 360.0, 91.0),
             size: Size(360.0, 800.0),
@@ -102,7 +118,7 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
-         
+
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 158.0, 360.0, 103.0),
             size: Size(360.0, 800.0),
@@ -124,8 +140,7 @@ class SettingsScreenXD extends StatelessWidget {
               ),
             ),
           ),
-          
-          
+
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 158.0, 180.0, 482.0),
             size: Size(360.0, 800.0),
@@ -136,7 +151,7 @@ class SettingsScreenXD extends StatelessWidget {
               decoration: BoxDecoration(),
             ),
           ),
-          
+
           // crowding
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 427.0, 360.0, 75.0),
@@ -237,85 +252,36 @@ class SettingsScreenXD extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: const Color(0x6043c7ae),
+                            color: isSwitchedCrowding
+                                ? Color(0x6043c7ae)
+                                : Color(0xffc5c5c5),
                           ),
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(22.0, 4.0, 20.0, 20.0),
-                        size: Size(48.0, 28.0),
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Knob' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0xccffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x1f000000),
-                                      offset: Offset(0, 0),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0x1fffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x3d000000),
-                                      offset: Offset(0, 1),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
+                          size: Size(48.0, 28.0),
+                          pinLeft: false,
+                          pinTop: false,
+                          pinBottom: false,
+                          fixedWidth: true,
+                          child: Switch(
+                              activeTrackColor: Color(0x6043c7ae),
+                              activeColor: const Color(0xff43c7ae),
+                              value: isSwitchedCrowding,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSwitchedCrowding = value;
+                                  print(isSwitchedCrowding);
+                                });
+                              })),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-         
+
           // average spending time
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 577.0, 360.0, 75.0),
@@ -394,7 +360,7 @@ class SettingsScreenXD extends StatelessWidget {
                       Stack(
                     children: <Widget>[
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 47.0, 28.0),
+                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
                         size: Size(48.0, 28.0),
                         pinLeft: true,
                         pinRight: true,
@@ -416,85 +382,36 @@ class SettingsScreenXD extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: const Color(0x6043c7ae),
+                            color: isSwitchedAvgSpendingTime
+                                ? Color(0x6043c7ae)
+                                : Color(0xffc5c5c5),
                           ),
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(22.0, 4.0, 20.0, 20.0),
-                        size: Size(48.0, 28.0),
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Knob' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0xccffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x1f000000),
-                                      offset: Offset(0, 0),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0x1fffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x3d000000),
-                                      offset: Offset(0, 1),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
+                          size: Size(48.0, 28.0),
+                          pinLeft: false,
+                          pinTop: false,
+                          pinBottom: false,
+                          fixedWidth: true,
+                          child: Switch(
+                              activeTrackColor: Color(0x6043c7ae),
+                              activeColor: const Color(0xff43c7ae),
+                              value: isSwitchedAvgSpendingTime,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSwitchedAvgSpendingTime = value;
+                                  print(isSwitchedAvgSpendingTime);
+                                });
+                              })),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-         
+
           // user review
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 352.0, 360.0, 75.0),
@@ -595,85 +512,36 @@ class SettingsScreenXD extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: const Color(0x6043c7ae),
+                            color: isSwitchedUserReview
+                                ? Color(0x6043c7ae)
+                                : Color(0xffc5c5c5),
                           ),
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(22.0, 4.0, 20.0, 20.0),
-                        size: Size(48.0, 28.0),
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Knob' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0xccffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x1f000000),
-                                      offset: Offset(0, 0),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xff43c7ae),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0x1fffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x3d000000),
-                                      offset: Offset(0, 1),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
+                          size: Size(48.0, 28.0),
+                          pinLeft: false,
+                          pinTop: false,
+                          pinBottom: false,
+                          fixedWidth: true,
+                          child: Switch(
+                              activeTrackColor: Color(0x6043c7ae),
+                              activeColor: const Color(0xff43c7ae),
+                              value: isSwitchedUserReview,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSwitchedUserReview = value;
+                                  print(isSwitchedUserReview);
+                                });
+                              })),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-         
+
           // area in use
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 502.0, 360.0, 75.0),
@@ -685,6 +553,7 @@ class SettingsScreenXD extends StatelessWidget {
                 // Adobe XD layer: 'Row' (group)
                 Stack(
               children: <Widget>[
+                // container
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
                   size: Size(360.0, 75.0),
@@ -707,6 +576,7 @@ class SettingsScreenXD extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
                   size: Size(360.0, 75.0),
@@ -741,6 +611,7 @@ class SettingsScreenXD extends StatelessWidget {
                     textAlign: TextAlign.left,
                   ),
                 ),
+
                 Pinned.fromSize(
                   bounds: Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
                   size: Size(360.0, 75.0),
@@ -771,90 +642,38 @@ class SettingsScreenXD extends StatelessWidget {
                         pinRight: true,
                         pinTop: true,
                         pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Rectangle 31' (shape)
-                            Container(
+                        child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14.0),
-                            color: const Color(0xffc5c5c5),
+                            color: isSwitchedAreaInUse
+                                ? Color(0x6043c7ae)
+                                : Color(0xffc5c5c5),
                           ),
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(6.0, 4.0, 20.0, 20.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Knob' (group)
-                            Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xfff1f1f1),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0xccffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x1f000000),
-                                      offset: Offset(0, 0),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 20.0, 20.0),
-                              size: Size(20.0, 20.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Knob' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.elliptical(9999.0, 9999.0)),
-                                  color: const Color(0xfff1f1f1),
-                                  border: Border.all(
-                                      width: 0.5,
-                                      color: const Color(0x1fffffff)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x3d000000),
-                                      offset: Offset(0, 1),
-                                      blurRadius: 1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
+                          size: Size(48.0, 28.0),
+                          pinLeft: false,
+                          pinTop: false,
+                          pinBottom: false,
+                          fixedWidth: true,
+                          child: Switch(
+                              activeTrackColor: Color(0x6043c7ae),
+                              activeColor: const Color(0xff43c7ae),
+                              value: isSwitchedAreaInUse,
+                              onChanged: (value) {
+                                setState(() {
+                                  isSwitchedAreaInUse = value;
+                                });
+                              })),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-          
+
           Pinned.fromSize(
             bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
             size: Size(360.0, 800.0),
@@ -1142,7 +961,7 @@ class SettingsScreenXD extends StatelessWidget {
               ],
             ),
           ),
-         
+
           Pinned.fromSize(
             bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 25.0),
             size: Size(360.0, 800.0),
@@ -1161,7 +980,7 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          
+
           // text below of customize criteria
           Pinned.fromSize(
             bounds: Rect.fromLTWH(24.0, 303.0, 296.0, 35.0),
@@ -1180,7 +999,7 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-         
+
           // Analyze Range
           Pinned.fromSize(
             bounds: Rect.fromLTWH(24.0, 104.0, 105.0, 77.0),
@@ -1200,7 +1019,7 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          
+
           // customize criteria
           Pinned.fromSize(
             bounds: Rect.fromLTWH(24.0, 281.0, 131.0, 91.0),
@@ -1219,7 +1038,7 @@ class SettingsScreenXD extends StatelessWidget {
               textAlign: TextAlign.left,
             ),
           ),
-          
+
           // header
           Pinned.fromSize(
             bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
@@ -1268,36 +1087,39 @@ class SettingsScreenXD extends StatelessWidget {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Back' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Base' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
+                      InkWell(
+                    onTap: _onBackTapped,
+                    child: Stack(
+                      children: <Widget>[
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                          size: Size(24.0, 24.0),
+                          pinLeft: true,
+                          pinRight: true,
+                          pinTop: true,
+                          pinBottom: true,
+                          child:
+                              // Adobe XD layer: 'Base' (shape)
+                              Container(
+                            decoration: BoxDecoration(),
+                          ),
                         ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                        size: Size(24.0, 24.0),
-                        pinTop: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        child:
-                            // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                            SvgPicture.string(
-                          _svg_4joujt,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
+                        Pinned.fromSize(
+                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                          size: Size(24.0, 24.0),
+                          pinTop: true,
+                          pinBottom: true,
+                          fixedWidth: true,
+                          child:
+                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                              SvgPicture.string(
+                            _svg_4joujt,
+                            allowDrawingOutsideViewBox: true,
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Pinned.fromSize(
@@ -1324,6 +1146,10 @@ class SettingsScreenXD extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onBackTapped() {
+    Navigator.of(context).pop();
   }
 }
 

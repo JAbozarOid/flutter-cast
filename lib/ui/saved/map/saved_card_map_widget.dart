@@ -23,6 +23,7 @@ class SavedCardMapWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
             Text(
               venueModel == null ? savedCardModel.title : venueModel.name,
               style: TextStyle(
