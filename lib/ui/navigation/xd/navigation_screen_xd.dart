@@ -5,6 +5,7 @@ import 'package:cast/bloc/category_list_detail/category_list_detail_bloc.dart';
 import 'package:cast/bloc/main_category/main_category_bloc.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
+import 'package:cast/common/map_style.dart';
 import 'package:cast/location/location_state.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
@@ -174,14 +175,15 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                 right: 0,
                 child: GoogleMap(
                   key: _key,
+                  mapStyle: mapStyle,
                   interactive: true,
-                  mapType: MapType.roadmap,
+                  //mapType: MapType.none,
                   //initialPosition: GeoCoord(1.3521, 103.8198),
                   /* markers: {
                                   Marker(GeoCoord(1.3521, 103.8198)),
                                 }, */
                   mobilePreferences: MobileMapPreferences(
-                    trafficEnabled: true,
+                    trafficEnabled: false,
                     scrollGesturesEnabled: true,
                     myLocationEnabled: true,
                     myLocationButtonEnabled: false,
@@ -232,14 +234,15 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                               right: 0,
                               child: GoogleMap(
                                 key: _key,
+                                mapStyle: mapStyle,
                                 interactive: true,
-                                mapType: MapType.roadmap,
+                                //mapType: MapType.none,
                                 initialPosition: GeoCoord(_lat, _lon),
-                                markers: {
+                                /* markers: {
                                   Marker(GeoCoord(_lat, _lon)),
-                                },
+                                }, */
                                 mobilePreferences: MobileMapPreferences(
-                                  trafficEnabled: true,
+                                  trafficEnabled: false,
                                   scrollGesturesEnabled: true,
                                   myLocationEnabled: true,
                                   myLocationButtonEnabled: false,
@@ -833,7 +836,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       fixedWidth: false,
                       fixedHeight: true,
                       child: Text(
-                        'From: ',
+                        'From: Current Location',
                         style: TextStyle(
                           fontFamily: 'Open Sans',
                           fontSize: 10,
@@ -964,7 +967,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
             animated: true, waitUntilReady: true);
 
-        _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
+        //_key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
 
         // call main category list api
         getMainCategoryList();
@@ -979,7 +982,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
       _key.currentState.moveCamera(GeoCoord(_lat, _lon),
           animated: true, waitUntilReady: true);
 
-      _key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
+      //_key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
 
       // call main category list api
       getMainCategoryList();
