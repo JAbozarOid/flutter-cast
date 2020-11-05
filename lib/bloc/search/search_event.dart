@@ -16,4 +16,12 @@ class GetInputedTextSearch extends SearchEvent {
   List<Object> get props => [inputTextSearch];
 }
 
+class GetSavedList extends SearchEvent {
+  final List<String> savedList;
+  const GetSavedList(this.savedList);
+
+    @override
+  List<Object> get props => [];
+}
+
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cast/app/repository/endpoints_data.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
+import 'package:cast/db/saved/saved.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
@@ -92,6 +93,27 @@ class DataRepository {
       apiService.postAPI(
           apiVersion: API.apiVersion[APIVersions.version],
           path: PathApi.getApiPath(Path.getVenueListByLocation),
+          queryParameters: {},
+          body: body),
+    ]);
+
+    return EndpointsData(values: {
+      APIVersions.version: values[0],
+    });
+  }
+
+  Future<EndpointsData> callGetSavedVenueListAPI(
+          {@required List<String> savedList}) async =>
+      await _getData<EndpointsData>(
+          onGetData: () => _getSavedVenuList(savedList));
+
+  Future<EndpointsData> _getSavedVenuList(List<String> savedList) async {
+    var body = json.encode({"venueIdList": savedList});
+
+    final values = await Future.wait([
+      apiService.postAPI(
+          apiVersion: API.apiVersion[APIVersions.version],
+          path: PathApi.getApiPath(Path.getSavedVenueList),
           queryParameters: {},
           body: body),
     ]);

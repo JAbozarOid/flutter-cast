@@ -2,7 +2,6 @@ part of 'category_list_detail_bloc.dart';
 
 abstract class CategoryListDetailEvent extends Equatable {
   const CategoryListDetailEvent();
-
 }
 
 class GetCategoryListDetail extends CategoryListDetailEvent {
@@ -11,3 +10,5 @@ class GetCategoryListDetail extends CategoryListDetailEvent {
   @override
   List<Object> get props => [];
 }
+
+

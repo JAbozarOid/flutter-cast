@@ -26,6 +26,14 @@ class SearchLoaded extends SearchState {
   List<Object> get props => [searchResultRes];
 }
 
+class SaveLoaded extends SearchState {
+  final List<SavedVenueListRes> saveResultRes;
+  const SaveLoaded(this.saveResultRes);
+
+  @override
+  List<Object> get props => [saveResultRes];
+}
+
 class TextInputedState extends SearchState {
   final String message;
   const TextInputedState(this.message);

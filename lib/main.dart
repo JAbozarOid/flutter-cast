@@ -1,5 +1,6 @@
 import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
+import 'package:cast/db/saved/saved.dart';
 import 'package:cast/ui/splash/xd/splash_screen_xd.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ void main() async {
         .initFlutter(); //waits to initialize path on flutter with the default path
   }
   Hive.registerAdapter(HistoryAdapter());
+  Hive.registerAdapter(SavedAdapter());
 
   runApp(MyApp());
 }
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     Hive.box(historiesBox).close();
+    Hive.box(savedBox).close();
 
     super.dispose();
   }

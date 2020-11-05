@@ -1,5 +1,6 @@
 import 'package:adobe_xd/adobe_xd.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
 import 'package:cast/db/history/history.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +11,14 @@ class SavedCardItemXD extends StatelessWidget {
   final Function onCardTapped;
   final VenueListByLocationResponse venueModel;
   final History historyModel;
+  final SavedVenueListRes savedModel;
 
   const SavedCardItemXD(
       {Key key,
       this.savedCardModel,
       this.venueModel,
       this.historyModel,
+      this.savedModel,
       this.onCardTapped})
       : super(key: key);
 

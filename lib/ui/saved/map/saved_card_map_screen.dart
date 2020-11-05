@@ -63,7 +63,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                     mapType: MapType.roadmap,
                     initialPosition: GeoCoord(1.290270, 103.851959),
                     markers: {
-                      Marker(GeoCoord(1.290270, 103.851959)),
+                      Marker(GeoCoord(1.290270, 103.851959), ),
                     },
                     mobilePreferences: MobileMapPreferences(
                         trafficEnabled: true,

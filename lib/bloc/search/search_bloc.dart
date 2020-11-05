@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cast/app/repository/data_repository.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
+import 'package:cast/db/saved/saved.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -49,6 +51,32 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         }
       } else {
         yield TextInputedState('Please input more...');
+      }
+    }
+
+    if (event is GetSavedList) {
+      yield SearchLoading();
+      try {
+        final savedList = await dataRepository.callGetSavedVenueListAPI(
+            savedList: event.savedList);
+        if (savedList.getEndpointsData.statusCode == 200) {
+          var res = savedList.getEndpointsData.json['result'];
+          List<SavedVenueListRes> list =
+              (res as List).map((e) => SavedVenueListRes.fromJson(e)).toList();
+
+          yield SaveLoaded(list);
+        } else {
+          var errorMessage = VenueListByLocationResponse.fromJsonError(
+              savedList.getEndpointsData.json);
+
+          yield SearchError(errorMessage.errorMessage);
+        }
+      } on SocketException catch (_) {
+        yield SearchError("Connection Error");
+      } on TimeoutException catch (_) {
+        yield SearchError("Timeout Error, Please Try later");
+      } catch (_) {
+        yield SearchError("Unknown Error");
       }
     }
   }

@@ -274,8 +274,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                         return NavigationCategoryItemXD(
                                           title: itemModel.name,
                                           icon: itemModel.iconUrl,
-                                          onCardTapped: () => 
-                                              _goToSearchScreenPanelType(itemModel),
+                                          onCardTapped: () =>
+                                              _goToSearchScreenPanelType(
+                                                  itemModel),
                                         );
                                       },
                                     );
@@ -889,8 +890,15 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   }
 
   void _goToSavedScreen() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SavedScreenXD()));
+    /* Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => SavedScreenXD())); */
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) =>
+                  SearchBloc(DataRepository(APIService(API.sandbox()))),
+              child: SavedScreenXD(),
+            )));
   }
 
   // tapped on the top of the card which named Where to?
@@ -900,9 +908,11 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) => SearchBloc(
-                  DataRepository(APIService(API.sandbox()))),
-              child: SearchScreenXD(typeModelSearch: null,),
+              create: (context) =>
+                  SearchBloc(DataRepository(APIService(API.sandbox()))),
+              child: SearchScreenXD(
+                typeModelSearch: null,
+              ),
             )));
   }
 
@@ -910,11 +920,13 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
     /* Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD())); */
 
-        Navigator.of(context).push(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
-              create: (context) => SearchBloc(
-                  DataRepository(APIService(API.sandbox()))),
-              child: SearchScreenXD(typeModelSearch: model,),
+              create: (context) =>
+                  SearchBloc(DataRepository(APIService(API.sandbox()))),
+              child: SearchScreenXD(
+                typeModelSearch: model,
+              ),
             )));
   }
 

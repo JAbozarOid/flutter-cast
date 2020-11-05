@@ -32,18 +32,20 @@ dependencies:
   flutter_google_places: ^0.2.6
   flutter_rating_bar: ^3.0.1+1
   flutter_svg: ^0.18.1
+  hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
   http: ^0.12.2
   location: ^3.0.2
   rxdart: ^0.24.1
   scroll_to_index: ^1.0.6
-  hive: ^1.4.4+1
-  hive_flutter: ^0.3.1
+  share: ^0.6.5+4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: null
   hive_generator: ^0.8.2
-  build_runner:
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

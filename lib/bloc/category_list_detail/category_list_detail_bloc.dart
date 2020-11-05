@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:cast/app/repository/data_repository.dart';
 import 'package:cast/bloc/category_list_detail/model/category_list_detail_res.dart';
+import 'package:cast/db/saved/saved.dart';
 import 'package:equatable/equatable.dart';
 
 part 'category_list_detail_event.dart';
@@ -27,8 +28,9 @@ class CategoryListDetailBloc
             await dataRepository.callGetCategoryListDetailAPI();
         if (categoryDetail.getEndpointsData.statusCode == 200) {
           var res = categoryDetail.getEndpointsData.json['result'];
-          List<CategoryListDetailResponse> list =
-              (res as List).map((e) => CategoryListDetailResponse.fromJson(e)).toList();
+          List<CategoryListDetailResponse> list = (res as List)
+              .map((e) => CategoryListDetailResponse.fromJson(e))
+              .toList();
 
           yield CategoryListDetailLoaded(list);
         } else {
