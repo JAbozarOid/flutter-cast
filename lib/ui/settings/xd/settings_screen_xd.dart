@@ -18,9 +18,20 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
   bool isSwitchedCrowding = true;
   bool isSwitchedAreaInUse = true;
 
+  bool _point1 = true;
+  bool _point2 = false;
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void _onPoints2Tapped() {
+    print("<<<<<<<<<<<<<<<<<<<<<<<<before>>>>>>>>>>>>>>>>>>>>>>>>");
+    setState(() {
+      _point2 = true;
+      print("<<<<<<<<<<<<<<<<<<<<<<<<after>>>>>>>>>>>>>>>>>>>>>>>>");
+    });
   }
 
   @override
@@ -674,6 +685,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
             ),
           ),
 
+          // range selector
           Pinned.fromSize(
             bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
             size: Size(360.0, 800.0),
@@ -757,18 +769,23 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                         ),
                       ),
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(74.0, 21.0, 8.0, 8.0),
+                        bounds: _point2
+                            ? Rect.fromLTWH(74.0, 18.0, 14.0, 14.0)
+                            : Rect.fromLTWH(74.0, 21.0, 8.0, 8.0),
                         size: Size(289.0, 32.0),
                         pinBottom: true,
                         fixedWidth: true,
                         fixedHeight: true,
                         child:
                             // Adobe XD layer: 'Point#2' (shape)
-                            Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff43c7ae),
+                            InkWell(
+                          onTap: _onPoints2Tapped,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                  Radius.elliptical(9999.0, 9999.0)),
+                              color: const Color(0xff43c7ae),
+                            ),
                           ),
                         ),
                       ),
@@ -794,7 +811,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                         size: Size(289.0, 32.0),
                         pinLeft: true,
                         pinTop: true,
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Small',
@@ -810,7 +827,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                         bounds: Rect.fromLTWH(126.0, 0.0, 36.0, 13.0),
                         size: Size(289.0, 32.0),
                         pinTop: true,
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Medium',
@@ -827,7 +844,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                         size: Size(289.0, 32.0),
                         pinRight: true,
                         pinTop: true,
-                        fixedWidth: true,
+                        fixedWidth: false,
                         fixedHeight: true,
                         child: Text(
                           'Large',
@@ -853,6 +870,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                       // Adobe XD layer: 'Indicator' (group)
                       Stack(
                     children: <Widget>[
+                      // 500
                       Pinned.fromSize(
                         bounds: Rect.fromLTWH(0.0, 0.0, 44.0, 29.0),
                         size: Size(44.0, 29.0),
@@ -874,6 +892,134 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                         fixedHeight: true,
                         child: Text(
                           '500m',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 12,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      // 1000
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(79.0, 0.0, 44.0, 29.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child: SvgPicture.string(
+                          _svg_2rq049,
+                          allowDrawingOutsideViewBox: true,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(84.0, 10.0, 32.0, 14.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        fixedHeight: true,
+                        child: Text(
+                          '1000m',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 12,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      // 1500
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(157.0, 0.0, 44.0, 29.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child: SvgPicture.string(
+                          _svg_2rq049,
+                          allowDrawingOutsideViewBox: true,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(162.0, 10.0, 32.0, 14.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        fixedHeight: true,
+                        child: Text(
+                          '1500m',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 12,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      // 2000
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(235.0, 0.0, 44.0, 29.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child: SvgPicture.string(
+                          _svg_2rq049,
+                          allowDrawingOutsideViewBox: true,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(240.0, 10.0, 32.0, 14.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        fixedHeight: true,
+                        child: Text(
+                          '2000m',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 12,
+                            color: const Color(0xffffffff),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+
+                      // 2500
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(315.0, 0.0, 44.0, 29.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        pinTop: true,
+                        pinBottom: true,
+                        child: SvgPicture.string(
+                          _svg_2rq049,
+                          allowDrawingOutsideViewBox: true,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Pinned.fromSize(
+                        bounds: Rect.fromLTWH(320.0, 10.0, 32.0, 14.0),
+                        size: Size(44.0, 29.0),
+                        pinLeft: true,
+                        pinRight: true,
+                        fixedHeight: true,
+                        child: Text(
+                          '2500m',
                           style: TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 12,

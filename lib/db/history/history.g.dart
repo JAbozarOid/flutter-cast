@@ -19,6 +19,7 @@ class HistoryAdapter extends TypeAdapter<History> {
     return History(
       fields[0] as String,
       fields[1] as BadgeModel,
+      fields[2] as int,
       fields[3] as String,
       fields[4] as int,
       fields[5] as int,
@@ -29,7 +30,7 @@ class HistoryAdapter extends TypeAdapter<History> {
       fields[10] as double,
       fields[11] as String,
       fields[12] as int,
-    )..rate = fields[2] as int;
+    );
   }
 
   @override

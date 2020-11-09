@@ -47,6 +47,7 @@ class History extends HiveObject {
   History(
       this.name,
       this.badgeModel,
+      this.rate,
       this.categoryName,
       this.avgSpendingTime,
       this.reviewCount,

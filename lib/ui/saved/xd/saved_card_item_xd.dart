@@ -2,6 +2,7 @@ import 'package:adobe_xd/adobe_xd.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
 import 'package:cast/db/history/history.dart';
+import 'package:cast/db/search/search.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,6 +12,7 @@ class SavedCardItemXD extends StatelessWidget {
   final Function onCardTapped;
   final VenueListByLocationResponse venueModel;
   final History historyModel;
+  final Search searchModel;
   final SavedVenueListRes savedModel;
 
   const SavedCardItemXD(
@@ -19,6 +21,7 @@ class SavedCardItemXD extends StatelessWidget {
       this.venueModel,
       this.historyModel,
       this.savedModel,
+      this.searchModel,
       this.onCardTapped})
       : super(key: key);
 
@@ -306,7 +309,7 @@ class SavedCardItemXD extends StatelessWidget {
                               ),
                             ),
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(223.0, 47.0, 30.0, 17.0),
+                              bounds: Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
                               size: Size(328.0, 128.0),
                               fixedWidth: false,
                               fixedHeight: true,
@@ -394,188 +397,389 @@ class SavedCardItemXD extends StatelessWidget {
                             ),
                           ],
                         )
-                      : Stack(
-                          children: <Widget>[
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
-                              size: Size(328.0, 128.0),
-                              pinLeft: true,
-                              pinRight: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              child:
-                                  // Adobe XD layer: 'Base' (shape)
-                                  Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  color: const Color(0xffffffff),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color(0x29000000),
-                                      offset: Offset(0, 3),
-                                      blurRadius: 24,
+                      : historyModel != null
+                          ? Stack(
+                              children: <Widget>[
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
+                                  size: Size(328.0, 128.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Base' (shape)
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: const Color(0xffffffff),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0x29000000),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 24,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
-                              size: Size(328.0, 128.0),
-                              pinLeft: true,
-                              pinTop: true,
-                              pinBottom: true,
-                              fixedWidth: false,
-                              child: Container(
-                                child: Image.network(
-                                  historyModel.imageUrlThumbnail.toString(),
-                                  fit: BoxFit.cover,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  /* image: 
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
+                                  size: Size(328.0, 128.0),
+                                  pinLeft: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  fixedWidth: false,
+                                  child: Container(
+                                    child: Image.network(
+                                      historyModel.imageUrlThumbnail.toString(),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      /* image: 
                       DecorationImage(
                         image: AssetImage(savedCardModel.image),
                         fit: BoxFit.cover,
                       ), */
-                                ),
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
-                              size: Size(328.0, 128.0),
-                              fixedWidth: false,
-                              fixedHeight: true,
-                              child: Text(
-                                historyModel.name,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 16,
-                                  color: const Color(0xff202020),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
-                              size: Size(328.0, 128.0),
-                              fixedWidth: false,
-                              fixedHeight: true,
-                              child: Text(
-                                '${historyModel.rate}',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xff757575),
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
-                              size: Size(328.0, 128.0),
-                              fixedWidth: false,
-                              fixedHeight: true,
-                              child: Text(
-                                historyModel.categoryName,
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xff757575),
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(223.0, 47.0, 30.0, 17.0),
-                              size: Size(328.0, 128.0),
-                              fixedWidth: false,
-                              fixedHeight: true,
-                              child: Text(
-                                '(${historyModel.reviewCount})',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xff757575),
-                                ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                              size: Size(328.0, 128.0),
-                              child:
-                                  // Adobe XD layer: 'Rate' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  SvgPicture.string(
-                                    _svg_cvz5lm,
-                                    allowDrawingOutsideViewBox: true,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
-                              size: Size(328.0, 128.0),
-                              pinRight: true,
-                              fixedWidth: true,
-                              fixedHeight: true,
-                              child:
-                                  // Adobe XD layer: 'arrow' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  Pinned.fromSize(
-                                    bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                                    size: Size(24.0, 24.0),
-                                    pinLeft: true,
-                                    pinRight: true,
-                                    pinTop: true,
-                                    pinBottom: true,
-                                    child:
-                                        // Adobe XD layer: 'Base' (shape)
-                                        Container(
-                                      decoration: BoxDecoration(),
                                     ),
                                   ),
-                                  Pinned.fromSize(
-                                    bounds: Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
-                                    size: Size(24.0, 24.0),
-                                    pinTop: true,
-                                    pinBottom: true,
-                                    fixedWidth: true,
-                                    child:
-                                        // Adobe XD layer: 'Icon material-keybo…' (shape)
-                                        SvgPicture.string(
-                                      _svg_48h7a4,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Pinned.fromSize(
-                              bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
-                              size: Size(328.0, 128.0),
-                              pinRight: true,
-                              fixedWidth: false,
-                              fixedHeight: true,
-                              child: SingleChildScrollView(
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
                                   child: Text(
-                                //savedCardModel.address,
-                                'No.21,eshraghi st,vanak',
-                                style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 14,
-                                  color: const Color(0xff757575),
+                                    historyModel.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 16,
+                                      color: const Color(0xff202020),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
-                                textAlign: TextAlign.left,
-                              )),
-                            ),
-                          ],
-                        )),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    '${historyModel.rate}',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    historyModel.categoryName,
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    '(${historyModel.reviewCount})',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
+                                  size: Size(328.0, 128.0),
+                                  child:
+                                      // Adobe XD layer: 'Rate' (group)
+                                      Stack(
+                                    children: <Widget>[
+                                      SvgPicture.string(
+                                        _svg_cvz5lm,
+                                        allowDrawingOutsideViewBox: true,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
+                                  size: Size(328.0, 128.0),
+                                  pinRight: true,
+                                  fixedWidth: true,
+                                  fixedHeight: true,
+                                  child:
+                                      // Adobe XD layer: 'arrow' (group)
+                                      Stack(
+                                    children: <Widget>[
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                        size: Size(24.0, 24.0),
+                                        pinLeft: true,
+                                        pinRight: true,
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        child:
+                                            // Adobe XD layer: 'Base' (shape)
+                                            Container(
+                                          decoration: BoxDecoration(),
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
+                                        size: Size(24.0, 24.0),
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        fixedWidth: true,
+                                        child:
+                                            // Adobe XD layer: 'Icon material-keybo…' (shape)
+                                            SvgPicture.string(
+                                          _svg_48h7a4,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
+                                  size: Size(328.0, 128.0),
+                                  pinRight: true,
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: SingleChildScrollView(
+                                      child: Text(
+                                    //savedCardModel.address,
+                                    'No.21,eshraghi st,vanak',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  )),
+                                ),
+                              ],
+                            )
+                          : Stack(
+                              children: <Widget>[
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(0.0, 0.0, 328.0, 128.0),
+                                  size: Size(328.0, 128.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Base' (shape)
+                                      Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: const Color(0xffffffff),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0x29000000),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 24,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
+                                  size: Size(328.0, 128.0),
+                                  pinLeft: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  fixedWidth: false,
+                                  child: Container(
+                                    child: Image.network(
+                                      searchModel.imageUrlThumbnail.toString(),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      /* image: 
+                      DecorationImage(
+                        image: AssetImage(savedCardModel.image),
+                        fit: BoxFit.cover,
+                      ), */
+                                    ),
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    searchModel.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 16,
+                                      color: const Color(0xff202020),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    '${searchModel.rate}',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    searchModel.categoryName,
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
+                                  size: Size(328.0, 128.0),
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: Text(
+                                    '(${searchModel.reviewCount})',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
+                                  size: Size(328.0, 128.0),
+                                  child:
+                                      // Adobe XD layer: 'Rate' (group)
+                                      Stack(
+                                    children: <Widget>[
+                                      SvgPicture.string(
+                                        _svg_cvz5lm,
+                                        allowDrawingOutsideViewBox: true,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
+                                  size: Size(328.0, 128.0),
+                                  pinRight: true,
+                                  fixedWidth: true,
+                                  fixedHeight: true,
+                                  child:
+                                      // Adobe XD layer: 'arrow' (group)
+                                      Stack(
+                                    children: <Widget>[
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                        size: Size(24.0, 24.0),
+                                        pinLeft: true,
+                                        pinRight: true,
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        child:
+                                            // Adobe XD layer: 'Base' (shape)
+                                            Container(
+                                          decoration: BoxDecoration(),
+                                        ),
+                                      ),
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(8.6, 5.7, 7.4, 12.0),
+                                        size: Size(24.0, 24.0),
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        fixedWidth: true,
+                                        child:
+                                            // Adobe XD layer: 'Icon material-keybo…' (shape)
+                                            SvgPicture.string(
+                                          _svg_48h7a4,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
+                                  size: Size(328.0, 128.0),
+                                  pinRight: true,
+                                  fixedWidth: false,
+                                  fixedHeight: true,
+                                  child: SingleChildScrollView(
+                                      child: Text(
+                                    //savedCardModel.address,
+                                    'No.21,eshraghi st,vanak',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 14,
+                                      color: const Color(0xff757575),
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  )),
+                                ),
+                              ],
+                            )),
         ),
       ),
     );

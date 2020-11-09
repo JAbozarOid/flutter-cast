@@ -47,6 +47,7 @@ class Search extends HiveObject {
   Search(
       this.name,
       this.badgeModel,
+      this.rate,
       this.categoryName,
       this.avgSpendingTime,
       this.reviewCount,

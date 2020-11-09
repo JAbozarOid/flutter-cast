@@ -4,6 +4,7 @@ import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
 import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
+import 'package:cast/db/search/search.dart';
 import 'package:cast/location/location_state.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
@@ -700,8 +701,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                   VenueListByLocationResponse venueModel =
                                       state.searchResultRes[position];
 
-                                  addHistory(state.searchResultRes[position],
-                                      position);
+                                  if (typeModelSearch == null) {
+                                    addHistory(state.searchResultRes[position],
+                                        position);
+                                  } else {
+                                    addSearch(state.searchResultRes[position],
+                                        position);
+                                  }
 
                                   return SavedCardItemXD(
                                     savedCardModel: null,
@@ -753,53 +759,109 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                       );
                       break;
                   }
-                  return FutureBuilder(
-                    future: Hive.openBox(historiesBox),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        if (snapshot.hasError)
-                          return Text(snapshot.error.toString());
-                        else
-                          return ValueListenableBuilder(
-                            valueListenable:
-                                Hive.box(historiesBox).listenable(),
-                            builder: (context, box, _) {
-                              if (box.values.isEmpty) {
-                                return Pinned.fromSize(
-                                  bounds:
-                                      Rect.fromLTWH(130.0, 80.0, 250.0, 25.0),
-                                  size: Size(360.0, 640.0),
-                                  child: Text(
-                                    typeModelSearch == null
-                                        ? 'History list is empty'
-                                        : 'Search list is empty',
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 15,
-                                      color: const Color(0xff9ea1a6),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return ListView.builder(
-                                  itemCount: box.values.length,
-                                  itemBuilder: (context, index) {
-                                    var historyModel = box.getAt(index);
+                  return typeModelSearch == null
+                      ?
+                      // get data from history table
+                      FutureBuilder(
+                          future: Hive.openBox(historiesBox),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasError)
+                                return Text(snapshot.error.toString());
+                              else
+                                return ValueListenableBuilder(
+                                  valueListenable:
+                                      Hive.box(historiesBox).listenable(),
+                                  builder: (context, box, _) {
+                                    if (box.values.isEmpty) {
+                                      return Pinned.fromSize(
+                                        bounds: Rect.fromLTWH(
+                                            130.0, 80.0, 250.0, 25.0),
+                                        size: Size(360.0, 640.0),
+                                        child: Text(
+                                          typeModelSearch == null
+                                              ? 'History list is empty'
+                                              : 'Search list is empty',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 15,
+                                            color: const Color(0xff9ea1a6),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return ListView.builder(
+                                        itemCount: box.values.length,
+                                        itemBuilder: (context, index) {
+                                          var historyModel = box.getAt(index);
 
-                                    return SavedCardItemXD(
-                                        savedCardModel: null,
-                                        //onCardTapped: _onCardTapped,
-                                        venueModel: null,
-                                        historyModel: historyModel);
+                                          return SavedCardItemXD(
+                                              savedCardModel: null,
+                                              //onCardTapped: _onCardTapped,
+                                              venueModel: null,
+                                              historyModel: historyModel);
+                                        },
+                                      );
+                                    }
                                   },
                                 );
-                              }
-                            },
-                          );
-                      } else
-                        return buildLoading();
-                    },
-                  );
+                            } else
+                              return buildLoading();
+                          },
+                        )
+                      :
+                      // get data from search table
+                      FutureBuilder(
+                          future: Hive.openBox(searchBox),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              if (snapshot.hasError)
+                                return Text(snapshot.error.toString());
+                              else
+                                return ValueListenableBuilder(
+                                  valueListenable:
+                                      Hive.box(searchBox).listenable(),
+                                  builder: (context, box, _) {
+                                    if (box.values.isEmpty) {
+                                      return Pinned.fromSize(
+                                        bounds: Rect.fromLTWH(
+                                            130.0, 80.0, 250.0, 25.0),
+                                        size: Size(360.0, 640.0),
+                                        child: Text(
+                                          typeModelSearch == null
+                                              ? 'History list is empty'
+                                              : 'Search list is empty',
+                                          style: TextStyle(
+                                            fontFamily: 'Roboto',
+                                            fontSize: 15,
+                                            color: const Color(0xff9ea1a6),
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      return ListView.builder(
+                                        itemCount: box.values.length,
+                                        itemBuilder: (context, index) {
+                                          var searchModel = box.getAt(index);
+
+                                          return SavedCardItemXD(
+                                              savedCardModel: null,
+                                              //onCardTapped: _onCardTapped,
+                                              venueModel: null,
+                                              searchModel: searchModel);
+                                        },
+                                      );
+                                    }
+                                  },
+                                );
+                            } else
+                              return buildLoading();
+                          },
+                        );
                 }),
           ),
         ],
@@ -811,6 +873,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     final history = History(
         venuModel.name,
         null,
+        venuModel.rate,
         venuModel.categoryName,
         venuModel.avgSpendingTime,
         venuModel.reviewCount,
@@ -827,6 +890,27 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     histories.add(history);
 
     //histories.putAt(index, history);
+  }
+
+  void addSearch(VenueListByLocationResponse venuModel, int index) {
+    final search = Search(
+        venuModel.name,
+        null,
+        venuModel.rate,
+        venuModel.categoryName,
+        venuModel.avgSpendingTime,
+        venuModel.reviewCount,
+        venuModel.crowding,
+        venuModel.areaInUse,
+        venuModel.safetyStatus,
+        venuModel.latitude,
+        venuModel.longitude,
+        venuModel.imageUrlThumbnail,
+        index);
+
+    final searches = Hive.box(searchBox);
+
+    searches.add(search);
   }
 
   void _onBackTapped() {
