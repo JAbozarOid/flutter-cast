@@ -1,10 +1,10 @@
 import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
 import 'package:hive/hive.dart';
 
-part 'history.g.dart';
+part 'search.g.dart';
 
-@HiveType(typeId: 0)
-class History extends HiveObject {
+@HiveType(typeId: 2)
+class Search extends HiveObject {
   @HiveField(0)
   String name;
 
@@ -44,7 +44,7 @@ class History extends HiveObject {
   @HiveField(12)
   int id;
 
-  History(
+  Search(
       this.name,
       this.badgeModel,
       this.categoryName,

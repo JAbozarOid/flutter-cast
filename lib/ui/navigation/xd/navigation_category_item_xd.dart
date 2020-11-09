@@ -45,11 +45,11 @@ class NavigationCategoryItemXD extends StatelessWidget {
                       borderRadius: BorderRadius.circular(28.0),
                       color: const Color(0xffffffff),
                       boxShadow: [
-                        BoxShadow(
+                        /* BoxShadow(
                           color: const Color(0x1a000000),
                           offset: Offset(0, 0),
                           blurRadius: 24,
-                        ),
+                        ), */
                       ],
                     ),
                   ),

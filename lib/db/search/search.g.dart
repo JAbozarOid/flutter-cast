@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'history.dart';
+part of 'search.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HistoryAdapter extends TypeAdapter<History> {
+class SearchAdapter extends TypeAdapter<Search> {
   @override
-  final int typeId = 0;
+  final int typeId = 2;
 
   @override
-  History read(BinaryReader reader) {
+  Search read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return History(
+    return Search(
       fields[0] as String,
       fields[1] as BadgeModel,
       fields[3] as String,
@@ -33,7 +33,7 @@ class HistoryAdapter extends TypeAdapter<History> {
   }
 
   @override
-  void write(BinaryWriter writer, History obj) {
+  void write(BinaryWriter writer, Search obj) {
     writer
       ..writeByte(13)
       ..writeByte(0)
@@ -70,7 +70,7 @@ class HistoryAdapter extends TypeAdapter<History> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HistoryAdapter &&
+      other is SearchAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

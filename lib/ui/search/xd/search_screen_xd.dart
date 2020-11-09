@@ -4,14 +4,17 @@ import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
 import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
+import 'package:cast/location/location_state.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/saved/xd/saved_card_item_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
+import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -34,10 +37,54 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   var _inputedTextState = PublishSubject<InputedTextState>();
   MainCategoryListResponse get typeModelSearch => widget.typeModelSearch;
 
+  // location properties
+  bool _serviceEnabled;
+  Location location = new Location();
+  PermissionStatus _permissionGranted;
+  var _onLocationState = PublishSubject<LocationState>();
+  LocationData _locationData;
+  double _lat;
+  double _lon;
+  // *******************
+
   Widget buildLoading() {
     return Center(
       child: CircularProgressIndicator(),
     );
+  }
+
+  // get user current location
+  void getUserCurrentLocation() async {
+    _onLocationState.add(LocationState.loading);
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        _onLocationState.add(LocationState.deny);
+      } else {
+        _locationData = await location.getLocation();
+        _lat = _locationData.latitude;
+        _lon = _locationData.longitude;
+
+        _onLocationState.add(LocationState.granted);
+      }
+    } else {
+      _locationData = await location.getLocation();
+      _lat = _locationData.latitude;
+      _lon = _locationData.longitude;
+
+      _onLocationState.add(LocationState.granted);
+    }
   }
 
   @override
@@ -45,11 +92,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     super.initState();
     _inputedTextSearchController = TextEditingController(text: '');
     _inputedTextState.add(InputedTextState.textEmpty);
+    getUserCurrentLocation();
   }
 
   @override
   void dispose() {
     Hive.box(historiesBox).close();
+    Hive.box(searchBox).close();
     super.dispose();
   }
 
@@ -439,7 +488,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                             Stack(
                           children: <Widget>[
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 18.0, 257.0, 32.0),
+                              bounds: Rect.fromLTWH(0.0, 20.0, 257.0, 32.0),
                               size: Size(257.0, 50.0),
                               pinLeft: true,
                               pinRight: true,
@@ -451,6 +500,52 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16.0),
                                   color: const Color(0x32ffffff),
+                                ),
+                                child: Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(10.5, 25.0, 257.0, 50.0),
+                                  size: Size(279.5, 110.0),
+                                  child: StreamBuilder<LocationState>(
+                                      stream: _onLocationState,
+                                      builder: (context, snapshot) {
+                                        switch (snapshot.data) {
+                                          case LocationState.deny:
+                                            return Text(
+                                              'Current Location Not Specify',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: const Color(0xffffffff),
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            );
+                                            break;
+                                          case LocationState.granted:
+                                            return Text(
+                                              '${_lat.toString()} , ${_lon.toString()}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: const Color(0xffffffff),
+                                              ),
+                                              textAlign: TextAlign.left,
+                                            );
+                                            break;
+                                          case LocationState.loading:
+                                            return Text(
+                                                'getting user current location...',
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color:
+                                                      const Color(0xffffffff),
+                                                ));
+                                            break;
+                                        }
+                                        return Text(
+                                            'getting user current location...',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: const Color(0xffffffff),
+                                            ));
+                                      }),
                                 ),
                               ),
                             ),
@@ -584,10 +679,17 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                           } else if (state is SearchLoading) {
                             return
                                 //buildLoading();
-                                Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 150, right: 150),
-                              child: Text('Searching...'),
+                                Pinned.fromSize(
+                              bounds: Rect.fromLTWH(150.0, 80.0, 250.0, 25.0),
+                              size: Size(360.0, 640.0),
+                              child: Text(
+                                'Searching...',
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 15,
+                                  color: const Color(0xff9ea1a6),
+                                ),
+                              ),
                             );
                           } else if (state is SearchLoaded) {
                             if (state.searchResultRes.length > 0) {
@@ -598,7 +700,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                   VenueListByLocationResponse venueModel =
                                       state.searchResultRes[position];
 
-                                  addHistory(state.searchResultRes[position]);
+                                  addHistory(state.searchResultRes[position],
+                                      position);
 
                                   return SavedCardItemXD(
                                     savedCardModel: null,
@@ -608,9 +711,17 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 },
                               );
                             } else {
-                              return Center(
+                              return Pinned.fromSize(
+                                bounds: Rect.fromLTWH(80.0, 80.0, 250.0, 25.0),
+                                size: Size(360.0, 640.0),
                                 child: Text(
-                                    'Your Search result is empty!, Try Again'),
+                                  'Your Search result is empty!, Try Again',
+                                  style: TextStyle(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 15,
+                                    color: const Color(0xff9ea1a6),
+                                  ),
+                                ),
                               );
                             }
                           } else if (state is SearchError) {
@@ -624,10 +735,18 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                             );
                           } else
                             return (state is TextInputedState)
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 150, right: 150),
-                                    child: Text(state.message),
+                                ? Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(130.0, 80.0, 250.0, 25.0),
+                                    size: Size(360.0, 640.0),
+                                    child: Text(
+                                      state.message,
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 15,
+                                        color: const Color(0xff9ea1a6),
+                                      ),
+                                    ),
                                   )
                                 : Container();
                         },
@@ -646,12 +765,20 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 Hive.box(historiesBox).listenable(),
                             builder: (context, box, _) {
                               if (box.values.isEmpty) {
-                                return Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 150, right: 150),
-                                  child: Text(typeModelSearch == null
-                                      ? 'History list is empty'
-                                      : 'Search list is empty'),
+                                return Pinned.fromSize(
+                                  bounds:
+                                      Rect.fromLTWH(130.0, 80.0, 250.0, 25.0),
+                                  size: Size(360.0, 640.0),
+                                  child: Text(
+                                    typeModelSearch == null
+                                        ? 'History list is empty'
+                                        : 'Search list is empty',
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 15,
+                                      color: const Color(0xff9ea1a6),
+                                    ),
+                                  ),
                                 );
                               } else {
                                 return ListView.builder(
@@ -680,7 +807,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     );
   }
 
-  void addHistory(VenueListByLocationResponse venuModel) {
+  void addHistory(VenueListByLocationResponse venuModel, int index) {
     final history = History(
         venuModel.name,
         null,
@@ -692,11 +819,14 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venuModel.safetyStatus,
         venuModel.latitude,
         venuModel.longitude,
-        venuModel.imageUrlThumbnail);
+        venuModel.imageUrlThumbnail,
+        index);
 
     final histories = Hive.box(historiesBox);
 
     histories.add(history);
+
+    //histories.putAt(index, history);
   }
 
   void _onBackTapped() {
@@ -713,11 +843,20 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   }
 
   void _onTextChanged(String text) {
-    print('<<<<<<<<<<<<<<<the inputed text is $text>>>>>>>>>>>>>>>');
     _inputedTextState.add(InputedTextState.text);
     final searchBloc = BlocProvider.of<SearchBloc>(context);
-    searchBloc.add(GetInputedTextSearch(
-        categoryId: '1811e3f9af8b49ac80f10d210cd31e79', inputTextSearch: text));
+
+    // this means, this page comes from where to card and has not category id, search in all categories -> so the categoryId must be empty
+    if (typeModelSearch == null) {
+      searchBloc
+          .add(GetInputedTextSearch(categoryId: '', inputTextSearch: text));
+    }
+    // this means, this page comes from one of the main categories such as bank,restaurant and .... and must be searched in that categoryId
+    else {
+      print("the categoru id is ${typeModelSearch.categoryId}");
+      searchBloc.add(GetInputedTextSearch(
+          categoryId: typeModelSearch.categoryId, inputTextSearch: text));
+    }
   }
 }
 

@@ -835,15 +835,52 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                       pinLeft: true,
                       fixedWidth: false,
                       fixedHeight: true,
-                      child: Text(
-                        'From: Current Location',
-                        style: TextStyle(
-                          fontFamily: 'Open Sans',
-                          fontSize: 10,
-                          color: const Color(0xff0d1724),
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
+                      child: StreamBuilder<LocationState>(
+                          stream: _onLocationState,
+                          builder: (context, snapshot) {
+                            switch (snapshot.data) {
+                              case LocationState.deny:
+                                return Text(
+                                  'From: Current Location Not Specify',
+                                  style: TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 10,
+                                    color: const Color(0xff0d1724),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                                break;
+                              case LocationState.granted:
+                                return Text(
+                                  'From: ${_lat.toString()} , ${_lon.toString()}',
+                                  style: TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 10,
+                                    color: const Color(0xff0d1724),
+                                  ),
+                                  textAlign: TextAlign.left,
+                                );
+                                break;
+                              case LocationState.loading:
+                                return Text(
+                                  'From: ',
+                                  style: TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 10,
+                                    color: const Color(0xff0d1724),
+                                  ),
+                                );
+                                break;
+                            }
+                            return Text(
+                              'From: ',
+                              style: TextStyle(
+                                fontFamily: 'Open Sans',
+                                fontSize: 10,
+                                color: const Color(0xff0d1724),
+                              ),
+                            );
+                          }),
                     ),
                     Pinned.fromSize(
                       bounds: Rect.fromLTWH(23.0, 32.0, 8.0, 8.0),
@@ -874,16 +911,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
   }
 
+
+  // gettings detail of each category and neaby items
   void _goToWhereToScreen() {
-    /* Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => WhereToScreenXD())); */
-
-    /*  Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => BlocProvider.value(
-              value: BlocProvider.of<CategoryListDetailBloc>(context),
-              child: WhereToScreenXD(),
-            ))); */
-
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
               create: (context) => CategoryListDetailBloc(
@@ -893,9 +923,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   }
 
   void _goToSavedScreen() {
-    /* Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SavedScreenXD())); */
-
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
               create: (context) =>
@@ -904,11 +931,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             )));
   }
 
-  // tapped on the top of the card which named Where to?
+  // tapped on the top of the card which named Where to? -> history list
   void _goToSearchPanelScreen() {
-    /* Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SearchScreenXD())); */
-
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
               create: (context) =>
@@ -919,10 +943,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             )));
   }
 
+   // tapped on one of the top category for searching list
   void _goToSearchScreenPanelType(MainCategoryListResponse model) {
-    /* Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SearchScreenTypeXD())); */
-
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
               create: (context) =>
@@ -964,6 +986,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         _onLocationState.add(LocationState.granted);
 
+
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
             animated: true, waitUntilReady: true);
 
@@ -978,6 +1001,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
       _lon = _locationData.longitude;
 
       _onLocationState.add(LocationState.granted);
+
 
       _key.currentState.moveCamera(GeoCoord(_lat, _lon),
           animated: true, waitUntilReady: true);
