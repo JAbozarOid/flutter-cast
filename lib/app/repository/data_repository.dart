@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:cast/app/repository/endpoints_data.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
+import 'package:cast/db/config.dart';
 import 'package:cast/db/saved/saved.dart';
+import 'package:cast/db/setting/setting.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 
 class DataRepository {
@@ -75,19 +78,43 @@ class DataRepository {
 
   Future<EndpointsData> _getVenueListByLocation(
       String categoryId, String inputedTextSearch) async {
-    var body = json.encode({
-      "latitude": 35.760739,
-      "longitude": 51.472668,
-      "filters": {
-        "radius": 10000,
-        "userReview": false,
-        "crowding": false,
-        "areaInUse": false,
-        "avgSpendingTime": false
-      },
-      "categoryId": categoryId,
-      "text": inputedTextSearch
-    });
+    var setting;
+    var body;
+
+    await Hive.openBox(settingBox)
+        .then((value) => {setting = value.get("setting") as Setting});
+
+    if (setting != null) {
+      body = json.encode({
+        "latitude": 35.760739,
+        "longitude": 51.472668,
+        "filters": {
+          "radius": setting.radius.round(),
+          "userReview": setting.getUserReview,
+          "crowding": setting.getCrowding,
+          "areaInUse": setting.getAreaInUse,
+          "avgSpendingTime": setting.getAvgSpendingTime
+        },
+        "categoryId": categoryId,
+        "text": inputedTextSearch
+      });
+    }else {
+      body = json.encode({
+        "latitude": 35.760739,
+        "longitude": 51.472668,
+        "filters": {
+          "radius": 1000,
+          "userReview": false,
+          "crowding": false,
+          "areaInUse": false,
+          "avgSpendingTime": false
+        },
+        "categoryId": categoryId,
+        "text": inputedTextSearch
+      });
+    }
+
+    print("the body for _getVenueListByLocation api is ${body.toString()}");
 
     final values = await Future.wait([
       apiService.postAPI(

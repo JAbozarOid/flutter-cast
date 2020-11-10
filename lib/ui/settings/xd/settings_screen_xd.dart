@@ -1,7 +1,11 @@
+import 'package:cast/db/config.dart';
+import 'package:cast/db/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class SettingsScreenXD extends StatefulWidget {
   SettingsScreenXD({
@@ -16,1286 +20,1556 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
   bool isSwitchedAvgSpendingTime = true;
   bool isSwitchedUserReview = true;
   bool isSwitchedCrowding = true;
-  bool isSwitchedAreaInUse = true;
+  bool isSwitchedAreaInUse = false;
 
-  bool _point1 = true;
-  bool _point2 = false;
+  double _currentSliderValue = 0.0;
+
+  var saveSetting;
+
+  Widget buildLoading() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _onPoints2Tapped() {
-    print("<<<<<<<<<<<<<<<<<<<<<<<<before>>>>>>>>>>>>>>>>>>>>>>>>");
-    setState(() {
-      _point2 = true;
-      print("<<<<<<<<<<<<<<<<<<<<<<<<after>>>>>>>>>>>>>>>>>>>>>>>>");
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffffff),
-      body: Stack(
-        children: <Widget>[
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 640.0),
-            size: Size(360.0, 640.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            pinBottom: true,
-            child: Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(-566.0, -49.0, 1446.0, 904.0),
-                  size: Size(360.0, 740.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Screen Shot 2020-09…' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: const AssetImage(''),
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 740.0),
-                  size: Size(360.0, 740.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: ClipRect(
-                    child: BackdropFilter(
-                      filter: ui.ImageFilter.blur(sigmaX: 10.72, sigmaY: 10.72),
-                      child: Container(
+        backgroundColor: const Color(0xffffffff),
+        body: Stack(children: [
+          Stack(
+            children: <Widget>[
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 640.0),
+                size: Size(360.0, 640.0),
+                pinLeft: true,
+                pinRight: true,
+                pinTop: true,
+                pinBottom: true,
+                child: Stack(
+                  children: <Widget>[
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(-566.0, -49.0, 1446.0, 904.0),
+                      size: Size(360.0, 740.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child:
+                          // Adobe XD layer: 'Screen Shot 2020-09…' (shape)
+                          Container(
                         decoration: BoxDecoration(
-                          color: const Color(0x00ffffff),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 740.0),
-                  size: Size(360.0, 740.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xffffffff),
-                      border: Border.all(
-                          width: 1.0, color: const Color(0xff707070)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 81.0, 360.0, 77.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0x80e6e6e6),
-              ),
-            ),
-          ),
-
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 261.0, 360.0, 91.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0x80e6e6e6),
-              ),
-            ),
-          ),
-
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 158.0, 360.0, 103.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Row Bounds' (shape)
-                Container(
-              decoration: BoxDecoration(
-                color: const Color(0x80ffffff),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0x010000000),
-                    offset: Offset(0, -1),
-                    blurRadius: 0,
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 158.0, 180.0, 482.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            fixedWidth: true,
-            fixedHeight: true,
-            child: Container(
-              decoration: BoxDecoration(),
-            ),
-          ),
-
-          // crowding
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 427.0, 360.0, 75.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Row' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Row Bounds' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0x80ffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x010000000),
-                          offset: Offset(0, -1),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 187.0, 20.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Number of people in the place',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0x8a000000),
-                      height: 1.4285714285714286,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 68.0, 25.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Crowding',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      color: const Color(0xde000000),
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
-                  size: Size(360.0, 75.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Switches Tumbler' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 47.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Bounds' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: isSwitchedCrowding
-                                ? Color(0x6043c7ae)
-                                : Color(0xffc5c5c5),
+                          image: DecorationImage(
+                            image: const AssetImage(''),
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
-                      Pinned.fromSize(
-                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
-                          size: Size(48.0, 28.0),
-                          pinLeft: false,
-                          pinTop: false,
-                          pinBottom: false,
-                          fixedWidth: true,
-                          child: Switch(
-                              activeTrackColor: Color(0x6043c7ae),
-                              activeColor: const Color(0xff43c7ae),
-                              value: isSwitchedCrowding,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitchedCrowding = value;
-                                  print(isSwitchedCrowding);
-                                });
-                              })),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // average spending time
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 577.0, 360.0, 75.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Row' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Row Bounds' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0x80ffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x010000000),
-                          offset: Offset(0, -1),
-                          blurRadius: 0,
-                        ),
-                      ],
                     ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Average time of presence people',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0x8a000000),
-                      height: 1.4285714285714286,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 131.0, 25.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Avg spending time',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      color: const Color(0xde000000),
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
-                  size: Size(360.0, 75.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Switches Tumbler' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Bounds' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: isSwitchedAvgSpendingTime
-                                ? Color(0x6043c7ae)
-                                : Color(0xffc5c5c5),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
-                          size: Size(48.0, 28.0),
-                          pinLeft: false,
-                          pinTop: false,
-                          pinBottom: false,
-                          fixedWidth: true,
-                          child: Switch(
-                              activeTrackColor: Color(0x6043c7ae),
-                              activeColor: const Color(0xff43c7ae),
-                              value: isSwitchedAvgSpendingTime,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitchedAvgSpendingTime = value;
-                                  print(isSwitchedAvgSpendingTime);
-                                });
-                              })),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // user review
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 352.0, 360.0, 75.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Row' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Row Bounds' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0x80ffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x010000000),
-                          offset: Offset(0, -1),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 223.0, 20.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Analyze places based on user rating',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0x8a000000),
-                      height: 1.4285714285714286,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 82.0, 25.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'User review',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      color: const Color(0xde000000),
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
-                  size: Size(360.0, 75.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Switches Tumbler' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 47.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Bounds' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: isSwitchedUserReview
-                                ? Color(0x6043c7ae)
-                                : Color(0xffc5c5c5),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
-                          size: Size(48.0, 28.0),
-                          pinLeft: false,
-                          pinTop: false,
-                          pinBottom: false,
-                          fixedWidth: true,
-                          child: Switch(
-                              activeTrackColor: Color(0x6043c7ae),
-                              activeColor: const Color(0xff43c7ae),
-                              value: isSwitchedUserReview,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitchedUserReview = value;
-                                  print(isSwitchedUserReview);
-                                });
-                              })),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // area in use
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 502.0, 360.0, 75.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Row' (group)
-                Stack(
-              children: <Widget>[
-                // container
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child:
-                      // Adobe XD layer: 'Row Bounds' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0x80ffffff),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x010000000),
-                          offset: Offset(0, -1),
-                          blurRadius: 0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'The area where people are inside',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 14,
-                      color: const Color(0x8a000000),
-                      height: 1.4285714285714286,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(24.0, 19.0, 79.0, 25.0),
-                  size: Size(360.0, 75.0),
-                  pinLeft: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Text(
-                    'Area in use',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 16,
-                      color: const Color(0xde000000),
-                      height: 1.5,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
-                  size: Size(360.0, 75.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Switches Tumbler' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 47.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Bounds' (shape)
-                            Container(
-                          decoration: BoxDecoration(),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 48.0, 28.0),
-                        size: Size(48.0, 28.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14.0),
-                            color: isSwitchedAreaInUse
-                                ? Color(0x6043c7ae)
-                                : Color(0xffc5c5c5),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                          bounds: Rect.fromLTWH(22.0, 0.0, 48.0, 28.0),
-                          size: Size(48.0, 28.0),
-                          pinLeft: false,
-                          pinTop: false,
-                          pinBottom: false,
-                          fixedWidth: true,
-                          child: Switch(
-                              activeTrackColor: Color(0x6043c7ae),
-                              activeColor: const Color(0xff43c7ae),
-                              value: isSwitchedAreaInUse,
-                              onChanged: (value) {
-                                setState(() {
-                                  isSwitchedAreaInUse = value;
-                                });
-                              })),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // range selector
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Range Selector' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(10.0, 0.0, 289.0, 32.0),
-                  size: Size(299.0, 68.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  pinTop: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Points' (group)
-                      Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(11.9, 24.5, 264.2, 1.0),
-                        size: Size(289.0, 32.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: SvgPicture.string(
-                          _svg_bons2p,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(272.0, 21.0, 8.0, 8.0),
-                        size: Size(289.0, 32.0),
-                        pinRight: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Point#5' (shape)
-                            Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff43c7ae),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(206.0, 21.0, 8.0, 8.0),
-                        size: Size(289.0, 32.0),
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Point#4' (shape)
-                            Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff43c7ae),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(140.0, 21.0, 8.0, 8.0),
-                        size: Size(289.0, 32.0),
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Point#3' (shape)
-                            Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff43c7ae),
-                          ),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: _point2
-                            ? Rect.fromLTWH(74.0, 18.0, 14.0, 14.0)
-                            : Rect.fromLTWH(74.0, 21.0, 8.0, 8.0),
-                        size: Size(289.0, 32.0),
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Point#2' (shape)
-                            InkWell(
-                          onTap: _onPoints2Tapped,
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 740.0),
+                      size: Size(360.0, 740.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child: ClipRect(
+                        child: BackdropFilter(
+                          filter:
+                              ui.ImageFilter.blur(sigmaX: 10.72, sigmaY: 10.72),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                  Radius.elliptical(9999.0, 9999.0)),
-                              color: const Color(0xff43c7ae),
+                              color: const Color(0x00ffffff),
                             ),
                           ),
                         ),
                       ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(5.0, 18.0, 14.0, 14.0),
-                        size: Size(289.0, 32.0),
-                        pinLeft: true,
-                        pinBottom: true,
-                        fixedWidth: true,
-                        fixedHeight: true,
-                        child:
-                            // Adobe XD layer: 'Point#1' (shape)
-                            Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                                Radius.elliptical(9999.0, 9999.0)),
-                            color: const Color(0xff43c7ae),
-                          ),
+                    ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 740.0),
+                      size: Size(360.0, 740.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xffffffff),
+                          border: Border.all(
+                              width: 1.0, color: const Color(0xff707070)),
                         ),
                       ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 13.0),
-                        size: Size(289.0, 32.0),
-                        pinLeft: true,
-                        pinTop: true,
-                        fixedWidth: false,
-                        fixedHeight: true,
-                        child: Text(
-                          'Small',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 10,
-                            color: const Color(0xff757575),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(126.0, 0.0, 36.0, 13.0),
-                        size: Size(289.0, 32.0),
-                        pinTop: true,
-                        fixedWidth: false,
-                        fixedHeight: true,
-                        child: Text(
-                          'Medium',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 10,
-                            color: const Color(0xff757575),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(263.0, 0.0, 26.0, 13.0),
-                        size: Size(289.0, 32.0),
-                        pinRight: true,
-                        pinTop: true,
-                        fixedWidth: false,
-                        fixedHeight: true,
-                        child: Text(
-                          'Large',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 10,
-                            color: const Color(0xff757575),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                    ),
+                  ],
+                ),
+              ),
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 81.0, 360.0, 77.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                pinTop: true,
+                fixedHeight: true,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0x80e6e6e6),
+                  ),
+                ),
+              ),
+
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 261.0, 360.0, 91.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                fixedHeight: true,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0x80e6e6e6),
+                  ),
+                ),
+              ),
+
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 158.0, 360.0, 103.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                fixedHeight: true,
+                child:
+                    // Adobe XD layer: 'Row Bounds' (shape)
+                    Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0x80ffffff),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0x010000000),
+                        offset: Offset(0, -1),
+                        blurRadius: 0,
                       ),
                     ],
                   ),
                 ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 39.0, 44.0, 29.0),
-                  size: Size(299.0, 68.0),
-                  pinLeft: true,
-                  pinBottom: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Indicator' (group)
-                      Stack(
-                    children: <Widget>[
-                      // 500
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 44.0, 29.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: SvgPicture.string(
-                          _svg_2rq049,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(6.0, 10.0, 32.0, 14.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: Text(
-                          '500m',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      // 1000
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(79.0, 0.0, 44.0, 29.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: SvgPicture.string(
-                          _svg_2rq049,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(84.0, 10.0, 32.0, 14.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: Text(
-                          '1000m',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      // 1500
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(157.0, 0.0, 44.0, 29.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: SvgPicture.string(
-                          _svg_2rq049,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(162.0, 10.0, 32.0, 14.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: Text(
-                          '1500m',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      // 2000
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(235.0, 0.0, 44.0, 29.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: SvgPicture.string(
-                          _svg_2rq049,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(240.0, 10.0, 32.0, 14.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: Text(
-                          '2000m',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-
-                      // 2500
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(315.0, 0.0, 44.0, 29.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child: SvgPicture.string(
-                          _svg_2rq049,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(320.0, 10.0, 32.0, 14.0),
-                        size: Size(44.0, 29.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        fixedHeight: true,
-                        child: Text(
-                          '2500m',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(10.0, 13.0, 24.0, 24.0),
-                  size: Size(299.0, 68.0),
-                  pinLeft: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Bound#1' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(76.0, 13.0, 24.0, 24.0),
-                  size: Size(299.0, 68.0),
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Bound#2' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(142.0, 13.0, 24.0, 24.0),
-                  size: Size(299.0, 68.0),
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Bound#3' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(208.0, 13.0, 24.0, 24.0),
-                  size: Size(299.0, 68.0),
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Bound#4' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(274.0, 13.0, 24.0, 24.0),
-                  size: Size(299.0, 68.0),
-                  pinRight: true,
-                  fixedWidth: true,
-                  fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Bound#5' (shape)
-                      Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.elliptical(9999.0, 9999.0)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 25.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinTop: true,
-            fixedWidth: false,
-            fixedHeight: true,
-            child: Text(
-              'Select range area for better result of analyzing',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 13,
-                color: const Color(0x8a000000),
-                height: 1.5384615384615385,
               ),
-              textAlign: TextAlign.left,
-            ),
-          ),
 
-          // text below of customize criteria
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 303.0, 296.0, 35.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            fixedHeight: true,
-            child: Text(
-              'Select the criteria that you want to be effective as a result of the analysis',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 13,
-                color: const Color(0x8a000000),
-                height: 1.1538461538461537,
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 158.0, 180.0, 482.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                fixedWidth: true,
+                fixedHeight: true,
+                child: Container(
+                  decoration: BoxDecoration(),
+                ),
               ),
-              textAlign: TextAlign.left,
-            ),
-          ),
 
-          // Analyze Range
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 104.0, 105.0, 77.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinTop: true,
-            fixedWidth: false,
-            fixedHeight: true,
-            child: Text(
-              'Analyze Range',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 16,
-                color: const Color(0xde000000),
-                height: 1.5,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-
-          // customize criteria
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(24.0, 281.0, 131.0, 91.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            fixedWidth: false,
-            fixedHeight: true,
-            child: Text(
-              'Customize Criteria',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 16,
-                color: const Color(0xde000000),
-                height: 1.5,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-
-          // header
-          Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
-            size: Size(360.0, 800.0),
-            pinLeft: true,
-            pinRight: true,
-            pinTop: true,
-            fixedHeight: true,
-            child:
-                // Adobe XD layer: 'Header' (group)
-                Stack(
-              children: <Widget>[
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
-                  size: Size(360.0, 80.0),
+              // range selector
+              Pinned.fromSize(
+                  bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
+                  size: Size(360.0, 800.0),
                   pinLeft: true,
                   pinRight: true,
-                  pinTop: true,
-                  pinBottom: true,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(0.0, 1.0),
-                        end: Alignment(0.0, -1.0),
-                        colors: [
-                          const Color(0xff44cac5),
-                          const Color(0xff44caab)
-                        ],
-                        stops: [0.0, 1.0],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0x29000000),
-                          offset: Offset(0, 3),
-                          blurRadius: 6,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(16.0, 44.0, 24.0, 24.0),
-                  size: Size(360.0, 80.0),
-                  pinLeft: true,
-                  fixedWidth: true,
                   fixedHeight: true,
-                  child:
-                      // Adobe XD layer: 'Back' (group)
-                      InkWell(
-                    onTap: _onBackTapped,
-                    child: Stack(
-                      children: <Widget>[
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                          size: Size(24.0, 24.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child:
-                              // Adobe XD layer: 'Base' (shape)
-                              Container(
-                            decoration: BoxDecoration(),
-                          ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
-                          size: Size(24.0, 24.0),
-                          pinTop: true,
-                          pinBottom: true,
-                          fixedWidth: true,
-                          child:
-                              // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                              SvgPicture.string(
-                            _svg_4joujt,
-                            allowDrawingOutsideViewBox: true,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ],
-                    ),
+                  child: Slider(
+                    activeColor: const Color(0xff43c7ae),
+                    value: _currentSliderValue,
+                    min: 0,
+                    max: 2500,
+                    divisions: 5,
+                    label: _currentSliderValue.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
+                    },
+                  )),
+
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 25.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinTop: true,
+                fixedWidth: false,
+                fixedHeight: true,
+                child: Text(
+                  'Select range area for better result of analyzing',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 13,
+                    color: const Color(0x8a000000),
+                    height: 1.5384615384615385,
                   ),
+                  textAlign: TextAlign.left,
                 ),
-                Pinned.fromSize(
-                  bounds: Rect.fromLTWH(141.0, 42.0, 80.0, 27.0),
-                  size: Size(360.0, 80.0),
-                  pinBottom: true,
-                  fixedWidth: false,
-                  fixedHeight: true,
-                  child: Center(
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 22,
-                        color: const Color(0xffffffff),
+              ),
+
+              // text below of customize criteria
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(24.0, 303.0, 296.0, 35.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                fixedHeight: true,
+                child: Text(
+                  'Select the criteria that you want to be effective as a result of the analysis',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 13,
+                    color: const Color(0x8a000000),
+                    height: 1.1538461538461537,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+
+              // Analyze Range
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(24.0, 104.0, 105.0, 77.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinTop: true,
+                fixedWidth: false,
+                fixedHeight: true,
+                child: Text(
+                  'Analyze Range',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 16,
+                    color: const Color(0xde000000),
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+
+              // customize criteria
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(24.0, 281.0, 131.0, 91.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                fixedWidth: false,
+                fixedHeight: true,
+                child: Text(
+                  'Customize Criteria',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 16,
+                    color: const Color(0xde000000),
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+
+              // header
+              Pinned.fromSize(
+                bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                pinTop: true,
+                fixedHeight: true,
+                child:
+                    // Adobe XD layer: 'Header' (group)
+                    Stack(
+                  children: <Widget>[
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 80.0),
+                      size: Size(360.0, 80.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.0, 1.0),
+                            end: Alignment(0.0, -1.0),
+                            colors: [
+                              const Color(0xff44cac5),
+                              const Color(0xff44caab)
+                            ],
+                            stops: [0.0, 1.0],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x29000000),
+                              offset: Offset(0, 3),
+                              blurRadius: 6,
+                            ),
+                          ],
+                        ),
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(16.0, 44.0, 24.0, 24.0),
+                      size: Size(360.0, 80.0),
+                      pinLeft: true,
+                      fixedWidth: true,
+                      fixedHeight: true,
+                      child:
+                          // Adobe XD layer: 'Back' (group)
+                          InkWell(
+                        onTap: _onBackTapped,
+                        child: Stack(
+                          children: <Widget>[
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                              size: Size(24.0, 24.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              pinTop: true,
+                              pinBottom: true,
+                              child:
+                                  // Adobe XD layer: 'Base' (shape)
+                                  Container(
+                                decoration: BoxDecoration(),
+                              ),
+                            ),
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(7.0, 4.1, 9.0, 15.7),
+                              size: Size(24.0, 24.0),
+                              pinTop: true,
+                              pinBottom: true,
+                              fixedWidth: true,
+                              child:
+                                  // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
+                                  SvgPicture.string(
+                                _svg_4joujt,
+                                allowDrawingOutsideViewBox: true,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Pinned.fromSize(
+                      bounds: Rect.fromLTWH(141.0, 42.0, 80.0, 27.0),
+                      size: Size(360.0, 80.0),
+                      pinBottom: true,
+                      fixedWidth: false,
+                      fixedHeight: true,
+                      child: Center(
+                        child: Text(
+                          'Settings',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 22,
+                            color: const Color(0xffffffff),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+          FutureBuilder(
+            future: Hive.openBox(settingBox),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError)
+                  return Text(snapshot.error.toString());
+                else
+                  return ValueListenableBuilder(
+                    valueListenable: Hive.box(settingBox).listenable(),
+                    builder: (context, box, _) {
+                      if (box.values.isEmpty) {
+                        // when nothing saved in setting table
+                        return Stack(
+                          children: [
+                            // crowding
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 427.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 187.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Number of people in the place',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 68.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Crowding',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: isSwitchedCrowding
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: isSwitchedCrowding,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isSwitchedCrowding = value;
+                                                    print(isSwitchedCrowding);
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // average spending time
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 577.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Average time of presence people',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 131.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Avg spending time',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: isSwitchedAvgSpendingTime
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value:
+                                                    isSwitchedAvgSpendingTime,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isSwitchedAvgSpendingTime =
+                                                        value;
+                                                    print(
+                                                        isSwitchedAvgSpendingTime);
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // user review
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 352.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 223.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Analyze places based on user rating',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 82.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'User review',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: isSwitchedUserReview
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: isSwitchedUserReview,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isSwitchedUserReview =
+                                                        value;
+                                                    print(isSwitchedUserReview);
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // area in use
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 502.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  // container
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'The area where people are inside',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 79.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Area in use',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: isSwitchedAreaInUse
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: isSwitchedAreaInUse,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isSwitchedAreaInUse = value;
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        // when there is data in setting table
+                        saveSetting = box.get('setting') as Setting;
+
+                        return Stack(
+                          children: <Widget>[
+                            // crowding
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 427.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 187.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Number of people in the place',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 68.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Crowding',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: saveSetting.getCrowding
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: saveSetting.getCrowding,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    saveSetting.crowding =
+                                                        value;
+                                                    /* isSwitchedCrowding =
+                                                        saveSetting.crowding; */
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // average spending time
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 577.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Average time of presence people',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 131.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Avg spending time',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 24.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color:
+                                                  saveSetting.getAvgSpendingTime
+                                                      ? Color(0x6043c7ae)
+                                                      : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: saveSetting
+                                                    .getAvgSpendingTime,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    saveSetting
+                                                            .avgSpendingTime =
+                                                        value;
+                                                    /* isSwitchedAvgSpendingTime =
+                                                        saveSetting
+                                                            .avgSpendingTime; */
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // user review
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 352.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 223.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Analyze places based on user rating',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 82.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'User review',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: saveSetting.getUserReview
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value:
+                                                    saveSetting.getUserReview,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    saveSetting.userReview =
+                                                        value;
+                                                    /*  isSwitchedUserReview =
+                                                        saveSetting.userReview; */
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // area in use
+                            Pinned.fromSize(
+                              bounds: Rect.fromLTWH(0.0, 502.0, 360.0, 75.0),
+                              size: Size(360.0, 800.0),
+                              pinLeft: true,
+                              pinRight: true,
+                              fixedHeight: true,
+                              child:
+                                  // Adobe XD layer: 'Row' (group)
+                                  Stack(
+                                children: <Widget>[
+                                  // container
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(0.0, 0.0, 360.0, 75.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    pinRight: true,
+                                    pinTop: true,
+                                    pinBottom: true,
+                                    child:
+                                        // Adobe XD layer: 'Row Bounds' (shape)
+                                        Container(
+                                      decoration: BoxDecoration(
+                                        color: const Color(0x80ffffff),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: const Color(0x010000000),
+                                            offset: Offset(0, -1),
+                                            blurRadius: 0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 40.0, 204.0, 20.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'The area where people are inside',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 14,
+                                        color: const Color(0x8a000000),
+                                        height: 1.4285714285714286,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(24.0, 19.0, 79.0, 25.0),
+                                    size: Size(360.0, 75.0),
+                                    pinLeft: true,
+                                    fixedWidth: false,
+                                    fixedHeight: true,
+                                    child: Text(
+                                      'Area in use',
+                                      style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 16,
+                                        color: const Color(0xde000000),
+                                        height: 1.5,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+
+                                  Pinned.fromSize(
+                                    bounds:
+                                        Rect.fromLTWH(288.0, 23.0, 48.0, 28.0),
+                                    size: Size(360.0, 75.0),
+                                    pinRight: true,
+                                    fixedWidth: true,
+                                    fixedHeight: true,
+                                    child:
+                                        // Adobe XD layer: 'Switches Tumbler' (group)
+                                        Stack(
+                                      children: <Widget>[
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 47.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child:
+                                              // Adobe XD layer: 'Bounds' (shape)
+                                              Container(
+                                            decoration: BoxDecoration(),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                          bounds: Rect.fromLTWH(
+                                              0.0, 0.0, 48.0, 28.0),
+                                          size: Size(48.0, 28.0),
+                                          pinLeft: true,
+                                          pinRight: true,
+                                          pinTop: true,
+                                          pinBottom: true,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14.0),
+                                              color: saveSetting.getAreaInUse
+                                                  ? Color(0x6043c7ae)
+                                                  : Color(0xffc5c5c5),
+                                            ),
+                                          ),
+                                        ),
+                                        Pinned.fromSize(
+                                            bounds: Rect.fromLTWH(
+                                                22.0, 0.0, 48.0, 28.0),
+                                            size: Size(48.0, 28.0),
+                                            pinLeft: false,
+                                            pinTop: false,
+                                            pinBottom: false,
+                                            fixedWidth: true,
+                                            child: Switch(
+                                                activeTrackColor:
+                                                    Color(0x6043c7ae),
+                                                activeColor:
+                                                    const Color(0xff43c7ae),
+                                                value: saveSetting.getAreaInUse,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    saveSetting.areaInUse =
+                                                        value;
+                                                    /* isSwitchedAreaInUse =
+                                                        saveSetting.areaInUse; */
+                                                  });
+                                                })),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  );
+              } else
+                return buildLoading();
+            },
+          ),
+        ]));
   }
 
   void _onBackTapped() {
+    addSetting();
     Navigator.of(context).pop();
+  }
+
+  void addSetting() {
+    var setting;
+    if (saveSetting == null) {
+      setting = Setting(_currentSliderValue, isSwitchedUserReview,
+          isSwitchedCrowding, isSwitchedAreaInUse, isSwitchedAvgSpendingTime);
+    } else {
+      setting = Setting(_currentSliderValue, (saveSetting as Setting).getUserReview,
+          (saveSetting as Setting).getCrowding, (saveSetting as Setting).getAreaInUse, (saveSetting as Setting).getAvgSpendingTime);
+    }
+
+    final box = Hive.box(settingBox);
+
+    box.put("setting", setting);
+  }
+
+  @override
+  void dispose() {
+    Hive.box(settingBox).close();
+    super.dispose();
   }
 }
 

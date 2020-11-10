@@ -356,8 +356,8 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
   void _onCardTapped(VenueListByLocationResponse venueModel) async {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
-              savedCardModel: null,
-              savedType: 'Food',
+              //savedCardModel: null,
+              //savedType: 'Food',
               venueModel: venueModel,
             )));
   }

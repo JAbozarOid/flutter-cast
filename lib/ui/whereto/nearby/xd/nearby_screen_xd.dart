@@ -83,7 +83,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
 
                               return NearbyCardItemXD(
                                 venueListByLocationResponse: resModel,
-                                onCardTapped: () => _onCardTapped(resModel),
+                                onCardTapped: () => _onCardTapped(state.venueListByLocationRes,resModel),
                               );
                             },
                           );
@@ -158,7 +158,8 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                   fixedHeight: true,
                   child:
                       // Adobe XD layer: 'Back' (group)
-                      InkWell(onTap: _onBackTapped,
+                      InkWell(
+                    onTap: _onBackTapped,
                     child: Stack(
                       children: <Widget>[
                         Pinned.fromSize(
@@ -488,19 +489,18 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     Navigator.of(context).pop();
   }
 
-  void _onCardTapped(VenueListByLocationResponse venueModel) {
+  void _onCardTapped(List<VenueListByLocationResponse> venueList,VenueListByLocationResponse venueModel) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
-              savedCardModel: null,
               venueModel: venueModel,
-              savedType: 'Food',
+              venueList: venueList,
             )));
-    //Navigator.of(context).push(MaterialPageRoute(builder: (_) => Loading7()));
   }
 
-  void _goToSettingPage() {
-    Navigator.of(context)
+  void _goToSettingPage() async {
+    await Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
+    getVenueListByLocation();
   }
 }
 

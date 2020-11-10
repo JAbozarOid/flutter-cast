@@ -2,7 +2,6 @@ import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/db/config.dart';
 import 'package:cast/db/saved/saved.dart';
-import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
@@ -10,11 +9,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:share/share.dart';
 
 class SavedCardMapWidget extends StatefulWidget {
-  final SavedCardModel savedCardModel;
   final VenueListByLocationResponse venueModel;
 
   const SavedCardMapWidget(
-      {Key key, @required this.savedCardModel, @required this.venueModel})
+      {Key key, 
+       @required this.venueModel})
       : super(key: key);
 
   @override
@@ -45,9 +44,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.venueModel == null
-                  ? widget.savedCardModel.title
-                  : widget.venueModel.name,
+              widget.venueModel.name,
               style: TextStyle(
                 fontSize: 22,
                 color: HexColor('#000000'),
@@ -90,7 +87,8 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       ),
                     ),
                   ),
-                  InkWell(onTap: _onShareClicked,
+                  InkWell(
+                    onTap: _onShareClicked,
                     child: Container(
                       width: 40,
                       height: 40,
@@ -175,9 +173,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
-                    widget.venueModel == null
-                        ? '${widget.savedCardModel.minutes}'
-                        : '${widget.venueModel.avgSpendingTime} Minutes',
+                    '${widget.venueModel.avgSpendingTime} Minutes',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 26,
@@ -185,9 +181,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                   ),
                 ),
                 Text(
-                  widget.venueModel == null
-                      ? widget.savedCardModel.kilometers
-                      : '2.3 Km',
+                  '2.3 Km',
                   style: TextStyle(color: HexColor('757575'), fontSize: 14),
                 )
               ],
@@ -199,9 +193,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
               child: Row(
                 children: [
                   Text(
-                    widget.venueModel == null
-                        ? widget.savedCardModel.rateValue
-                        : '${widget.venueModel.rate}',
+                    '${widget.venueModel.rate}',
                     style: TextStyle(fontSize: 14, color: HexColor('#757575')),
                   ),
                   Padding(
@@ -220,20 +212,19 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       ),
                     ),
                   ),
-                  Text(widget.venueModel == null
-                      ? '(${widget.savedCardModel.rateCount})'
-                      : '${widget.venueModel.reviewCount}')
+                  Text('${widget.venueModel.reviewCount}')
                 ],
               ),
             ),
 
             // category name
             Text(
-              widget.venueModel == null
-                  ? widget.savedCardModel.type
-                  : widget.venueModel.categoryName,
+              widget.venueModel.categoryName,
               style: TextStyle(fontSize: 14, color: HexColor('#757575')),
             ),
+
+            // safety status
+            
           ],
         ),
       ),

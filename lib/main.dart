@@ -2,6 +2,7 @@ import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
 import 'package:cast/db/saved/saved.dart';
 import 'package:cast/db/search/search.dart';
+import 'package:cast/db/setting/setting.dart';
 import 'package:cast/ui/splash/xd/splash_screen_xd.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ void main() async {
   Hive.registerAdapter(HistoryAdapter());
   Hive.registerAdapter(SavedAdapter());
   Hive.registerAdapter(SearchAdapter());
+  Hive.registerAdapter(SettingAdapter());
 
 
   runApp(MyApp());
@@ -53,6 +55,7 @@ class _MyAppState extends State<MyApp> {
     Hive.box(historiesBox).close();
     Hive.box(savedBox).close();
     Hive.box(searchBox).close();
+    Hive.box(settingBox).close();
 
     super.dispose();
   }

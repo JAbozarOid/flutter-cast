@@ -920,8 +920,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   void _onCardTapped(SavedCardModel savedCardModel) async {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
-              savedCardModel: savedCardModel,
-              savedType: 'Food',
+              //savedCardModel: savedCardModel,
+              //savedType: 'Food',
               venueModel: null,
             )));
   }
