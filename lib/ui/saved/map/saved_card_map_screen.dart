@@ -6,7 +6,9 @@ import 'package:flutter_google_maps/flutter_google_maps.dart';
 class SavedCardMapScreen extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
   final List<VenueListByLocationResponse> venueList;
-  const SavedCardMapScreen({Key key, @required this.venueModel, this.venueList})
+  final int position;
+  const SavedCardMapScreen(
+      {Key key, @required this.venueModel, this.venueList, this.position})
       : super(key: key);
 
   @override
@@ -17,6 +19,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
   VenueListByLocationResponse get venueModel => widget.venueModel;
   List<VenueListByLocationResponse> get venueList => widget.venueList;
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+  int get position => widget.position;
   var pageController = PageController();
 
   @override
@@ -68,8 +71,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                         zoomControlsEnabled: false),
                   ),
             Positioned(
-              height: 250,
-              bottom: 0,
+              height: 300,
+              bottom: -20,
               right: 16,
               left: 16,
               child: PageView(
@@ -78,6 +81,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                   children: venueList.map((_) {
                     return SavedCardMapWidget(
                       venueModel: venueModel,
+                      position: position,
                     );
                   }).toList()),
             )

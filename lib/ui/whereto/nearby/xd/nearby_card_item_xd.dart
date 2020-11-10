@@ -1,12 +1,10 @@
 import 'package:adobe_xd/adobe_xd.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
-import 'package:cast/ui/whereto/nearby/xd/model/nearby_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyCardItemXD extends StatelessWidget {
-  //final NearbyCardModel nearbyCardModel;
   final VenueListByLocationResponse venueListByLocationResponse;
   final Function onCardTapped;
 

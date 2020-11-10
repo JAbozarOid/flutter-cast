@@ -10,10 +10,9 @@ import 'package:share/share.dart';
 
 class SavedCardMapWidget extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
-
+  final int position;
   const SavedCardMapWidget(
-      {Key key, 
-       @required this.venueModel})
+      {Key key, @required this.venueModel, @required this.position})
       : super(key: key);
 
   @override
@@ -40,7 +39,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -212,7 +211,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       ),
                     ),
                   ),
-                  Text('${widget.venueModel.reviewCount}')
+                  Text('(${widget.venueModel.reviewCount})')
                 ],
               ),
             ),
@@ -224,7 +223,43 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
             ),
 
             // safety status
-            
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                children: [
+                  Text(
+                    'Safety status',
+                    style: TextStyle(fontSize: 14, color: HexColor('#757575')),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      widget.venueModel.safetyStatus == 2
+                          ? 'Clear'
+                          : widget.venueModel.safetyStatus == 1
+                              ? 'Caution'
+                              : widget.venueModel.safetyStatus == 0
+                                  ? 'Risk Level'
+                                  : widget.venueModel.safetyStatus == -1
+                                      ? 'High Risk'
+                                      : 'Clear',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: widget.venueModel.safetyStatus == 2
+                            ? Color(0xff43c7ae)
+                            : widget.venueModel.safetyStatus == 1
+                                ? HexColor('#F4CD29')
+                                : widget.venueModel.safetyStatus == 0
+                                    ? HexColor('#F49E29')
+                                    : widget.venueModel.safetyStatus == -1
+                                        ? HexColor('#F45029')
+                                        : Color(0xff43c7ae),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -232,26 +267,21 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
   }
 
   void _onSavedTapped() async {
-    print(
-        "<<<<<<<<<<<<<<<<<<<<<<<<<the venue id is ${widget.venueModel.venueId}>>>>>>>>>>>>>>>>>>>>>>");
     final saved = Saved(widget.venueModel.venueId);
     final savedIntoBox = Hive.box(savedBox);
-    savedIntoBox.add(saved);
+
+    //savedIntoBox.add(saved);
+    savedIntoBox.put(widget.position, saved);
 
     savedList.add(widget.venueModel.venueId);
-
-    print(
-        "<<<<<<<<<<<<<<<<<<<<<<<<<the saved list is ${savedList.length}>>>>>>>>>>>>>>>>>>>>>>");
   }
 
   void _onUnSavedTapped() async {
     final deleteFromBox = Hive.box(savedBox);
-    deleteFromBox.deleteAt(0);
+
+    deleteFromBox.deleteAt(widget.position);
 
     savedList.remove(widget.venueModel.venueId);
-
-    print(
-        "<<<<<<<<<<<<<<<<<<<<<<<<<the saved list is ${savedList.length}>>>>>>>>>>>>>>>>>>>>>>");
 
     setState(() {});
   }

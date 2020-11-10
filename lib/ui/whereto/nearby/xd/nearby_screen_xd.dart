@@ -83,7 +83,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
 
                               return NearbyCardItemXD(
                                 venueListByLocationResponse: resModel,
-                                onCardTapped: () => _onCardTapped(state.venueListByLocationRes,resModel),
+                                onCardTapped: () => _onCardTapped(state.venueListByLocationRes,resModel,position),
                               );
                             },
                           );
@@ -489,11 +489,12 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     Navigator.of(context).pop();
   }
 
-  void _onCardTapped(List<VenueListByLocationResponse> venueList,VenueListByLocationResponse venueModel) {
+  void _onCardTapped(List<VenueListByLocationResponse> venueList,VenueListByLocationResponse venueModel,int position) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
               venueModel: venueModel,
               venueList: venueList,
+              position: position,
             )));
   }
 
