@@ -29,7 +29,7 @@ class HistoryAdapter extends TypeAdapter<History> {
       fields[9] as double,
       fields[10] as double,
       fields[11] as String,
-      fields[12] as int,
+      fields[12] as String,
     );
   }
 
@@ -62,7 +62,7 @@ class HistoryAdapter extends TypeAdapter<History> {
       ..writeByte(11)
       ..write(obj.imageUrlThumbnail)
       ..writeByte(12)
-      ..write(obj.id);
+      ..write(obj.venueId);
   }
 
   @override

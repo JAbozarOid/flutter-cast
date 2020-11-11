@@ -892,7 +892,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venuModel.latitude,
         venuModel.longitude,
         venuModel.imageUrlThumbnail,
-        index);
+        venueModel.venueId);
 
     final histories = Hive.box(historiesBox);
 
@@ -915,7 +915,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venuModel.latitude,
         venuModel.longitude,
         venuModel.imageUrlThumbnail,
-        index);
+        venueModel.venueId);
 
     final searches = Hive.box(searchBox);
 
@@ -930,6 +930,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     if (typeModelSearch == null) {
       var bx = await Hive.openBox(historiesBox);
 
+      historyList.clear();
       for (var h in bx.values.toList()) {
         historyList.add(h);
       }
@@ -944,6 +945,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     } else {
       var bx = await Hive.openBox(searchBox);
 
+      searchList.clear();
       for (var s in bx.values.toList()) {
         searchList.add(s);
       }

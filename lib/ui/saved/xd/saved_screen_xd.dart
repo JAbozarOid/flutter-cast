@@ -142,7 +142,7 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
                                 key: ValueKey(state.saveResultRes.length),
                                 child: SavedCardItemXD(
                                   venueModel: savedmodel,
-                                  onCardTapped: () => _onCardTapped(savedmodel),
+                                  onCardTapped: () => _onCardTapped(savedmodel,position,state.saveResultRes),
                                 ),
                               );
                             },
@@ -353,12 +353,13 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
     );
   }
 
-  void _onCardTapped(VenueListByLocationResponse venueModel) async {
+  void _onCardTapped(VenueListByLocationResponse venueModel,int position,List<SavedVenueListRes> savedList) async {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
-              //savedCardModel: null,
-              //savedType: 'Food',
               venueModel: venueModel,
+              position: position,
+              savedList: savedList,
+              pageType: 'saved',
             )));
   }
 

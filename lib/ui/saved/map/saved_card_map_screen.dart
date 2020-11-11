@@ -1,7 +1,9 @@
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
+import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
 import 'package:cast/db/history/history.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:cast/ui/saved/map/saved_card_map_widget.dart';
+import 'package:cast/ui/saved/xd/detail_full.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
 
@@ -13,6 +15,8 @@ class SavedCardMapScreen extends StatefulWidget {
   final int position;
   final History history;
   final Search search;
+  final List<SavedVenueListRes> savedList;
+  final String pageType;
   const SavedCardMapScreen(
       {Key key,
       @required this.venueModel,
@@ -21,6 +25,8 @@ class SavedCardMapScreen extends StatefulWidget {
       this.search,
       this.historyList,
       this.searchList,
+      this.savedList,
+      this.pageType,
       this.position})
       : super(key: key);
 
@@ -37,9 +43,20 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
 
   List<History> get historyList => widget.historyList;
   List<Search> get searchList => widget.searchList;
+  List<SavedVenueListRes> get savedList => widget.savedList;
+
+  String get pageType => widget.pageType;
 
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
   var pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      print(pageController.page);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,39 +157,78 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
               bottom: -20,
               right: 16,
               left: 16,
-              child: PageView(
-                  controller: pageController,
-                  scrollDirection: Axis.horizontal,
-                  children: venueList.isNotEmpty
-                      ? venueList.map((_) {
-                          return SavedCardMapWidget(
-                            venueModel: venueModel,
-                            searchModel: searchModel,
-                            historyModel: historyModel,
-                            position: position,
-                          );
-                        }).toList()
-                      : historyList.isNotEmpty
+              child: PageView.builder(
+                controller: pageController,
+                scrollDirection: Axis.horizontal,
+                itemCount: pageType == 'saved'
+                    ? (venueList != null
+                        ? venueList.length
+                        : historyList != null
+                            ? historyList.length
+                            : searchList != null
+                                ? searchList.length
+                                : savedList.length)
+                    : (venueList.isNotEmpty
+                        ? venueList.length
+                        : historyList.isNotEmpty
+                            ? historyList.length
+                            : searchList.isNotEmpty
+                                ? searchList.length
+                                : savedList.length),
+                itemBuilder: (BuildContext context, int index) {
+                  return venueList != null
+                      ? SavedCardMapWidget(
+                          venueModel: venueModel,
+                          searchModel: searchModel,
+                          historyModel: historyModel,
+                          position: index,
+                          onCardTapped: _onCardTapped,
+                        )
+                      : historyList != null
                           ? historyList.map((_) {
-                              return SavedCardMapWidget(
+                              SavedCardMapWidget(
                                 venueModel: venueModel,
                                 searchModel: searchModel,
                                 historyModel: historyModel,
-                                position: position,
+                                position: index,
+                                onCardTapped: _onCardTapped,
                               );
                             }).toList()
-                          : searchList.map((_) {
-                              return SavedCardMapWidget(
-                                venueModel: venueModel,
-                                searchModel: searchModel,
-                                historyModel: historyModel,
-                                position: position,
-                              );
-                            }).toList()),
+                          : searchList != null
+                              ? SavedCardMapWidget(
+                                  venueModel: venueModel,
+                                  searchModel: searchModel,
+                                  historyModel: historyModel,
+                                  position: index,
+                                )
+                              : savedList != null
+                                  ? SavedCardMapWidget(
+                                      venueModel: venueModel,
+                                      searchModel: searchModel,
+                                      historyModel: historyModel,
+                                      position: index,
+                                      onCardTapped: _onCardTapped,
+                                    )
+                                  : SavedCardMapWidget(
+                                      venueModel: venueModel,
+                                      searchModel: searchModel,
+                                      historyModel: historyModel,
+                                      position: index,
+                                    );
+                },
+              ),
             )
           ],
         ),
       ),
     );
+  }
+
+  void _onCardTapped() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => DetailFull(
+              venueModel: venueModel,
+              history: historyModel,
+            )));
   }
 }

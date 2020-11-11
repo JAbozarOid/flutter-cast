@@ -42,7 +42,7 @@ class Search extends HiveObject {
   String imageUrlThumbnail;
 
   @HiveField(12)
-  int id;
+  String venueId;
 
   Search(
       this.name,
@@ -57,7 +57,5 @@ class Search extends HiveObject {
       this.latitude,
       this.longitude,
       this.imageUrlThumbnail,
-      this.id);
-
-  int get getID => id;
+      this.venueId);
 }

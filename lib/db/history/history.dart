@@ -42,7 +42,7 @@ class History extends HiveObject {
   String imageUrlThumbnail;
 
   @HiveField(12)
-  int id;
+  String venueId;
 
   History(
       this.name,
@@ -57,7 +57,7 @@ class History extends HiveObject {
       this.latitude,
       this.longitude,
       this.imageUrlThumbnail,
-      this.id);
+      this.venueId);
 
-  int get getID => id;
+  
 }
