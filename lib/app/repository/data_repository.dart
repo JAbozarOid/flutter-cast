@@ -98,7 +98,7 @@ class DataRepository {
         "categoryId": categoryId,
         "text": inputedTextSearch
       });
-    }else {
+    } else {
       body = json.encode({
         "latitude": 35.760739,
         "longitude": 51.472668,
@@ -135,7 +135,16 @@ class DataRepository {
           onGetData: () => _getSavedVenuList(savedList));
 
   Future<EndpointsData> _getSavedVenuList(List<String> savedList) async {
-    var body = json.encode({"venueIdList": savedList});
+    List<String> savedItems = [];
+    var bx = await Hive.openBox(savedBox);
+
+    for (var s in bx.values.toList()) {
+      savedItems.add(s.venueId);
+    }
+
+    var body = json.encode({"venueIdList": savedItems});
+
+    print("the body for saved is ${body.toString()}");
 
     final values = await Future.wait([
       apiService.postAPI(

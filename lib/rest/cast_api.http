@@ -44,8 +44,8 @@ Content-Type: application/json
     "areaInUse": false,
     "avgSpendingTime": false
   },
-  "categoryId": "1811e3f9af8b49ac80f10d210cd31e79",
-  "text": ""
+  "categoryId": "6cbdbdf48d8b406fabafd92a49a091a3",
+  "text": "sdssdds"
 }
 
 ### GetVenue - POST - Request Body

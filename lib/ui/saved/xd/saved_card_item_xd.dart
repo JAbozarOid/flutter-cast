@@ -36,7 +36,7 @@ class SavedCardItemXD extends StatelessWidget {
             Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: InkWell(
-              onTap: () => onCardTapped(savedCardModel),
+              onTap: onCardTapped,
               child: savedCardModel != null
                   ? Stack(
                       children: <Widget>[

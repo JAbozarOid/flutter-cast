@@ -48,6 +48,13 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   double _lon;
   // *******************
 
+  var historyModel;
+  var searchModel;
+  List<VenueListByLocationResponse> venueList = [];
+  VenueListByLocationResponse venueModel;
+  List<History> historyList = [];
+  List<Search> searchList = [];
+
   Widget buildLoading() {
     return Center(
       child: CircularProgressIndicator(),
@@ -698,8 +705,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 scrollDirection: Axis.vertical,
                                 itemCount: state.searchResultRes.length,
                                 itemBuilder: (context, position) {
-                                  VenueListByLocationResponse venueModel =
-                                      state.searchResultRes[position];
+                                  venueModel = state.searchResultRes[position];
+                                  venueList = state.searchResultRes;
 
                                   if (typeModelSearch == null) {
                                     addHistory(state.searchResultRes[position],
@@ -711,7 +718,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
                                   return SavedCardItemXD(
                                     savedCardModel: null,
-                                    //onCardTapped: _onCardTapped,
+                                    onCardTapped: () => _onCardTapped(position),
                                     venueModel: venueModel,
                                   );
                                 },
@@ -795,11 +802,12 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       return ListView.builder(
                                         itemCount: box.values.length,
                                         itemBuilder: (context, index) {
-                                          var historyModel = box.getAt(index);
+                                          historyModel = box.getAt(index);
 
                                           return SavedCardItemXD(
                                               savedCardModel: null,
-                                              //onCardTapped: _onCardTapped,
+                                              onCardTapped: () =>
+                                                  _onCardTapped(index),
                                               venueModel: null,
                                               historyModel: historyModel);
                                         },
@@ -846,11 +854,12 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       return ListView.builder(
                                         itemCount: box.values.length,
                                         itemBuilder: (context, index) {
-                                          var searchModel = box.getAt(index);
+                                          searchModel = box.getAt(index);
 
                                           return SavedCardItemXD(
                                               savedCardModel: null,
-                                              //onCardTapped: _onCardTapped,
+                                              onCardTapped: () =>
+                                                  _onCardTapped(index),
                                               venueModel: null,
                                               searchModel: searchModel);
                                         },
@@ -917,13 +926,37 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     Navigator.of(context).pop();
   }
 
-  void _onCardTapped(SavedCardModel savedCardModel) async {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => SavedCardMapScreen(
-              //savedCardModel: savedCardModel,
-              //savedType: 'Food',
-              venueModel: null,
-            )));
+  void _onCardTapped(int position) async {
+    if (typeModelSearch == null) {
+      var bx = await Hive.openBox(historiesBox);
+
+      for (var h in bx.values.toList()) {
+        historyList.add(h);
+      }
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => SavedCardMapScreen(
+                position: position,
+                venueModel: venueModel,
+                venueList: venueList,
+                history: historyModel,
+                historyList: historyList,
+              )));
+    } else {
+      var bx = await Hive.openBox(searchBox);
+
+      for (var s in bx.values.toList()) {
+        searchList.add(s);
+      }
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => SavedCardMapScreen(
+                position: position,
+                venueModel: venueModel,
+                venueList: venueList,
+                search: searchModel,
+                searchList: searchList,
+              )));
+    }
   }
 
   void _onTextChanged(String text) {

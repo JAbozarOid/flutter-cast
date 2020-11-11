@@ -1,7 +1,9 @@
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/db/config.dart';
+import 'package:cast/db/history/history.dart';
 import 'package:cast/db/saved/saved.dart';
+import 'package:cast/db/search/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
@@ -10,9 +12,15 @@ import 'package:share/share.dart';
 
 class SavedCardMapWidget extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
+  final History historyModel;
+  final Search searchModel;
   final int position;
   const SavedCardMapWidget(
-      {Key key, @required this.venueModel, @required this.position})
+      {Key key,
+      @required this.venueModel,
+      this.historyModel,
+      this.searchModel,
+      @required this.position})
       : super(key: key);
 
   @override
@@ -43,7 +51,13 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.venueModel.name,
+              widget.venueModel != null
+                  ? widget.venueModel.name
+                  : widget.historyModel != null
+                      ? widget.historyModel.name
+                      : widget.searchModel != null
+                          ? widget.searchModel.name
+                          : '',
               style: TextStyle(
                 fontSize: 22,
                 color: HexColor('#000000'),
@@ -172,7 +186,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
-                    '${widget.venueModel.avgSpendingTime} Minutes',
+                    '${widget.venueModel != null ? widget.venueModel.avgSpendingTime : widget.historyModel != null ? widget.historyModel.avgSpendingTime : widget.searchModel != null ? widget.searchModel.avgSpendingTime : ''} Minutes',
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 26,
@@ -192,7 +206,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
               child: Row(
                 children: [
                   Text(
-                    '${widget.venueModel.rate}',
+                    '${widget.venueModel != null ? widget.venueModel.rate : widget.historyModel != null ? widget.historyModel.rate : widget.searchModel != null ? widget.searchModel.rate : ''}',
                     style: TextStyle(fontSize: 14, color: HexColor('#757575')),
                   ),
                   Padding(
@@ -211,14 +225,21 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       ),
                     ),
                   ),
-                  Text('(${widget.venueModel.reviewCount})')
+                  Text(
+                      '(${widget.venueModel != null ? widget.venueModel.reviewCount : widget.historyModel != null ? widget.historyModel.reviewCount : widget.searchModel != null ? widget.searchModel.reviewCount : ''})')
                 ],
               ),
             ),
 
             // category name
             Text(
-              widget.venueModel.categoryName,
+              widget.venueModel != null
+                  ? widget.venueModel.categoryName
+                  : widget.historyModel != null
+                      ? widget.historyModel.categoryName
+                      : widget.searchModel != null
+                          ? widget.searchModel.categoryName
+                          : '',
               style: TextStyle(fontSize: 14, color: HexColor('#757575')),
             ),
 
@@ -279,7 +300,7 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
   void _onUnSavedTapped() async {
     final deleteFromBox = Hive.box(savedBox);
 
-    deleteFromBox.deleteAt(widget.position);
+    deleteFromBox.delete(widget.position);
 
     savedList.remove(widget.venueModel.venueId);
 
