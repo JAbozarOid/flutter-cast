@@ -60,9 +60,12 @@ class _NearbyScreenState extends State<NearbyScreen> {
               ),
             ),
           ),
-          
           Padding(
-            padding: EdgeInsets.only(top: 100,left: 16,right: 16,),
+            padding: EdgeInsets.only(
+              top: 100,
+              left: 16,
+              right: 16,
+            ),
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: savedCardsValues.length,
@@ -83,8 +86,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
   void _onCardTapped(SavedCardModel savedCardModel) async {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
-              savedCardModel: savedCardModel,
-              savedType: 'Food', venueModel: null,
+              venueModel: null,
             )));
   }
 }

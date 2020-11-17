@@ -50,12 +50,15 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
   var pageController = PageController();
 
+    
+
   @override
   void initState() {
     super.initState();
     pageController.addListener(() {
       print(pageController.page);
     });
+
   }
 
   @override
@@ -80,7 +83,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                           GeoCoord(venueModel.latitude, venueModel.longitude),
                       markers: {
                         Marker(GeoCoord(
-                            venueModel.latitude, venueModel.longitude)),
+                            venueModel.latitude, venueModel.longitude),),
                       },
                       mobilePreferences: MobileMapPreferences(
                           trafficEnabled: true,

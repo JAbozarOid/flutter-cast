@@ -670,11 +670,11 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                     fixedHeight: true,
                     child:
                         // Adobe XD layer: 'Settings_btn' (group)
-                        Stack(
-                      children: <Widget>[
                         InkWell(
-                          onTap: _goToSettingsScreenXD,
-                          child: Pinned.fromSize(
+                      onTap: _goToSettingsScreenXD,
+                      child: Stack(
+                        children: <Widget>[
+                          Pinned.fromSize(
                             bounds: Rect.fromLTWH(0.0, 0.0, 90.0, 80.0),
                             size: Size(90.0, 80.0),
                             pinLeft: true,
@@ -687,90 +687,91 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                               decoration: BoxDecoration(),
                             ),
                           ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(19.0, 48.0, 52.0, 17.0),
-                          size: Size(90.0, 80.0),
-                          fixedWidth: true,
-                          fixedHeight: true,
-                          child:
-                              // Adobe XD layer: 'Program' (text)
-                              Text(
-                            'Settings',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: 14,
-                              color: const Color(0xff9ea1a6),
-                              fontWeight: FontWeight.w500,
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(19.0, 48.0, 52.0, 17.0),
+                            size: Size(90.0, 80.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'Program' (text)
+                                Text(
+                              'Settings',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 14,
+                                color: const Color(0xff9ea1a6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
                           ),
-                        ),
-                        Pinned.fromSize(
-                          bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
-                          size: Size(90.0, 80.0),
-                          fixedWidth: true,
-                          fixedHeight: true,
-                          child:
-                              // Adobe XD layer: 'settings' (group)
-                              Stack(
-                            children: <Widget>[
-                              Pinned.fromSize(
-                                bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                                size: Size(24.0, 24.0),
-                                pinLeft: true,
-                                pinRight: true,
-                                pinTop: true,
-                                pinBottom: true,
-                                child:
-                                    // Adobe XD layer: 'Path' (shape)
-                                    Container(
-                                  color: const Color(0x00000000),
+                          Pinned.fromSize(
+                            bounds: Rect.fromLTWH(33.0, 18.0, 24.0, 24.0),
+                            size: Size(90.0, 80.0),
+                            fixedWidth: true,
+                            fixedHeight: true,
+                            child:
+                                // Adobe XD layer: 'settings' (group)
+                                Stack(
+                              children: <Widget>[
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
+                                  size: Size(24.0, 24.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Path' (shape)
+                                      Container(
+                                    color: const Color(0x00000000),
+                                  ),
                                 ),
-                              ),
-                              Pinned.fromSize(
-                                bounds: Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
-                                size: Size(24.0, 24.0),
-                                pinLeft: true,
-                                pinRight: true,
-                                pinTop: true,
-                                pinBottom: true,
-                                child:
-                                    // Adobe XD layer: 'Icon feather-settin…' (group)
-                                    Stack(
-                                  children: <Widget>[
-                                    Pinned.fromSize(
-                                      bounds: Rect.fromLTWH(6.5, 6.5, 4.9, 4.9),
-                                      size: Size(18.0, 18.0),
-                                      fixedWidth: true,
-                                      fixedHeight: true,
-                                      child: SvgPicture.string(
-                                        _svg_mi2s4g,
-                                        allowDrawingOutsideViewBox: true,
-                                        fit: BoxFit.fill,
+                                Pinned.fromSize(
+                                  bounds: Rect.fromLTWH(3.0, 3.0, 18.0, 18.0),
+                                  size: Size(24.0, 24.0),
+                                  pinLeft: true,
+                                  pinRight: true,
+                                  pinTop: true,
+                                  pinBottom: true,
+                                  child:
+                                      // Adobe XD layer: 'Icon feather-settin…' (group)
+                                      Stack(
+                                    children: <Widget>[
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(6.5, 6.5, 4.9, 4.9),
+                                        size: Size(18.0, 18.0),
+                                        fixedWidth: true,
+                                        fixedHeight: true,
+                                        child: SvgPicture.string(
+                                          _svg_mi2s4g,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
-                                    ),
-                                    Pinned.fromSize(
-                                      bounds:
-                                          Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
-                                      size: Size(18.0, 18.0),
-                                      pinLeft: true,
-                                      pinRight: true,
-                                      pinTop: true,
-                                      pinBottom: true,
-                                      child: SvgPicture.string(
-                                        _svg_d9bj5t,
-                                        allowDrawingOutsideViewBox: true,
-                                        fit: BoxFit.fill,
+                                      Pinned.fromSize(
+                                        bounds:
+                                            Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
+                                        size: Size(18.0, 18.0),
+                                        pinLeft: true,
+                                        pinRight: true,
+                                        pinTop: true,
+                                        pinBottom: true,
+                                        child: SvgPicture.string(
+                                          _svg_d9bj5t,
+                                          allowDrawingOutsideViewBox: true,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -852,7 +853,8 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                 break;
                               case LocationState.granted:
                                 return Text(
-                                  'From: ${_lat.toString()} , ${_lon.toString()}',
+                                  //'From: ${_lat.toString()} , ${_lon.toString()}',
+                                  'From: Current Location',
                                   style: TextStyle(
                                     fontFamily: 'Open Sans',
                                     fontSize: 10,
@@ -911,7 +913,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
   }
 
-
   // gettings detail of each category and neaby items
   void _goToWhereToScreen() {
     Navigator.of(context).push(MaterialPageRoute(
@@ -943,7 +944,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             )));
   }
 
-   // tapped on one of the top category for searching list
+  // tapped on one of the top category for searching list
   void _goToSearchScreenPanelType(MainCategoryListResponse model) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => BlocProvider(
@@ -986,7 +987,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         _onLocationState.add(LocationState.granted);
 
-
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
             animated: true, waitUntilReady: true);
 
@@ -1001,7 +1001,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
       _lon = _locationData.longitude;
 
       _onLocationState.add(LocationState.granted);
-
 
       _key.currentState.moveCamera(GeoCoord(_lat, _lon),
           animated: true, waitUntilReady: true);

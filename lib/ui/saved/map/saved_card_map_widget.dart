@@ -259,102 +259,102 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Text(
                         (widget.venueModel != null &&
-                                widget.venueModel.safetyStatus == 2)
+                                widget.venueModel.safetyStatus == 1)
                             ? 'Clear'
                             : (widget.historyModel != null &&
-                                    widget.historyModel.safetyStatus == 2)
+                                    widget.historyModel.safetyStatus == 1)
                                 ? 'Clear'
                                 : (widget.searchModel != null &&
-                                        widget.searchModel.safetyStatus == 2)
+                                        widget.searchModel.safetyStatus == 1)
                                     ? 'Clear'
                                     : (widget.venueModel != null &&
-                                            widget.venueModel.safetyStatus == 1)
+                                            widget.venueModel.safetyStatus == 2)
                                         ? 'Caution'
                                         : (widget.historyModel != null &&
                                                 widget.historyModel.safetyStatus ==
-                                                    1)
+                                                    2)
                                             ? 'Caution'
                                             : (widget.searchModel != null &&
                                                     widget.searchModel.safetyStatus ==
-                                                        1)
+                                                        2)
                                                 ? 'Caution'
                                                 : (widget.venueModel != null &&
                                                         widget.venueModel
                                                                 .safetyStatus ==
-                                                            0)
+                                                            3)
                                                     ? 'Risk Level'
                                                     : (widget.historyModel != null &&
                                                             widget.historyModel
                                                                     .safetyStatus ==
-                                                                0)
+                                                                3)
                                                         ? 'Risk Level'
                                                         : (widget.searchModel !=
                                                                     null &&
                                                                 widget.searchModel
                                                                         .safetyStatus ==
-                                                                    0)
+                                                                    3)
                                                             ? 'Risk Level'
                                                             : (widget.venueModel !=
                                                                         null &&
                                                                     widget.venueModel
                                                                             .safetyStatus ==
-                                                                        -1)
+                                                                        4)
                                                                 ? 'High Risk'
                                                                 : (widget.historyModel !=
                                                                             null &&
                                                                         widget.historyModel.safetyStatus ==
-                                                                            -1)
+                                                                            4)
                                                                     ? 'High Risk'
                                                                     : (widget.searchModel != null &&
-                                                                            widget.searchModel.safetyStatus == -1)
+                                                                            widget.searchModel.safetyStatus == 4)
                                                                         ? 'High Risk'
-                                                                        : 'Clear',
+                                                                        : '',
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: (widget.venueModel != null &&
-                                  widget.venueModel.safetyStatus == 2)
+                                  widget.venueModel.safetyStatus == 1)
                               ? Color(0xff43c7ae)
                               : (widget.historyModel != null &&
-                                      widget.historyModel.safetyStatus == 2)
+                                      widget.historyModel.safetyStatus == 1)
                                   ? Color(0xff43c7ae)
                                   : (widget.searchModel != null &&
-                                          widget.searchModel.safetyStatus == 2)
+                                          widget.searchModel.safetyStatus == 1)
                                       ? Color(0xff43c7ae)
                                       : (widget.venueModel != null &&
-                                              widget.venueModel.safetyStatus == 1)
+                                              widget.venueModel.safetyStatus == 2)
                                           ? HexColor('#F4CD29')
                                           : (widget.historyModel != null &&
                                                   widget.historyModel.safetyStatus ==
-                                                      1)
+                                                      2)
                                               ? HexColor('#F4CD29')
                                               : (widget.searchModel != null &&
                                                       widget.searchModel.safetyStatus ==
-                                                          1)
+                                                          2)
                                                   ? HexColor('#F4CD29')
                                                   : (widget.venueModel != null &&
                                                           widget.venueModel
                                                                   .safetyStatus ==
-                                                              0)
+                                                              3)
                                                       ? HexColor('#F49E29')
                                                       : (widget.historyModel != null &&
                                                               widget.historyModel
                                                                       .safetyStatus ==
-                                                                  0)
+                                                                  3)
                                                           ? HexColor('#F49E29')
                                                           : (widget.searchModel !=
                                                                       null &&
                                                                   widget.searchModel
                                                                           .safetyStatus ==
-                                                                      0)
+                                                                      3)
                                                               ? HexColor(
                                                                   '#F49E29')
                                                               : (widget.venueModel !=
                                                                           null &&
-                                                                      widget.venueModel.safetyStatus == -1)
+                                                                      widget.venueModel.safetyStatus == 4)
                                                                   ? HexColor('#F45029')
-                                                                  : (widget.historyModel != null && widget.historyModel.safetyStatus == -1)
+                                                                  : (widget.historyModel != null && widget.historyModel.safetyStatus == 4)
                                                                       ? HexColor('#F45029')
-                                                                      : (widget.searchModel != null && widget.searchModel.safetyStatus == -1)
+                                                                      : (widget.searchModel != null && widget.searchModel.safetyStatus == 4)
                                                                           ? HexColor('#F45029')
                                                                           : Color(0xff43c7ae),
                         ),

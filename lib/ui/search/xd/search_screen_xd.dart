@@ -351,7 +351,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
 
                       // where to
                       Pinned.fromSize(
-                        bounds: Rect.fromLTWH(22.5, 60.0, 257.0, 50.0),
+                        bounds: Rect.fromLTWH(22.5, 55.0, 257.0, 50.0),
                         size: Size(279.5, 110.0),
                         pinLeft: true,
                         pinRight: true,
@@ -362,7 +362,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                             Stack(
                           children: <Widget>[
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(0.0, 18.0, 257.0, 32.0),
+                              bounds: Rect.fromLTWH(0.0, 22.0, 257.0, 32.0),
                               size: Size(257.0, 50.0),
                               pinLeft: true,
                               pinRight: true,
@@ -377,19 +377,23 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 ),
                                 child: Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(10.5, 60.0, 257.0, 50.0),
+                                      Rect.fromLTWH(10.5, 50.0, 257.0, 50.0),
                                   size: Size(279.5, 110.0),
                                   child: TextFormField(
+                                    cursorColor: const Color(0xffffffff),
+                                    style: TextStyle(color: const Color(0xffffffff),),
                                     onChanged: (text) => {_onTextChanged(text)},
                                     keyboardType: TextInputType.text,
                                     controller: _inputedTextSearchController,
                                     maxLines: 1,
+                                    
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
-                                        hintText: 'Enter a search term',
+                                        hintText: 'enter a search term',
                                         hintStyle: TextStyle(
                                           fontSize: 12,
                                           color: const Color(0xffffffff),
+                                          
                                         )),
                                   ),
                                 ),
@@ -511,7 +515,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 ),
                                 child: Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(10.5, 25.0, 257.0, 50.0),
+                                      Rect.fromLTWH(10.5, 30.0, 257.0, 50.0),
                                   size: Size(279.5, 110.0),
                                   child: StreamBuilder<LocationState>(
                                       stream: _onLocationState,
@@ -529,7 +533,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                             break;
                                           case LocationState.granted:
                                             return Text(
-                                              '${_lat.toString()} , ${_lon.toString()}',
+                                              // '${_lat.toString()} , ${_lon.toString()}',
+                                              'Current Location',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 color: const Color(0xffffffff),

@@ -71,10 +71,14 @@ class _WhereToCategoryItemWidgetXDState
                         .categoryList[position].iconUrl,
                     title: widget
                         .categoryListDetailResponse.categoryList[position].name,
-                    onCardTapped: () => _goToListOfItemSelected(widget
-                        .categoryListDetailResponse
-                        .categoryList[position]
-                        .categoryId),
+                    onCardTapped: () => _goToListOfItemSelected(
+                      widget.categoryListDetailResponse.categoryList[position]
+                          .categoryId,
+                      widget.categoryListDetailResponse.categoryList[position]
+                          .iconUrl,
+                      widget.categoryListDetailResponse.categoryList[position]
+                          .name,
+                    ),
                   );
                 },
                 padding: const EdgeInsets.all(0.0),
@@ -88,7 +92,8 @@ class _WhereToCategoryItemWidgetXDState
     );
   }
 
-  void _goToListOfItemSelected(String categoryId) {
+  void _goToListOfItemSelected(
+      String categoryId, String iconURL, String title) {
     /* Navigator.of(context)
         .push(MaterialPageRoute(builder: (_) => NearbyScreenXD(categoryId: categoryId,))); */
 
@@ -98,6 +103,8 @@ class _WhereToCategoryItemWidgetXDState
                   GetVenueListBloc(DataRepository(APIService(API.sandbox()))),
               child: NearbyScreenXD(
                 categoryId: categoryId,
+                iconURL: iconURL,
+                title: title,
               ),
             )));
   }

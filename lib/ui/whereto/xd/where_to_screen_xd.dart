@@ -46,13 +46,13 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
       ..addListener(() {
         // when scrolling down goes to the next tabs
         if (tappedIndex == 0) {
-          if (controller.offset > 220) {
+          if (controller.offset > 170) {
             tappedIndex += 1;
           }
         }
         // when scrolling up goes back one step in tabs
         if (tappedIndex != 0) {
-          if (controller.offset < 220) {
+          if (controller.offset < 170) {
             tappedIndex -= 1;
           }
         }

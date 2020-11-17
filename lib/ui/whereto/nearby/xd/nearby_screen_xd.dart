@@ -15,7 +15,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyScreenXD extends StatefulWidget {
   final String categoryId;
-  NearbyScreenXD({Key key, @required this.categoryId}) : super(key: key);
+  final String iconURL;
+  final String title;
+  NearbyScreenXD(
+      {Key key,
+      @required this.categoryId,
+      @required this.iconURL,
+      @required this.title})
+      : super(key: key);
 
   @override
   _NearbyScreenXDState createState() => _NearbyScreenXDState();
@@ -83,7 +90,10 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
 
                               return NearbyCardItemXD(
                                 venueListByLocationResponse: resModel,
-                                onCardTapped: () => _onCardTapped(state.venueListByLocationRes,resModel,position),
+                                onCardTapped: () => _onCardTapped(
+                                    state.venueListByLocationRes,
+                                    resModel,
+                                    position),
                               );
                             },
                           );
@@ -396,7 +406,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                   fixedWidth: false,
                   fixedHeight: true,
                   child: Text(
-                    'Best Restaurants nearby you',
+                    'Best ${widget.title} nearby you',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 18,
@@ -450,10 +460,10 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                         pinTop: true,
                         pinBottom: true,
                         fixedWidth: true,
-                        child:
+                        child: 
                             // Adobe XD layer: 'Icon' (shape)
-                            SvgPicture.string(
-                          _svg_pbvkb6,
+                            SvgPicture.network(
+                          widget.iconURL,
                           allowDrawingOutsideViewBox: true,
                           fit: BoxFit.fill,
                         ),
@@ -489,7 +499,8 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     Navigator.of(context).pop();
   }
 
-  void _onCardTapped(List<VenueListByLocationResponse> venueList,VenueListByLocationResponse venueModel,int position) {
+  void _onCardTapped(List<VenueListByLocationResponse> venueList,
+      VenueListByLocationResponse venueModel, int position) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
               venueModel: venueModel,

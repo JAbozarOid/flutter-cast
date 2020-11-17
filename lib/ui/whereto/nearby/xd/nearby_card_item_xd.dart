@@ -94,7 +94,11 @@ class NearbyCardItemXD extends StatelessWidget {
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Container(
-                      child: Image.network(venueListByLocationResponse.imageUrlThumbnail.toString(),fit: BoxFit.cover,),
+                      child: Image.network(
+                        venueListByLocationResponse.imageUrlThumbnail
+                            .toString(),
+                        fit: BoxFit.cover,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.0),
                         /* image: DecorationImage(
@@ -199,37 +203,37 @@ class NearbyCardItemXD extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(13.0),
                               color: venueListByLocationResponse.safetyStatus ==
-                                      2
+                                      1
                                   ? Color(0xff43c7ae)
                                   : venueListByLocationResponse.safetyStatus ==
-                                          1
+                                          2
                                       ? HexColor('#F4CD29')
                                       : venueListByLocationResponse
                                                   .safetyStatus ==
-                                              0
+                                              3
                                           ? HexColor('#F49E29')
                                           : venueListByLocationResponse
                                                       .safetyStatus ==
-                                                  -1
+                                                  4
                                               ? HexColor('#F45029')
                                               : Color(0xff43c7ae),
                               border: Border.all(
                                   width: 1.0,
                                   color: venueListByLocationResponse
                                               .safetyStatus ==
-                                          2
+                                          1
                                       ? Color(0xff43c7ae)
                                       : venueListByLocationResponse
                                                   .safetyStatus ==
-                                              1
+                                              2
                                           ? HexColor('#F4CD29')
                                           : venueListByLocationResponse
                                                       .safetyStatus ==
-                                                  0
+                                                  3
                                               ? HexColor('#F49E29')
                                               : venueListByLocationResponse
                                                           .safetyStatus ==
-                                                      -1
+                                                      4
                                                   ? HexColor('#F45029')
                                                   : Color(0xff43c7ae)),
                             ),
@@ -245,9 +249,18 @@ class NearbyCardItemXD extends StatelessWidget {
                           child: Center(
                             child: Text(
                               //nearbyCardModel.typeOfSafety,
-                              venueListByLocationResponse.safetyStatus == 2
+                              venueListByLocationResponse.safetyStatus == 1
                                   ? 'Clear'
-                                  : '',
+                                  : venueListByLocationResponse.safetyStatus ==
+                                          2
+                                      ? 'Caution'
+                                      : venueListByLocationResponse
+                                                  .safetyStatus ==
+                                              3
+                                          ? 'Risk Level'
+                                          : venueListByLocationResponse
+                                                  .safetyStatus ==
+                                              4 ? 'High Risk' : '',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 14,

@@ -72,7 +72,7 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
             ),
           ),
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(-53.8, 186.1, 413.8, 146.2),
+            bounds: Rect.fromLTWH(-40.8, 186.1, 400.8, 146.2),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinRight: true,
@@ -86,12 +86,14 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
           Pinned.fromSize(
             bounds: Rect.fromLTWH(97.8, 270.8, 165.7, 58.5),
             size: Size(360.0, 640.0),
-            fixedWidth: true,
+            fixedWidth: false,
             fixedHeight: true,
-            child: SvgPicture.string(
-              _svg_432sia,
-              allowDrawingOutsideViewBox: true,
-              fit: BoxFit.fill,
+            child: Center(
+              child: SvgPicture.string(
+                _svg_432sia,
+                allowDrawingOutsideViewBox: true,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           Pinned.fromSize(
@@ -99,15 +101,17 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
             size: Size(360.0, 640.0),
             fixedWidth: false,
             fixedHeight: true,
-            child: Text(
-              'Find the best',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 27,
-                color: const Color(0xff202020),
-                fontWeight: FontWeight.w300,
+            child: Center(
+              child: Text(
+                'Find the best',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 27,
+                  color: const Color(0xff202020),
+                  fontWeight: FontWeight.w300,
+                ),
+                textAlign: TextAlign.left,
               ),
-              textAlign: TextAlign.left,
             ),
           ),
         ],
