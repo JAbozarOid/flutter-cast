@@ -2,6 +2,7 @@ import 'package:adobe_xd/adobe_xd.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyCardItemXD extends StatelessWidget {
@@ -93,18 +94,12 @@ class NearbyCardItemXD extends StatelessWidget {
                     pinLeft: true,
                     fixedWidth: false,
                     fixedHeight: true,
-                    child: Container(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
                       child: Image.network(
                         venueListByLocationResponse.imageUrlThumbnail
                             .toString(),
                         fit: BoxFit.cover,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.0),
-                        /* image: DecorationImage(
-                          image: const AssetImage('assets/restaurant.png'),
-                          fit: BoxFit.cover,
-                        ), */
                       ),
                     ),
                   ),
@@ -130,13 +125,13 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // rate value
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(122.0, 123.0, 19.0, 17.0),
+                    bounds: Rect.fromLTWH(122.0, 123.0, 20.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
                       //nearbyCardModel.rateValue,
-                      '${venueListByLocationResponse.rate}',
+                      '${venueListByLocationResponse.rate.toDouble()}',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -259,8 +254,10 @@ class NearbyCardItemXD extends StatelessWidget {
                                               3
                                           ? 'Risk Level'
                                           : venueListByLocationResponse
-                                                  .safetyStatus ==
-                                              4 ? 'High Risk' : '',
+                                                      .safetyStatus ==
+                                                  4
+                                              ? 'High Risk'
+                                              : '',
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 14,
@@ -315,7 +312,7 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // rate count
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(223.0, 123.0, 26.0, 17.0),
+                    bounds: Rect.fromLTWH(200.0, 123.0, 26.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
@@ -331,20 +328,25 @@ class NearbyCardItemXD extends StatelessWidget {
                     ),
                   ),
 
-                  // ???
+                  // stars rate
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(146.0, 125.0, 72.0, 12.0),
+                    bounds: Rect.fromLTWH(141.0, 125.0, 55.0, 12.0),
                     size: Size(328.0, 334.0),
-                    child:
-                        // Adobe XD layer: 'Rate' (group)
-                        Stack(
-                      children: <Widget>[
-                        SvgPicture.string(
-                          _svg_cvz5lm,
-                          allowDrawingOutsideViewBox: true,
-                        ),
-                      ],
-                    ),
+                    child: RatingBar(
+                        initialRating:
+                            venueListByLocationResponse.rate.toDouble(),
+                        minRating: venueListByLocationResponse.rate.toDouble(),
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemSize: 13.5,
+                        unratedColor: HexColor('#DBDCE0'),
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                        itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: HexColor('#F3BD42'),
+                            ),
+                        onRatingUpdate: null),
                   ),
 
                   // ???

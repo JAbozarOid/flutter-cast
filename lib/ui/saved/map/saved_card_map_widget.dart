@@ -43,330 +43,366 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(onTap: widget.onCardTapped,
-          child: Card(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: widget.onCardTapped,
+      child: Card(
+          color: Colors.white,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+          child: Stack(
             children: [
-              Text(
-                widget.venueModel != null
-                    ? widget.venueModel.name
-                    : widget.historyModel != null
-                        ? widget.historyModel.name
-                        : widget.searchModel != null
-                            ? widget.searchModel.name
-                            : '',
-                style: TextStyle(
-                  fontSize: 22,
-                  color: HexColor('#000000'),
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w500,
-                ),
+              Positioned(
+                top: -25.0,
+                right: 30.0,
+                child: widget.venueModel.badgeModel != null
+                    ? Container(
+                        width: 100,
+                        height: 100,
+                        child: Image.asset('assets/bestsuggestionbadge.png'))
+                    : widget.historyModel.badgeModel != null
+                        ? Container(
+                            width: 100,
+                            height: 100,
+                            child:
+                                Image.asset('assets/bestsuggestionbadge.png'))
+                        : widget.searchModel.badgeModel != null
+                            ? Container(
+                                width: 100,
+                                height: 100,
+                                child: Image.asset(
+                                    'assets/bestsuggestionbadge.png'))
+                            : Container(),
               ),
-
-              // direction, share, saved
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Row(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      widget.venueModel != null
+                          ? widget.venueModel.name
+                          : widget.historyModel != null
+                              ? widget.historyModel.name
+                              : widget.searchModel != null
+                                  ? widget.searchModel.name
+                                  : '',
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: HexColor('#000000'),
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    // direction, share, saved
                     Padding(
-                      padding: const EdgeInsets.only(right: 60),
-                      child: Card(
-                        color: HexColor('#43C7AE'),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(21.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 16),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Container(
-                                  width: 20,
-                                  height: 20,
-                                  child: Image.asset('assets/directions.png'),
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 60),
+                            child: Card(
+                              color: HexColor('#43C7AE'),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21.0)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 16),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Container(
+                                        width: 20,
+                                        height: 20,
+                                        child: Image.asset(
+                                            'assets/directions.png'),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Directions',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
-                                'Directions',
-                                style:
-                                    TextStyle(color: Colors.white, fontSize: 16),
-                              )
-                            ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: _onShareClicked,
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              child: Icon(
+                                Icons.share,
+                                size: 20,
+                                color: HexColor('#43C7AE'),
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: HexColor('#43C7AE')),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                          ),
+                          FutureBuilder(
+                            future: Hive.openBox(savedBox),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                if (snapshot.hasError)
+                                  return Text(snapshot.error.toString());
+                                else
+                                  return ValueListenableBuilder(
+                                    valueListenable:
+                                        Hive.box(savedBox).listenable(),
+                                    builder: (context, box, _) {
+                                      if (box.values.isEmpty) {
+                                        // when user want to save
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: InkWell(
+                                            onTap: _onSavedTapped,
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Image.asset(
+                                                  'assets/unsaved-m.png'),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: HexColor('#43C7AE')),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else
+                                        // when user want to unsaved
+                                        return Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: InkWell(
+                                            onTap: _onUnSavedTapped,
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              child: Icon(
+                                                Icons.bookmark,
+                                                size: 20,
+                                                color: HexColor('#43C7AE'),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: HexColor('#43C7AE')),
+                                                shape: BoxShape.circle,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                    },
+                                  );
+                              } else
+                                return buildLoading();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // minutes
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Text(
+                            '${widget.venueModel != null ? widget.venueModel.avgSpendingTime : widget.historyModel != null ? widget.historyModel.avgSpendingTime : widget.searchModel != null ? widget.searchModel.avgSpendingTime : ''} Minutes',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 26,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
-                      ),
+                        Text(
+                          '2.3 Km',
+                          style: TextStyle(
+                              color: HexColor('757575'), fontSize: 14),
+                        )
+                      ],
                     ),
-                    InkWell(
-                      onTap: _onShareClicked,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Icons.share,
-                          size: 20,
-                          color: HexColor('#43C7AE'),
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: HexColor('#43C7AE')),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                    FutureBuilder(
-                      future: Hive.openBox(savedBox),
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          if (snapshot.hasError)
-                            return Text(snapshot.error.toString());
-                          else
-                            return ValueListenableBuilder(
-                              valueListenable: Hive.box(savedBox).listenable(),
-                              builder: (context, box, _) {
-                                if (box.values.isEmpty) {
-                                  // when user want to save
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: InkWell(
-                                      onTap: _onSavedTapped,
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        child: Icon(
-                                          Icons.bookmark,
-                                          size: 20,
-                                          color: Colors.grey,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: HexColor('#43C7AE')),
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                } else
-                                  // when user want to unsaved
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: InkWell(
-                                      onTap: _onUnSavedTapped,
-                                      child: Container(
-                                        width: 40,
-                                        height: 40,
-                                        child: Icon(
-                                          Icons.bookmark,
-                                          size: 20,
-                                          color: HexColor('#43C7AE'),
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: HexColor('#43C7AE')),
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                              },
-                            );
-                        } else
-                          return buildLoading();
-                      },
-                    ),
-                  ],
-                ),
-              ),
 
-              // minutes
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Text(
-                      '${widget.venueModel != null ? widget.venueModel.avgSpendingTime : widget.historyModel != null ? widget.historyModel.avgSpendingTime : widget.searchModel != null ? widget.searchModel.avgSpendingTime : ''} Minutes',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Text(
-                    '2.3 Km',
-                    style: TextStyle(color: HexColor('757575'), fontSize: 14),
-                  )
-                ],
-              ),
-
-              // rate value
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  children: [
-                    Text(
-                      '${widget.venueModel != null ? widget.venueModel.rate : widget.historyModel != null ? widget.historyModel.rate : widget.searchModel != null ? widget.searchModel.rate : ''}',
-                      style: TextStyle(fontSize: 14, color: HexColor('#757575')),
-                    ),
+                    // rate value
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: RatingBar(
-                        itemSize: 14,
-                        onRatingUpdate: null,
-                        initialRating: 4,
-                        itemCount: 5,
-                        direction: Axis.horizontal,
-                        unratedColor: Colors.blueGrey,
-                        glowColor: HexColor('#F3BD42'),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: [
+                          Text(
+                            '${widget.venueModel != null ? widget.venueModel.rate.toDouble() : widget.historyModel != null ? widget.historyModel.rate.toDouble() : widget.searchModel != null ? widget.searchModel.rate.toDouble() : ''}',
+                            style: TextStyle(
+                                fontSize: 14, color: HexColor('#757575')),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: RatingBar(
+                                initialRating: widget.venueModel != null
+                                    ? widget.venueModel.rate.toDouble()
+                                    : widget.historyModel != null
+                                        ? widget.historyModel.rate.toDouble()
+                                        : widget.searchModel.rate.toDouble(),
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemSize: 13.5,
+                                unratedColor: HexColor('#DBDCE0'),
+                                itemCount: 5,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 1.0),
+                                itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: HexColor('#F3BD42'),
+                                    ),
+                                onRatingUpdate: null),
+                          ),
+                          Text(
+                              '(${widget.venueModel != null ? widget.venueModel.reviewCount : widget.historyModel != null ? widget.historyModel.reviewCount : widget.searchModel != null ? widget.searchModel.reviewCount : ''})')
+                        ],
                       ),
                     ),
-                    Text(
-                        '(${widget.venueModel != null ? widget.venueModel.reviewCount : widget.historyModel != null ? widget.historyModel.reviewCount : widget.searchModel != null ? widget.searchModel.reviewCount : ''})')
-                  ],
-                ),
-              ),
 
-              // category name
-              Text(
-                widget.venueModel != null
-                    ? widget.venueModel.categoryName
-                    : widget.historyModel != null
-                        ? widget.historyModel.categoryName
-                        : widget.searchModel != null
-                            ? widget.searchModel.categoryName
-                            : '',
-                style: TextStyle(fontSize: 14, color: HexColor('#757575')),
-              ),
-
-              // safety status
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                child: Row(
-                  children: [
+                    // category name
                     Text(
-                      'Safety status',
-                      style: TextStyle(fontSize: 14, color: HexColor('#757575')),
+                      widget.venueModel != null
+                          ? widget.venueModel.categoryName
+                          : widget.historyModel != null
+                              ? widget.historyModel.categoryName
+                              : widget.searchModel != null
+                                  ? widget.searchModel.categoryName
+                                  : '',
+                      style:
+                          TextStyle(fontSize: 14, color: HexColor('#757575')),
                     ),
+
+                    // safety status
                     Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        (widget.venueModel != null &&
-                                widget.venueModel.safetyStatus == 1)
-                            ? 'Clear'
-                            : (widget.historyModel != null &&
-                                    widget.historyModel.safetyStatus == 1)
-                                ? 'Clear'
-                                : (widget.searchModel != null &&
-                                        widget.searchModel.safetyStatus == 1)
-                                    ? 'Clear'
-                                    : (widget.venueModel != null &&
-                                            widget.venueModel.safetyStatus == 2)
-                                        ? 'Caution'
-                                        : (widget.historyModel != null &&
-                                                widget.historyModel.safetyStatus ==
-                                                    2)
-                                            ? 'Caution'
-                                            : (widget.searchModel != null &&
-                                                    widget.searchModel.safetyStatus ==
-                                                        2)
-                                                ? 'Caution'
-                                                : (widget.venueModel != null &&
-                                                        widget.venueModel
-                                                                .safetyStatus ==
-                                                            3)
-                                                    ? 'Risk Level'
-                                                    : (widget.historyModel != null &&
-                                                            widget.historyModel
-                                                                    .safetyStatus ==
-                                                                3)
-                                                        ? 'Risk Level'
-                                                        : (widget.searchModel !=
-                                                                    null &&
-                                                                widget.searchModel
-                                                                        .safetyStatus ==
-                                                                    3)
-                                                            ? 'Risk Level'
-                                                            : (widget.venueModel !=
-                                                                        null &&
-                                                                    widget.venueModel
-                                                                            .safetyStatus ==
-                                                                        4)
-                                                                ? 'High Risk'
-                                                                : (widget.historyModel !=
-                                                                            null &&
-                                                                        widget.historyModel.safetyStatus ==
-                                                                            4)
-                                                                    ? 'High Risk'
-                                                                    : (widget.searchModel != null &&
-                                                                            widget.searchModel.safetyStatus == 4)
-                                                                        ? 'High Risk'
-                                                                        : '',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          color: (widget.venueModel != null &&
-                                  widget.venueModel.safetyStatus == 1)
-                              ? Color(0xff43c7ae)
-                              : (widget.historyModel != null &&
-                                      widget.historyModel.safetyStatus == 1)
-                                  ? Color(0xff43c7ae)
-                                  : (widget.searchModel != null &&
-                                          widget.searchModel.safetyStatus == 1)
-                                      ? Color(0xff43c7ae)
-                                      : (widget.venueModel != null &&
-                                              widget.venueModel.safetyStatus == 2)
-                                          ? HexColor('#F4CD29')
-                                          : (widget.historyModel != null &&
-                                                  widget.historyModel.safetyStatus ==
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Safety status',
+                            style: TextStyle(
+                                fontSize: 14, color: HexColor('#757575')),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text(
+                              (widget.venueModel != null &&
+                                      widget.venueModel.safetyStatus == 1)
+                                  ? 'Clear'
+                                  : (widget.historyModel != null &&
+                                          widget.historyModel.safetyStatus == 1)
+                                      ? 'Clear'
+                                      : (widget.searchModel != null &&
+                                              widget.searchModel.safetyStatus ==
+                                                  1)
+                                          ? 'Clear'
+                                          : (widget.venueModel != null &&
+                                                  widget.venueModel.safetyStatus ==
                                                       2)
-                                              ? HexColor('#F4CD29')
-                                              : (widget.searchModel != null &&
-                                                      widget.searchModel.safetyStatus ==
+                                              ? 'Caution'
+                                              : (widget.historyModel != null &&
+                                                      widget.historyModel
+                                                              .safetyStatus ==
                                                           2)
-                                                  ? HexColor('#F4CD29')
-                                                  : (widget.venueModel != null &&
-                                                          widget.venueModel
+                                                  ? 'Caution'
+                                                  : (widget.searchModel != null &&
+                                                          widget.searchModel
                                                                   .safetyStatus ==
-                                                              3)
-                                                      ? HexColor('#F49E29')
-                                                      : (widget.historyModel != null &&
-                                                              widget.historyModel
+                                                              2)
+                                                      ? 'Caution'
+                                                      : (widget.venueModel !=
+                                                                  null &&
+                                                              widget.venueModel
                                                                       .safetyStatus ==
                                                                   3)
-                                                          ? HexColor('#F49E29')
-                                                          : (widget.searchModel !=
+                                                          ? 'Risk Level'
+                                                          : (widget.historyModel !=
                                                                       null &&
-                                                                  widget.searchModel
+                                                                  widget.historyModel
                                                                           .safetyStatus ==
                                                                       3)
-                                                              ? HexColor(
-                                                                  '#F49E29')
-                                                              : (widget.venueModel !=
+                                                              ? 'Risk Level'
+                                                              : (widget.searchModel !=
                                                                           null &&
-                                                                      widget.venueModel.safetyStatus == 4)
-                                                                  ? HexColor('#F45029')
-                                                                  : (widget.historyModel != null && widget.historyModel.safetyStatus == 4)
-                                                                      ? HexColor('#F45029')
-                                                                      : (widget.searchModel != null && widget.searchModel.safetyStatus == 4)
-                                                                          ? HexColor('#F45029')
-                                                                          : Color(0xff43c7ae),
-                        ),
+                                                                      widget.searchModel.safetyStatus ==
+                                                                          3)
+                                                                  ? 'Risk Level'
+                                                                  : (widget.venueModel != null &&
+                                                                          widget.venueModel.safetyStatus == 4)
+                                                                      ? 'High Risk'
+                                                                      : (widget.historyModel != null && widget.historyModel.safetyStatus == 4)
+                                                                          ? 'High Risk'
+                                                                          : (widget.searchModel != null && widget.searchModel.safetyStatus == 4)
+                                                                              ? 'High Risk'
+                                                                              : '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                color: (widget.venueModel != null &&
+                                        widget.venueModel.safetyStatus == 1)
+                                    ? Color(0xff43c7ae)
+                                    : (widget.historyModel != null &&
+                                            widget.historyModel.safetyStatus ==
+                                                1)
+                                        ? Color(0xff43c7ae)
+                                        : (widget.searchModel != null &&
+                                                widget.searchModel.safetyStatus ==
+                                                    1)
+                                            ? Color(0xff43c7ae)
+                                            : (widget.venueModel != null &&
+                                                    widget.venueModel.safetyStatus ==
+                                                        2)
+                                                ? HexColor('#F4CD29')
+                                                : (widget.historyModel != null &&
+                                                        widget.historyModel
+                                                                .safetyStatus ==
+                                                            2)
+                                                    ? HexColor('#F4CD29')
+                                                    : (widget.searchModel != null &&
+                                                            widget.searchModel
+                                                                    .safetyStatus ==
+                                                                2)
+                                                        ? HexColor('#F4CD29')
+                                                        : (widget.venueModel != null &&
+                                                                widget.venueModel
+                                                                        .safetyStatus ==
+                                                                    3)
+                                                            ? HexColor(
+                                                                '#F49E29')
+                                                            : (widget.historyModel !=
+                                                                        null &&
+                                                                    widget.historyModel.safetyStatus == 3)
+                                                                ? HexColor('#F49E29')
+                                                                : (widget.searchModel != null && widget.searchModel.safetyStatus == 3)
+                                                                    ? HexColor('#F49E29')
+                                                                    : (widget.venueModel != null && widget.venueModel.safetyStatus == 4)
+                                                                        ? HexColor('#F45029')
+                                                                        : (widget.historyModel != null && widget.historyModel.safetyStatus == 4)
+                                                                            ? HexColor('#F45029')
+                                                                            : (widget.searchModel != null && widget.searchModel.safetyStatus == 4)
+                                                                                ? HexColor('#F45029')
+                                                                                : Color(0xff43c7ae),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    )
                   ],
                 ),
-              )
+              ),
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 

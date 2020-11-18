@@ -1,5 +1,6 @@
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
+import 'package:cast/common/map_style.dart';
 import 'package:cast/db/history/history.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:cast/ui/saved/map/saved_card_map_widget.dart';
@@ -50,15 +51,12 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
   GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
   var pageController = PageController();
 
-    
-
   @override
   void initState() {
     super.initState();
     pageController.addListener(() {
       print(pageController.page);
     });
-
   }
 
   @override
@@ -78,15 +76,17 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                     child: GoogleMap(
                       key: _key,
                       interactive: true,
-                      mapType: MapType.roadmap,
+                      mapStyle: mapStyle,
+                      //mapType: MapType.roadmap,
                       initialPosition:
                           GeoCoord(venueModel.latitude, venueModel.longitude),
                       markers: {
-                        Marker(GeoCoord(
-                            venueModel.latitude, venueModel.longitude),),
+                        Marker(
+                          GeoCoord(venueModel.latitude, venueModel.longitude),
+                        ),
                       },
                       mobilePreferences: MobileMapPreferences(
-                          trafficEnabled: true,
+                          trafficEnabled: false,
                           scrollGesturesEnabled: true,
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
@@ -101,7 +101,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                         child: GoogleMap(
                           key: _key,
                           interactive: true,
-                          mapType: MapType.roadmap,
+                          //mapType: MapType.roadmap,
+                          mapStyle: mapStyle,
                           initialPosition: GeoCoord(
                               historyModel.latitude, historyModel.longitude),
                           markers: {
@@ -109,7 +110,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                                 historyModel.latitude, historyModel.longitude)),
                           },
                           mobilePreferences: MobileMapPreferences(
-                              trafficEnabled: true,
+                              trafficEnabled: false,
                               scrollGesturesEnabled: true,
                               myLocationEnabled: true,
                               myLocationButtonEnabled: false,
@@ -124,7 +125,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                             child: GoogleMap(
                               key: _key,
                               interactive: true,
-                              mapType: MapType.roadmap,
+                              //mapType: MapType.roadmap,
+                              mapStyle: mapStyle,
                               initialPosition: GeoCoord(
                                   searchModel.latitude, searchModel.longitude),
                               markers: {
@@ -132,7 +134,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                                     searchModel.longitude)),
                               },
                               mobilePreferences: MobileMapPreferences(
-                                  trafficEnabled: true,
+                                  trafficEnabled: false,
                                   scrollGesturesEnabled: true,
                                   myLocationEnabled: true,
                                   myLocationButtonEnabled: false,
@@ -141,7 +143,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                         : GoogleMap(
                             key: _key,
                             interactive: true,
-                            mapType: MapType.roadmap,
+                            //mapType: MapType.roadmap,
+                            mapStyle: mapStyle,
                             initialPosition: GeoCoord(1.290270, 103.851959),
                             markers: {
                               Marker(
@@ -149,7 +152,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                               ),
                             },
                             mobilePreferences: MobileMapPreferences(
-                                trafficEnabled: true,
+                                trafficEnabled: false,
                                 scrollGesturesEnabled: true,
                                 myLocationEnabled: true,
                                 myLocationButtonEnabled: false,
