@@ -99,7 +99,7 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
       body: Stack(
         children: <Widget>[
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(16.0, 150.0, 328.0, 640.0),
+            bounds: Rect.fromLTWH(0.0, 150.0, 360.0, 640.0),
             size: Size(360.0, 840.0),
             pinLeft: true,
             pinRight: true,
@@ -277,7 +277,7 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
 
           // tabviews
           Pinned.fromSize(
-            bounds: Rect.fromLTWH(0.0, 80.0, 578.0, 52.0),
+            bounds: Rect.fromLTWH(0.0, 80.0, 360.0, 52.0),
             size: Size(360.0, 640.0),
             pinLeft: true,
             pinRight: true,
@@ -286,8 +286,8 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
             child: Stack(
               children: <Widget>[
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(0.0, 0.0, 578.0, 52.0),
-                  size: Size(578.0, 52.0),
+                  bounds: Rect.fromLTWH(0.0, 0.0, 360.0, 52.0),
+                  size: Size(360.0, 52.0),
                   pinLeft: true,
                   pinRight: true,
                   pinTop: true,
@@ -301,10 +301,10 @@ class _SavedScreenXDState extends State<SavedScreenXD> {
                   ),
                 ),
                 Pinned.fromSize(
-                  bounds: Rect.fromLTWH(33.0, 0.0, 545.0, 52.0),
-                  size: Size(578.0, 52.0),
-                  pinLeft: true,
-                  pinRight: true,
+                  bounds: Rect.fromLTWH(10.0, 0.0, 340.0, 52.0),
+                  size: Size(360.0, 52.0),
+                  pinLeft: false,
+                  pinRight: false,
                   pinTop: true,
                   pinBottom: true,
                   child:

@@ -1,7 +1,5 @@
 import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
-import 'package:cast/ui/saved/map/draggable_scrollable_sheet.dart';
-import 'package:cast/ui/saved/map/loading_7.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';

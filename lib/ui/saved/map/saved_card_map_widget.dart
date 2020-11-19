@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:location/location.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 class SavedCardMapWidget extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
@@ -51,28 +53,41 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
           child: Stack(
             children: [
-              Positioned(
-                top: -25.0,
-                right: 30.0,
-                child: widget.venueModel.badgeModel != null
-                    ? Container(
-                        width: 100,
-                        height: 100,
-                        child: Image.asset('assets/bestsuggestionbadge.png'))
-                    : widget.historyModel.badgeModel != null
-                        ? Container(
-                            width: 100,
-                            height: 100,
-                            child:
-                                Image.asset('assets/bestsuggestionbadge.png'))
-                        : widget.searchModel.badgeModel != null
-                            ? Container(
-                                width: 100,
-                                height: 100,
-                                child: Image.asset(
-                                    'assets/bestsuggestionbadge.png'))
-                            : Container(),
-              ),
+              widget.venueModel != null
+                  ? Positioned(
+                      top: -25.0,
+                      right: 30.0,
+                      child: widget.venueModel.badgeModel != null
+                          ? Container(
+                              width: 100,
+                              height: 100,
+                              child:
+                                  Image.asset('assets/bestsuggestionbadge.png'))
+                          : Container(),
+                    )
+                  : widget.historyModel != null
+                      ? Positioned(
+                          top: -25.0,
+                          right: 30.0,
+                          child: widget.historyModel.badgeModelIconUrl != null
+                              ? Container(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image.asset(
+                                      'assets/bestsuggestionbadge.png'))
+                              : Container(),
+                        )
+                      : Positioned(
+                          top: -25.0,
+                          right: 30.0,
+                          child: widget.searchModel.badgeModelIconUrl != null
+                              ? Container(
+                                  width: 100,
+                                  height: 100,
+                                  child: Image.asset(
+                                      'assets/bestsuggestionbadge.png'))
+                              : Container(),
+                        ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -101,36 +116,43 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                       padding: const EdgeInsets.symmetric(vertical: 18),
                       child: Row(
                         children: [
+                          // direction button
                           Padding(
                             padding: const EdgeInsets.only(right: 60),
-                            child: Card(
-                              color: HexColor('#43C7AE'),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(21.0)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 16),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                      child: Container(
-                                        width: 20,
-                                        height: 20,
-                                        child: Image.asset(
-                                            'assets/directions.png'),
+                            child: InkWell(
+                              onTap: _onNavigationTapped,
+                              child: Card(
+                                color: HexColor('#43C7AE'),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(21.0)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 16),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Container(
+                                          width: 20,
+                                          height: 20,
+                                          child: Image.asset(
+                                              'assets/directions.png'),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      'Directions',
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    )
-                                  ],
+                                      Text(
+                                        'Directions',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+
+                          // share button
                           InkWell(
                             onTap: _onShareClicked,
                             child: Container(
@@ -147,6 +169,8 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                               ),
                             ),
                           ),
+
+                          // save button
                           FutureBuilder(
                             future: Hive.openBox(savedBox),
                             builder:
@@ -455,7 +479,54 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
   }
 
   void _onShareClicked() {
-    Share.share("");
+    if (widget.venueModel != null) {
+      Share.share(widget.venueModel.name);
+    }
+    if (widget.historyModel != null) {
+      Share.share(widget.historyModel.name);
+    }
+  }
+
+  void _onNavigationTapped() async {
+    if (widget.venueModel != null) {
+      final location = await Location().getLocation();
+      var origin = '${location.latitude},${location.longitude}';
+      var destination =
+          '${widget.venueModel.latitude},${widget.venueModel.longitude}';
+      final url =
+          'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving&dir_action=navigate';
+      if (await UrlLauncher.canLaunch(url)) {
+        await UrlLauncher.launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+    if (widget.historyModel != null) {
+      final location = await Location().getLocation();
+      var origin = '${location.latitude},${location.longitude}';
+      var destination =
+          '${widget.historyModel.latitude},${widget.historyModel.longitude}';
+      final url =
+          'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving&dir_action=navigate';
+      if (await UrlLauncher.canLaunch(url)) {
+        await UrlLauncher.launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
+    if (widget.searchModel != null) {
+      final location = await Location().getLocation();
+      var origin = '${location.latitude},${location.longitude}';
+      var destination =
+          '${widget.searchModel.latitude},${widget.searchModel.longitude}';
+      final url =
+          'https://www.google.com/maps/dir/?api=1&origin=$origin&destination=$destination&travelmode=driving&dir_action=navigate';
+      if (await UrlLauncher.canLaunch(url)) {
+        await UrlLauncher.launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    }
   }
 
   @override

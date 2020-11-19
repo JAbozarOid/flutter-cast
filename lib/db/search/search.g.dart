@@ -18,7 +18,7 @@ class SearchAdapter extends TypeAdapter<Search> {
     };
     return Search(
       fields[0] as String,
-      fields[1] as BadgeModel,
+      fields[1] as String,
       fields[2] as int,
       fields[3] as String,
       fields[4] as int,
@@ -40,7 +40,7 @@ class SearchAdapter extends TypeAdapter<Search> {
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.badgeModel)
+      ..write(obj.badgeModelIconUrl)
       ..writeByte(2)
       ..write(obj.rate)
       ..writeByte(3)

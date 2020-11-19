@@ -65,6 +65,7 @@ class SavedCardItemXD extends StatelessWidget {
                             ),
                           ),
                         ),
+                        
                         Pinned.fromSize(
                           bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
                           size: Size(328.0, 128.0),
@@ -72,16 +73,15 @@ class SavedCardItemXD extends StatelessWidget {
                           pinTop: true,
                           pinBottom: true,
                           fixedWidth: false,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4.0),
-                              image: DecorationImage(
-                                image: AssetImage(savedCardModel.image),
-                                fit: BoxFit.cover,
+                          child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4.0),
+                                child: Image.network(
+                                  savedCardModel.image.toString(),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          ),
                         ),
+                        
                         Pinned.fromSize(
                           bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
                           size: Size(328.0, 128.0),

@@ -21,7 +21,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchEvent event,
   ) async* {
     if (event is GetInputedTextSearch) {
-      if (event.inputTextSearch.length > 5) {
+      if (event.inputTextSearch.length > 3) {
         yield SearchLoading();
 
         try {

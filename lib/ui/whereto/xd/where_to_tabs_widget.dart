@@ -19,7 +19,7 @@ class WhereToTabsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: 100,
       height: 20,
       child: InkWell(
         onTap: onTabsTapped,
@@ -28,8 +28,8 @@ class WhereToTabsWidget extends StatelessWidget {
             Pinned.fromSize(
               bounds: Rect.fromLTWH(0.0, 0.0, 100.0, 52.0),
               size: Size(100.0, 52.0),
-              pinLeft: true,
-              pinRight: true,
+             /*  pinLeft: true,
+              pinRight: true, */
               pinTop: true,
               pinBottom: true,
               child:
@@ -43,7 +43,7 @@ class WhereToTabsWidget extends StatelessWidget {
             Pinned.fromSize(
               bounds: Rect.fromLTWH(17.0, 20.0, 100.0, 17.0),
               size: Size(100.0, 52.0),
-              pinLeft: true,
+              pinLeft: false,
               fixedWidth: false,
               fixedHeight: true,
               child: Text(
@@ -61,8 +61,8 @@ class WhereToTabsWidget extends StatelessWidget {
             ),
             tappedIndex == position
                 ? Pinned.fromSize(
-                    bounds: Rect.fromLTWH(0.5, 50.5, 120.0, 1.0),
-                    size: Size(545.0, 52.0),
+                    bounds: Rect.fromLTWH(0.0, 50.5, 100.0, 1.0),
+                    size: Size(360.0, 52.0),
                     pinLeft: true,
                     pinBottom: true,
                     fixedWidth: true,

@@ -9,7 +9,7 @@ class Search extends HiveObject {
   String name;
 
   @HiveField(1)
-  BadgeModel badgeModel;
+  String badgeModelIconUrl;
 
   @HiveField(2)
   int rate;
@@ -46,7 +46,7 @@ class Search extends HiveObject {
 
   Search(
       this.name,
-      this.badgeModel,
+      this.badgeModelIconUrl,
       this.rate,
       this.categoryName,
       this.avgSpendingTime,

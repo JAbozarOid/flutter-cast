@@ -14,6 +14,7 @@ class VenueListByLocationResponse {
   double longitude;
   String imageUrlThumbnail;
   String venueId;
+  //List<String> imageUrlList;
 
   VenueListByLocationResponse.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -29,6 +30,7 @@ class VenueListByLocationResponse {
     longitude = json['longitude'];
     imageUrlThumbnail = json['imageUrlThumbnail'];
     venueId = json['venueId'];
+    //imageUrlList = json['imageUrlList'];
   }
 
   String errorMessage;

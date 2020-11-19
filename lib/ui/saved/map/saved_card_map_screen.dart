@@ -5,6 +5,7 @@ import 'package:cast/db/history/history.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:cast/ui/saved/map/saved_card_map_widget.dart';
 import 'package:cast/ui/saved/xd/detail_full.dart';
+import 'package:cast/ui/saved/xd/full_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_maps/flutter_google_maps.dart';
 
@@ -234,7 +235,10 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => DetailFull(
               venueModel: venueModel,
-              history: historyModel,
+              historyModel: historyModel,
+              searchModel: searchModel,
+              position: position,
             )));
+    
   }
 }

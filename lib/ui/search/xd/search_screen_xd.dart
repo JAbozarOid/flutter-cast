@@ -381,19 +381,19 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                   size: Size(279.5, 110.0),
                                   child: TextFormField(
                                     cursorColor: const Color(0xffffffff),
-                                    style: TextStyle(color: const Color(0xffffffff),),
+                                    style: TextStyle(
+                                      color: const Color(0xffffffff),
+                                    ),
                                     onChanged: (text) => {_onTextChanged(text)},
                                     keyboardType: TextInputType.text,
                                     controller: _inputedTextSearchController,
                                     maxLines: 1,
-                                    
                                     decoration: InputDecoration(
                                         border: InputBorder.none,
                                         hintText: 'enter a search term',
                                         hintStyle: TextStyle(
                                           fontSize: 12,
                                           color: const Color(0xffffffff),
-                                          
                                         )),
                                   ),
                                 ),
@@ -659,15 +659,47 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
             pinLeft: true,
             fixedWidth: false,
             fixedHeight: true,
-            child: Text(
-              typeModelSearch == null ? 'Recent history' : 'Search result',
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 15,
-                color: const Color(0xff9ea1a6),
-              ),
-              textAlign: TextAlign.left,
-            ),
+            child: StreamBuilder<InputedTextState>(
+                stream: _inputedTextState,
+                builder: (context, snapshot) {
+                  switch (snapshot.data) {
+                    case InputedTextState.textEmpty:
+                      return Text(
+                        typeModelSearch == null
+                            ? 'Recent history'
+                            : 'Search result',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 15,
+                          color: const Color(0xff9ea1a6),
+                        ),
+                        textAlign: TextAlign.left,
+                      );
+                      break;
+                    case InputedTextState.text:
+                      return Text(
+                        typeModelSearch == null ? '' : '',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 15,
+                          color: const Color(0xff9ea1a6),
+                        ),
+                        textAlign: TextAlign.left,
+                      );
+                      break;
+                  }
+                  return Text(
+                    typeModelSearch == null
+                        ? 'Recent history'
+                        : 'Search result',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 15,
+                      color: const Color(0xff9ea1a6),
+                    ),
+                    textAlign: TextAlign.left,
+                  );
+                }),
           ),
 
           // recent card items
@@ -805,7 +837,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       );
                                     } else {
                                       return ListView.builder(
-                                        itemCount: box.values.length,
+                                        //itemCount: box.values.length,
+                                        // becuase i want to show just one items
+                                        itemCount: 1,
                                         itemBuilder: (context, index) {
                                           historyModel = box.getAt(index);
 
@@ -857,7 +891,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       );
                                     } else {
                                       return ListView.builder(
-                                        itemCount: box.values.length,
+                                        //itemCount: box.values.length,
+                                        // becuase i want to show just one items
+                                        itemCount: 1,
                                         itemBuilder: (context, index) {
                                           searchModel = box.getAt(index);
 
@@ -886,7 +922,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   void addHistory(VenueListByLocationResponse venuModel, int index) {
     final history = History(
         venuModel.name,
-        null,
+        venueModel.badgeModel.iconUrl,
         venuModel.rate,
         venuModel.categoryName,
         venuModel.avgSpendingTime,
@@ -900,8 +936,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venueModel.venueId);
 
     final histories = Hive.box(historiesBox);
-    
-
+    histories.clear();
     histories.add(history);
 
     //histories.putAt(index, history);
@@ -910,7 +945,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   void addSearch(VenueListByLocationResponse venuModel, int index) {
     final search = Search(
         venuModel.name,
-        null,
+        venueModel.badgeModel.iconUrl,
         venuModel.rate,
         venuModel.categoryName,
         venuModel.avgSpendingTime,
@@ -924,7 +959,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venueModel.venueId);
 
     final searches = Hive.box(searchBox);
-
+    searches.clear();
     searches.add(search);
   }
 

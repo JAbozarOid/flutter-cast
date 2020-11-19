@@ -1,4 +1,3 @@
-import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
 import 'package:hive/hive.dart';
 
 part 'history.g.dart';
@@ -9,7 +8,7 @@ class History extends HiveObject {
   String name;
 
   @HiveField(1)
-  BadgeModel badgeModel;
+  String badgeModelIconUrl;
 
   @HiveField(2)
   int rate;
@@ -46,7 +45,7 @@ class History extends HiveObject {
 
   History(
       this.name,
-      this.badgeModel,
+      this.badgeModelIconUrl,
       this.rate,
       this.categoryName,
       this.avgSpendingTime,
@@ -58,4 +57,16 @@ class History extends HiveObject {
       this.longitude,
       this.imageUrlThumbnail,
       this.venueId);
+}
+
+@HiveType(typeId: 4)
+class BadgeModel {
+  @HiveField(0)
+  String title;
+  @HiveField(1)
+  String color;
+  @HiveField(2)
+  String iconUrl;
+
+  BadgeModel(this.title, this.color, this.iconUrl);
 }
