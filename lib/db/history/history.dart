@@ -58,6 +58,4 @@ class History extends HiveObject {
       this.longitude,
       this.imageUrlThumbnail,
       this.venueId);
-
-  
 }

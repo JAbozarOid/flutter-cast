@@ -1,10 +1,12 @@
 import 'package:adobe_xd/adobe_xd.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
+import 'package:cast/common/hex_color.dart';
 import 'package:cast/db/history/history.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SavedCardItemXD extends StatelessWidget {
@@ -240,6 +242,8 @@ class SavedCardItemXD extends StatelessWidget {
                                 ),
                               ),
                             ),
+
+                            // image of place
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
                               size: Size(328.0, 128.0),
@@ -247,21 +251,16 @@ class SavedCardItemXD extends StatelessWidget {
                               pinTop: true,
                               pinBottom: true,
                               fixedWidth: false,
-                              child: Container(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(4.0),
                                 child: Image.network(
                                   venueModel.imageUrlThumbnail.toString(),
                                   fit: BoxFit.cover,
                                 ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  /* image: 
-                      DecorationImage(
-                        image: AssetImage(savedCardModel.image),
-                        fit: BoxFit.cover,
-                      ), */
-                                ),
                               ),
                             ),
+
+                            // restaurant name
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
                               size: Size(328.0, 128.0),
@@ -278,13 +277,15 @@ class SavedCardItemXD extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                             ),
+
+                            // rate value
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
                               size: Size(328.0, 128.0),
                               fixedWidth: false,
                               fixedHeight: true,
                               child: Text(
-                                '${venueModel.rate}',
+                                '${venueModel.rate.toDouble()}',
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontSize: 14,
@@ -293,6 +294,8 @@ class SavedCardItemXD extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                             ),
+
+                            //category name
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
                               size: Size(328.0, 128.0),
@@ -308,8 +311,10 @@ class SavedCardItemXD extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                             ),
+
+                            // review count
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
+                              bounds: Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
                               size: Size(328.0, 128.0),
                               fixedWidth: false,
                               fixedHeight: true,
@@ -323,20 +328,28 @@ class SavedCardItemXD extends StatelessWidget {
                                 textAlign: TextAlign.left,
                               ),
                             ),
+
+                            // star rate
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                              size: Size(328.0, 128.0),
-                              child:
-                                  // Adobe XD layer: 'Rate' (group)
-                                  Stack(
-                                children: <Widget>[
-                                  SvgPicture.string(
-                                    _svg_cvz5lm,
-                                    allowDrawingOutsideViewBox: true,
-                                  ),
-                                ],
-                              ),
-                            ),
+                                bounds: Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                size: Size(328.0, 128.0),
+                                child: RatingBar(
+                                    initialRating: venueModel.rate.toDouble(),
+                                    minRating: venueModel.rate.toDouble(),
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemSize: 13.5,
+                                    unratedColor: HexColor('#DBDCE0'),
+                                    itemCount: 5,
+                                    itemPadding:
+                                        EdgeInsets.symmetric(horizontal: 1.0),
+                                    itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: HexColor('#F3BD42'),
+                                        ),
+                                    onRatingUpdate: null)),
+
+                            // arrow
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
                               size: Size(328.0, 128.0),
@@ -377,6 +390,8 @@ class SavedCardItemXD extends StatelessWidget {
                                 ],
                               ),
                             ),
+
+                            // address
                             Pinned.fromSize(
                               bounds: Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
                               size: Size(328.0, 128.0),
@@ -430,18 +445,11 @@ class SavedCardItemXD extends StatelessWidget {
                                   pinTop: true,
                                   pinBottom: true,
                                   fixedWidth: false,
-                                  child: Container(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4.0),
                                     child: Image.network(
                                       historyModel.imageUrlThumbnail.toString(),
                                       fit: BoxFit.cover,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      /* image: 
-                      DecorationImage(
-                        image: AssetImage(savedCardModel.image),
-                        fit: BoxFit.cover,
-                      ), */
                                     ),
                                   ),
                                 ),
@@ -469,7 +477,7 @@ class SavedCardItemXD extends StatelessWidget {
                                   fixedWidth: false,
                                   fixedHeight: true,
                                   child: Text(
-                                    '${historyModel.rate}',
+                                    '${historyModel.rate.toDouble()}',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,
@@ -496,7 +504,7 @@ class SavedCardItemXD extends StatelessWidget {
                                 ),
                                 Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
+                                      Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
                                   size: Size(328.0, 128.0),
                                   fixedWidth: false,
                                   fixedHeight: true,
@@ -510,21 +518,28 @@ class SavedCardItemXD extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
+                                // star rate
                                 Pinned.fromSize(
-                                  bounds:
-                                      Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                                  size: Size(328.0, 128.0),
-                                  child:
-                                      // Adobe XD layer: 'Rate' (group)
-                                      Stack(
-                                    children: <Widget>[
-                                      SvgPicture.string(
-                                        _svg_cvz5lm,
-                                        allowDrawingOutsideViewBox: true,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    bounds:
+                                        Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                    size: Size(328.0, 128.0),
+                                    child: RatingBar(
+                                        initialRating:
+                                            historyModel.rate.toDouble(),
+                                        minRating: historyModel.rate.toDouble(),
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemSize: 13.5,
+                                        unratedColor: HexColor('#DBDCE0'),
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 1.0),
+                                        itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: HexColor('#F3BD42'),
+                                            ),
+                                        onRatingUpdate: null)),
+
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
@@ -568,6 +583,7 @@ class SavedCardItemXD extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),
@@ -614,6 +630,7 @@ class SavedCardItemXD extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
                                   size: Size(328.0, 128.0),
@@ -621,21 +638,15 @@ class SavedCardItemXD extends StatelessWidget {
                                   pinTop: true,
                                   pinBottom: true,
                                   fixedWidth: false,
-                                  child: Container(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(4.0),
                                     child: Image.network(
                                       searchModel.imageUrlThumbnail.toString(),
                                       fit: BoxFit.cover,
                                     ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      /* image: 
-                      DecorationImage(
-                        image: AssetImage(savedCardModel.image),
-                        fit: BoxFit.cover,
-                      ), */
-                                    ),
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
@@ -653,6 +664,7 @@ class SavedCardItemXD extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(122.0, 47.0, 19.0, 17.0),
@@ -660,7 +672,7 @@ class SavedCardItemXD extends StatelessWidget {
                                   fixedWidth: false,
                                   fixedHeight: true,
                                   child: Text(
-                                    '${searchModel.rate}',
+                                    '${searchModel.rate.toDouble()}',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,
@@ -669,6 +681,7 @@ class SavedCardItemXD extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(122.0, 67.0, 68.0, 17.0),
@@ -685,9 +698,10 @@ class SavedCardItemXD extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
+
                                 Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(223.0, 47.0, 32.0, 17.0),
+                                      Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
                                   size: Size(328.0, 128.0),
                                   fixedWidth: false,
                                   fixedHeight: true,
@@ -701,21 +715,30 @@ class SavedCardItemXD extends StatelessWidget {
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
+
+                                // star rate
                                 Pinned.fromSize(
-                                  bounds:
-                                      Rect.fromLTWH(146.0, 49.0, 72.0, 12.0),
-                                  size: Size(328.0, 128.0),
-                                  child:
-                                      // Adobe XD layer: 'Rate' (group)
-                                      Stack(
-                                    children: <Widget>[
-                                      SvgPicture.string(
-                                        _svg_cvz5lm,
-                                        allowDrawingOutsideViewBox: true,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    bounds:
+                                        Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                    size: Size(328.0, 128.0),
+                                    child: RatingBar(
+                                        initialRating:
+                                            searchModel.rate.toDouble(),
+                                        minRating: searchModel.rate.toDouble(),
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemSize: 13.5,
+                                        unratedColor: HexColor('#DBDCE0'),
+                                        itemCount: 5,
+                                        itemPadding: EdgeInsets.symmetric(
+                                            horizontal: 1.0),
+                                        itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: HexColor('#F3BD42'),
+                                            ),
+                                        onRatingUpdate: null)),
+                                
+                                //arrow
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(288.0, 22.0, 24.0, 24.0),
@@ -759,6 +782,7 @@ class SavedCardItemXD extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+                                // address
                                 Pinned.fromSize(
                                   bounds:
                                       Rect.fromLTWH(122.0, 88.0, 182.0, 16.0),

@@ -900,6 +900,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
         venueModel.venueId);
 
     final histories = Hive.box(historiesBox);
+    
 
     histories.add(history);
 
