@@ -1,5 +1,6 @@
 import 'package:cast/db/config.dart';
 import 'package:cast/db/history/history.dart';
+import 'package:cast/db/local/local_data_source_impl.dart';
 import 'package:cast/db/saved/saved.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:cast/db/setting/setting.dart';
@@ -25,7 +26,14 @@ void main() async {
   Hive.registerAdapter(SearchAdapter());
   Hive.registerAdapter(SettingAdapter());
 
-
+  bool isSettingSaved = await LocalDataSourceImpl().getDataSavedLocally();
+  if (isSettingSaved == null) {
+    await LocalDataSourceImpl().isDataSavedLocally(false);
+  } else {
+    if (isSettingSaved) {
+      await LocalDataSourceImpl().isDataSavedLocally(true);
+    }
+  }
   runApp(MyApp());
 }
 

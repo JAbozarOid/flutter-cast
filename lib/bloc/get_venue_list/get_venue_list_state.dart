@@ -28,14 +28,6 @@ class GetVenueListByLocationLoaded extends GetVenueListState {
   List<Object> get props => [venueListByLocationRes, travelModel];
 }
 
-class GetTravelTimeInfo extends GetVenueListState {
-  final TravelTimeInfoModel travelModel;
-  const GetTravelTimeInfo(this.travelModel);
-
-  @override
-  List<Object> get props => [travelModel];
-}
-
 class GetVenueListByLocationError extends GetVenueListState {
   final String message;
   const GetVenueListByLocationError(this.message);

@@ -12,6 +12,7 @@ import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_type_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_xd.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
+import 'package:cast/ui/settings/xd/settings_screen_xd_2.dart';
 import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
@@ -910,7 +911,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
   void _goToSettingsScreenXD() {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
+        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD2()));
   }
 
   // gettings detail of each category and neaby items

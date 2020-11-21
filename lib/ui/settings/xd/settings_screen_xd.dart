@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 class SettingsScreenXD extends StatefulWidget {
   SettingsScreenXD({
@@ -23,6 +24,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
   bool isSwitchedAreaInUse = false;
 
   double _currentSliderValue = 0.0;
+  double _value = 500.0;
 
   var saveSetting;
 
@@ -170,24 +172,27 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
 
               // range selector
               Pinned.fromSize(
-                  bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
-                  size: Size(360.0, 800.0),
-                  pinLeft: true,
-                  pinRight: true,
-                  fixedHeight: true,
-                  child: Slider(
-                    activeColor: const Color(0xff43c7ae),
-                    value: _currentSliderValue,
-                    min: 0,
-                    max: 2500,
-                    divisions: 5,
-                    label: _currentSliderValue.round().toString(),
-                    onChanged: (double value) {
-                      setState(() {
-                        _currentSliderValue = value;
-                      });
-                    },
-                  )),
+                bounds: Rect.fromLTWH(26.0, 173.0, 299.0, 68.0),
+                size: Size(360.0, 800.0),
+                pinLeft: true,
+                pinRight: true,
+                fixedHeight: true,
+                child: SfSlider(
+                  min: 500.0,
+                  max: 3000.0,
+                  value: _value,
+                  interval: 500,
+                  showTicks: true,
+                  showLabels: true,
+                  activeColor: const Color(0xff43c7ae),
+                  showTooltip: true,
+                  onChanged: (dynamic value) {
+                    setState(() {
+                      _value = value;
+                    });
+                  },
+                ),
+              ),
 
               Pinned.fromSize(
                 bounds: Rect.fromLTWH(24.0, 126.0, 265.0, 25.0),
@@ -1557,8 +1562,12 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
       setting = Setting(_currentSliderValue, isSwitchedUserReview,
           isSwitchedCrowding, isSwitchedAreaInUse, isSwitchedAvgSpendingTime);
     } else {
-      setting = Setting(_currentSliderValue, (saveSetting as Setting).getUserReview,
-          (saveSetting as Setting).getCrowding, (saveSetting as Setting).getAreaInUse, (saveSetting as Setting).getAvgSpendingTime);
+      setting = Setting(
+          _currentSliderValue,
+          (saveSetting as Setting).getUserReview,
+          (saveSetting as Setting).getCrowding,
+          (saveSetting as Setting).getAreaInUse,
+          (saveSetting as Setting).getAvgSpendingTime);
     }
 
     final box = Hive.box(settingBox);

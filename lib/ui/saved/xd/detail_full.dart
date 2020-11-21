@@ -82,57 +82,58 @@ class _DetailFullState extends State<DetailFull> {
                   ))
               : historyModel != null
                   ? Container(
-                    height: 300,
-                    child: Positioned(
-                        top: 0,
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: GoogleMap(
-                          key: _key,
-                          interactive: true,
-                          //mapType: MapType.roadmap,
-                          mapStyle: mapStyle,
-                          initialPosition: GeoCoord(
-                              historyModel.latitude, historyModel.longitude),
-                          markers: {
-                            Marker(GeoCoord(
-                                historyModel.latitude, historyModel.longitude)),
-                          },
-                          mobilePreferences: MobileMapPreferences(
-                              trafficEnabled: false,
-                              scrollGesturesEnabled: true,
-                              myLocationEnabled: true,
-                              myLocationButtonEnabled: false,
-                              zoomControlsEnabled: false),
-                        )),
-                  )
+                      height: 300,
+                      child: Positioned(
+                          top: 0,
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: GoogleMap(
+                            key: _key,
+                            interactive: true,
+                            //mapType: MapType.roadmap,
+                            mapStyle: mapStyle,
+                            initialPosition: GeoCoord(
+                                historyModel.latitude, historyModel.longitude),
+                            markers: {
+                              Marker(GeoCoord(historyModel.latitude,
+                                  historyModel.longitude)),
+                            },
+                            mobilePreferences: MobileMapPreferences(
+                                trafficEnabled: false,
+                                scrollGesturesEnabled: true,
+                                myLocationEnabled: true,
+                                myLocationButtonEnabled: false,
+                                zoomControlsEnabled: false),
+                          )),
+                    )
                   : searchModel != null
-                      ? Container(height: 300,
-                        child: Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: GoogleMap(
-                              key: _key,
-                              interactive: true,
-                              //mapType: MapType.roadmap,
-                              mapStyle: mapStyle,
-                              initialPosition: GeoCoord(
-                                  searchModel.latitude, searchModel.longitude),
-                              markers: {
-                                Marker(GeoCoord(
-                                    searchModel.latitude, searchModel.longitude)),
-                              },
-                              mobilePreferences: MobileMapPreferences(
-                                  trafficEnabled: false,
-                                  scrollGesturesEnabled: true,
-                                  myLocationEnabled: true,
-                                  myLocationButtonEnabled: false,
-                                  zoomControlsEnabled: false),
-                            )),
-                      )
+                      ? Container(
+                          height: 300,
+                          child: Positioned(
+                              top: 0,
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: GoogleMap(
+                                key: _key,
+                                interactive: true,
+                                //mapType: MapType.roadmap,
+                                mapStyle: mapStyle,
+                                initialPosition: GeoCoord(searchModel.latitude,
+                                    searchModel.longitude),
+                                markers: {
+                                  Marker(GeoCoord(searchModel.latitude,
+                                      searchModel.longitude)),
+                                },
+                                mobilePreferences: MobileMapPreferences(
+                                    trafficEnabled: false,
+                                    scrollGesturesEnabled: true,
+                                    myLocationEnabled: true,
+                                    myLocationButtonEnabled: false,
+                                    zoomControlsEnabled: false),
+                              )),
+                        )
                       : GoogleMap(
                           key: _key,
                           interactive: true,
@@ -189,26 +190,26 @@ class _DetailFullState extends State<DetailFull> {
                             ? Positioned(
                                 top: -25.0,
                                 right: 30.0,
-                                child:
-                                    widget.historyModel.badgeModelIconUrl != null
-                                        ? Container(
-                                            width: 100,
-                                            height: 100,
-                                            child: Image.asset(
-                                                'assets/bestsuggestionbadge.png'))
-                                        : Container(),
+                                child: widget.historyModel.badgeModelIconUrl !=
+                                        null
+                                    ? Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Image.asset(
+                                            'assets/bestsuggestionbadge.png'))
+                                    : Container(),
                               )
                             : Positioned(
                                 top: -25.0,
                                 right: 30.0,
-                                child:
-                                    widget.searchModel.badgeModelIconUrl != null
-                                        ? Container(
-                                            width: 100,
-                                            height: 100,
-                                            child: Image.asset(
-                                                'assets/bestsuggestionbadge.png'))
-                                        : Container(),
+                                child: widget.searchModel.badgeModelIconUrl !=
+                                        null
+                                    ? Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: Image.asset(
+                                            'assets/bestsuggestionbadge.png'))
+                                    : Container(),
                               ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -288,8 +289,8 @@ class _DetailFullState extends State<DetailFull> {
                                       color: HexColor('#43C7AE'),
                                     ),
                                     decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: HexColor('#43C7AE')),
+                                      border: Border.all(
+                                          color: HexColor('#43C7AE')),
                                       shape: BoxShape.circle,
                                     ),
                                   ),
@@ -343,7 +344,8 @@ class _DetailFullState extends State<DetailFull> {
                                                     child: Icon(
                                                       Icons.bookmark,
                                                       size: 20,
-                                                      color: HexColor('#43C7AE'),
+                                                      color:
+                                                          HexColor('#43C7AE'),
                                                     ),
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
@@ -462,7 +464,8 @@ class _DetailFullState extends State<DetailFull> {
                                                     1)
                                             ? 'Clear'
                                             : (widget.searchModel != null &&
-                                                    widget.searchModel.safetyStatus ==
+                                                    widget.searchModel
+                                                            .safetyStatus ==
                                                         1)
                                                 ? 'Clear'
                                                 : (widget.venueModel != null &&
@@ -470,7 +473,8 @@ class _DetailFullState extends State<DetailFull> {
                                                                 .safetyStatus ==
                                                             2)
                                                     ? 'Caution'
-                                                    : (widget.historyModel != null &&
+                                                    : (widget.historyModel !=
+                                                                null &&
                                                             widget.historyModel
                                                                     .safetyStatus ==
                                                                 2)
@@ -489,11 +493,9 @@ class _DetailFullState extends State<DetailFull> {
                                                                 ? 'Risk Level'
                                                                 : (widget.historyModel !=
                                                                             null &&
-                                                                        widget.historyModel.safetyStatus ==
-                                                                            3)
+                                                                        widget.historyModel.safetyStatus == 3)
                                                                     ? 'Risk Level'
-                                                                    : (widget.searchModel != null &&
-                                                                            widget.searchModel.safetyStatus == 3)
+                                                                    : (widget.searchModel != null && widget.searchModel.safetyStatus == 3)
                                                                         ? 'Risk Level'
                                                                         : (widget.venueModel != null && widget.venueModel.safetyStatus == 4)
                                                                             ? 'High Risk'
@@ -505,10 +507,12 @@ class _DetailFullState extends State<DetailFull> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.w800,
                                       color: (widget.venueModel != null &&
-                                              widget.venueModel.safetyStatus == 1)
+                                              widget.venueModel.safetyStatus ==
+                                                  1)
                                           ? Color(0xff43c7ae)
                                           : (widget.historyModel != null &&
-                                                  widget.historyModel.safetyStatus ==
+                                                  widget.historyModel
+                                                          .safetyStatus ==
                                                       1)
                                               ? Color(0xff43c7ae)
                                               : (widget.searchModel != null &&
@@ -521,7 +525,8 @@ class _DetailFullState extends State<DetailFull> {
                                                                   .safetyStatus ==
                                                               2)
                                                       ? HexColor('#F4CD29')
-                                                      : (widget.historyModel != null &&
+                                                      : (widget.historyModel !=
+                                                                  null &&
                                                               widget.historyModel
                                                                       .safetyStatus ==
                                                                   2)
@@ -531,11 +536,8 @@ class _DetailFullState extends State<DetailFull> {
                                                                   widget.searchModel
                                                                           .safetyStatus ==
                                                                       2)
-                                                              ? HexColor(
-                                                                  '#F4CD29')
-                                                              : (widget.venueModel !=
-                                                                          null &&
-                                                                      widget.venueModel.safetyStatus == 3)
+                                                              ? HexColor('#F4CD29')
+                                                              : (widget.venueModel != null && widget.venueModel.safetyStatus == 3)
                                                                   ? HexColor('#F49E29')
                                                                   : (widget.historyModel != null && widget.historyModel.safetyStatus == 3)
                                                                       ? HexColor('#F49E29')
@@ -561,52 +563,14 @@ class _DetailFullState extends State<DetailFull> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    SvgPicture.string(
-                                      _svg_eterkn,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.elliptical(9999.0, 9999.0)),
-                                        border: Border.all(
-                                            width: 1.5,
-                                            color: const Color(0xff757575)),
-                                      ),
-                                    ),
-                                    SvgPicture.string(
-                                      _svg_a7yj29,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SvgPicture.string(
-                                      _svg_hqhrz0,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SvgPicture.string(
-                                      _svg_efrt9x,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SvgPicture.string(
-                                      _svg_h9a8x1,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    SvgPicture.string(
-                                      _svg_o5kmlz,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ],
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  child: Image.asset('assets/crowding.png'),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   child: Text(
                                     'Crowding',
                                     style: TextStyle(
@@ -618,11 +582,11 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 100),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 100),
                                   child: Text(
                                     //'${nearbyCardModel.crowding} People',
-                                    '${venueModel!=null ? venueModel.crowding : historyModel!=null ? historyModel.crowding : searchModel!=null ? searchModel.crowding : ''} People',
+                                    '${venueModel != null ? venueModel.crowding : historyModel != null ? historyModel.crowding : searchModel != null ? searchModel.crowding : ''} People',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,
@@ -642,56 +606,14 @@ class _DetailFullState extends State<DetailFull> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Stack(
-                                  children: <Widget>[
-                                    SvgPicture.string(
-                                      _svg_eterkn,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    Stack(
-                                      children: <Widget>[
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(3.0),
-                                            border: Border.all(
-                                                width: 1.5,
-                                                color: const Color(0xff707070)),
-                                          ),
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_360k7m,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_wdza2f,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_buoxk3,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_9fqa44,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_jtvnxi,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  child: Image.asset('assets/areainuse.png'),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   child: Text(
                                     'Area in use',
                                     style: TextStyle(
@@ -703,11 +625,11 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 90),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 90),
                                   child: Text(
                                     //'${nearbyCardModel.areaInUse} m²',
-                                    '${venueModel!=null ? venueModel.areaInUse : historyModel!=null ? historyModel.areaInUse : searchModel!=null ? searchModel.areaInUse : ''} m²',
+                                    '${venueModel != null ? venueModel.areaInUse : historyModel != null ? historyModel.areaInUse : searchModel != null ? searchModel.areaInUse : ''} m²',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,
@@ -727,42 +649,15 @@ class _DetailFullState extends State<DetailFull> {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Stack(
-                                  children: <Widget>[
-                                    SvgPicture.string(
-                                      _svg_eterkn,
-                                      allowDrawingOutsideViewBox: true,
-                                      fit: BoxFit.fill,
-                                    ),
-                                    Stack(
-                                      children: <Widget>[
-                                        SvgPicture.string(
-                                          _svg_eterkn,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.elliptical(
-                                                    9999.0, 9999.0)),
-                                            border: Border.all(
-                                                width: 1.5,
-                                                color: const Color(0xff707070)),
-                                          ),
-                                        ),
-                                        SvgPicture.string(
-                                          _svg_lzqzjo,
-                                          allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  child:
+                                      Image.asset('assets/avgspendingtime.png'),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
                                   child: Text(
                                     'Avg spending time',
                                     style: TextStyle(
@@ -774,11 +669,11 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 40),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 40),
                                   child: Text(
                                     //'${nearbyCardModel.areaInUse} min',
-                                    '${venueModel!=null ? venueModel.avgSpendingTime : historyModel!=null ? historyModel.avgSpendingTime : searchModel!=null ? searchModel.avgSpendingTime : ''} min',
+                                    '${venueModel != null ? venueModel.avgSpendingTime : historyModel != null ? historyModel.avgSpendingTime : searchModel != null ? searchModel.avgSpendingTime : ''} min',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,

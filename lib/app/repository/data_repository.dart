@@ -4,6 +4,7 @@ import 'package:cast/app/repository/endpoints_data.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
 import 'package:cast/db/config.dart';
+import 'package:cast/db/local/local_data_source_impl.dart';
 import 'package:cast/db/saved/saved.dart';
 import 'package:cast/db/setting/setting.dart';
 import 'package:flutter/foundation.dart';
@@ -78,36 +79,43 @@ class DataRepository {
 
   Future<EndpointsData> _getVenueListByLocation(
       String categoryId, String inputedTextSearch) async {
-    var setting;
+    //var setting;
     var body;
 
-    await Hive.openBox(settingBox)
-        .then((value) => {setting = value.get("setting") as Setting});
+    /* await Hive.openBox(settingBox)
+        .then((value) => {setting = value.get("setting") as Setting}); */
 
-    if (setting != null) {
+    bool isSettingSaved = await LocalDataSourceImpl().getDataSavedLocally();
+
+    if (!isSettingSaved) {
       body = json.encode({
         "latitude": 35.760739,
         "longitude": 51.472668,
         "filters": {
-          "radius": setting.radius.round(),
-          "userReview": setting.getUserReview,
-          "crowding": setting.getCrowding,
-          "areaInUse": setting.getAreaInUse,
-          "avgSpendingTime": setting.getAvgSpendingTime
+          "radius": 500,
+          "userReview": true,
+          "crowding": true,
+          "areaInUse": false,
+          "avgSpendingTime": true
         },
         "categoryId": categoryId,
         "text": inputedTextSearch
       });
     } else {
+      double radius = await LocalDataSourceImpl().getRange();
+      bool userReview = await LocalDataSourceImpl().getUserReview();
+      bool crowding = await LocalDataSourceImpl().getCrowding();
+      bool areaInUse = await LocalDataSourceImpl().getAreaInUse();
+      bool avgSpendingTime = await LocalDataSourceImpl().getAvgSpendingTime();
       body = json.encode({
         "latitude": 35.760739,
         "longitude": 51.472668,
         "filters": {
-          "radius": 1000,
-          "userReview": false,
-          "crowding": false,
-          "areaInUse": false,
-          "avgSpendingTime": false
+          "radius": radius.toInt(),
+          "userReview": userReview,
+          "crowding": crowding,
+          "areaInUse": areaInUse,
+          "avgSpendingTime": avgSpendingTime
         },
         "categoryId": categoryId,
         "text": inputedTextSearch
