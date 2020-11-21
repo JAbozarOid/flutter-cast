@@ -1,4 +1,5 @@
 import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
@@ -85,9 +86,11 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                             itemBuilder: (context, position) {
                               VenueListByLocationResponse resModel =
                                   state.venueListByLocationRes[position];
-
+                              TravelTimeInfoModel travelModel =
+                                  state.travelModel;
                               return NearbyCardItemXD(
                                 venueListByLocationResponse: resModel,
+                                travelTimeInfoModel: travelModel,
                                 onCardTapped: () => _onCardTapped(
                                     state.venueListByLocationRes,
                                     resModel,
@@ -458,7 +461,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                         pinTop: true,
                         pinBottom: true,
                         fixedWidth: true,
-                        child: 
+                        child:
                             // Adobe XD layer: 'Icon' (shape)
                             SvgPicture.network(
                           widget.iconURL,

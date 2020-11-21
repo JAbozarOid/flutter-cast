@@ -158,4 +158,29 @@ class DataRepository {
       APIVersions.version: values[0],
     });
   }
+
+  Future<EndpointsData> callGetTravelTimeInfo() async =>
+      await _getData<EndpointsData>(onGetData: () => _getTravelTimeInfo());
+
+  Future<EndpointsData> _getTravelTimeInfo() async {
+    var bodyForTravel = json.encode({
+      "latitude": 35.760739,
+      "longitude": 51.472668,
+      "venueId": "4867e0b3ef644318a05d877f9f85069c"
+    });
+
+    print("the body for _TravelTimeInfo api is ${bodyForTravel.toString()}");
+
+    final values = await Future.wait([
+      apiService.postAPI(
+          apiVersion: API.apiVersion[APIVersions.version],
+          path: PathApi.getApiPath(Path.getTravelTimeInfo),
+          queryParameters: {},
+          body: bodyForTravel),
+    ]);
+
+    return EndpointsData(values: {
+      APIVersions.version: values[0],
+    });
+  }
 }

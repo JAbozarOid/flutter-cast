@@ -20,10 +20,20 @@ class GetVenueListByLocationLoading extends GetVenueListState {
 
 class GetVenueListByLocationLoaded extends GetVenueListState {
   final List<VenueListByLocationResponse> venueListByLocationRes;
-  const GetVenueListByLocationLoaded(this.venueListByLocationRes);
+  final TravelTimeInfoModel travelModel;
+  const GetVenueListByLocationLoaded(
+      this.venueListByLocationRes, this.travelModel);
 
   @override
-  List<Object> get props => [venueListByLocationRes];
+  List<Object> get props => [venueListByLocationRes, travelModel];
+}
+
+class GetTravelTimeInfo extends GetVenueListState {
+  final TravelTimeInfoModel travelModel;
+  const GetTravelTimeInfo(this.travelModel);
+
+  @override
+  List<Object> get props => [travelModel];
 }
 
 class GetVenueListByLocationError extends GetVenueListState {

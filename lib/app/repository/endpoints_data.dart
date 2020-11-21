@@ -11,6 +11,4 @@ class EndpointsData {
 
   @override
   String toString() => 'showServicesData: $getEndpointsData';
-
 }
-
