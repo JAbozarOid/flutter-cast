@@ -318,7 +318,7 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // rate count
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(200.0, 123.0, 26.0, 17.0),
+                    bounds: Rect.fromLTWH(205.0, 123.0, 35.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
@@ -336,7 +336,7 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // stars rate
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(141.0, 125.0, 55.0, 12.0),
+                    bounds: Rect.fromLTWH(141.0, 125.0, 65.0, 12.0),
                     size: Size(328.0, 334.0),
                     child: RatingBar(
                         initialRating:

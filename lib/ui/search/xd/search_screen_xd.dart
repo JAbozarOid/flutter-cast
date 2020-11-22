@@ -1,4 +1,5 @@
 import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
@@ -54,6 +55,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   VenueListByLocationResponse venueModel;
   List<History> historyList = [];
   List<Search> searchList = [];
+
+  TravelTimeInfoModel travelTimeInfoModel;
 
   Widget buildLoading() {
     return Center(
@@ -425,7 +428,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     children: [
                                       Pinned.fromSize(
                                         bounds: Rect.fromLTWH(
-                                            65.0, 0.0, 80.0, 17.0),
+                                            65.0, 0.0, 120.0, 17.0),
                                         size: Size(257.0, 50.0),
                                         pinRight: false,
                                         fixedWidth: false,
@@ -435,7 +438,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                             typeModelSearch.name.length >= 15
                                                 ? typeModelSearch.name
                                                         .substring(0, 15) +
-                                                    "..."
+                                                    "...."
                                                 : typeModelSearch.name,
                                             style: TextStyle(
                                               fontFamily: 'Roboto',
@@ -448,7 +451,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       ),
                                       Pinned.fromSize(
                                         bounds: Rect.fromLTWH(
-                                            70.0, 0.0, 90.0, 19.0),
+                                            70.0, 0.0, 120.0, 19.0),
                                         size: Size(257.0, 50.0),
                                         pinLeft: true,
                                         pinBottom: true,
@@ -744,7 +747,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 itemBuilder: (context, position) {
                                   venueModel = state.searchResultRes[position];
                                   venueList = state.searchResultRes;
-
+                                  travelTimeInfoModel =
+                                      state.travelTimeInfoModel;
                                   if (typeModelSearch == null) {
                                     addHistory(state.searchResultRes[position],
                                         position);
@@ -982,6 +986,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                 venueList: venueList,
                 history: historyModel,
                 historyList: historyList,
+                travelTimeInfoModel: travelTimeInfoModel,
               )));
     } else {
       var bx = await Hive.openBox(searchBox);
@@ -998,6 +1003,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                 venueList: venueList,
                 search: searchModel,
                 searchList: searchList,
+                travelTimeInfoModel: travelTimeInfoModel,
               )));
     }
   }

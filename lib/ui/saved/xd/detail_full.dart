@@ -1,4 +1,5 @@
 import 'package:adobe_xd/adobe_xd.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/common/map_style.dart';
@@ -20,12 +21,14 @@ class DetailFull extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
   final History historyModel;
   final Search searchModel;
+  final TravelTimeInfoModel travelTimeInfoModel;
   final int position;
   DetailFull(
       {Key key,
       this.venueModel,
       this.historyModel,
       this.searchModel,
+      this.travelTimeInfoModel,
       this.position})
       : super(key: key);
 
@@ -382,7 +385,10 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Text(
-                                  '2.3 Km',
+                                  //'2.3 Km',
+                                  widget.travelTimeInfoModel != null
+                                      ? '${widget.travelTimeInfoModel.distance} km'
+                                      : '',
                                   style: TextStyle(
                                       color: HexColor('757575'), fontSize: 14),
                                 )
@@ -582,8 +588,8 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 100),
+                                  padding: const EdgeInsets.only(
+                                      left: 80, right: 20),
                                   child: Text(
                                     //'${nearbyCardModel.crowding} People',
                                     '${venueModel != null ? venueModel.crowding : historyModel != null ? historyModel.crowding : searchModel != null ? searchModel.crowding : ''} People',
@@ -625,8 +631,8 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 90),
+                                  padding: const EdgeInsets.only(
+                                      left: 70, right: 20),
                                   child: Text(
                                     //'${nearbyCardModel.areaInUse} m²',
                                     '${venueModel != null ? venueModel.areaInUse : historyModel != null ? historyModel.areaInUse : searchModel != null ? searchModel.areaInUse : ''} m²',
@@ -669,11 +675,13 @@ class _DetailFullState extends State<DetailFull> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 40),
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20),
                                   child: Text(
                                     //'${nearbyCardModel.areaInUse} min',
-                                    '${venueModel != null ? venueModel.avgSpendingTime : historyModel != null ? historyModel.avgSpendingTime : searchModel != null ? searchModel.avgSpendingTime : ''} min',
+                                    widget.travelTimeInfoModel == null
+                                        ? '${venueModel != null ? venueModel.avgSpendingTime : historyModel != null ? historyModel.avgSpendingTime : searchModel != null ? searchModel.avgSpendingTime : ''} min'
+                                        : '${widget.travelTimeInfoModel.timeToArrived} min',
                                     style: TextStyle(
                                       fontFamily: 'Roboto',
                                       fontSize: 14,

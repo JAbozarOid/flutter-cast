@@ -65,7 +65,6 @@ class SavedCardItemXD extends StatelessWidget {
                             ),
                           ),
                         ),
-                        
                         Pinned.fromSize(
                           bounds: Rect.fromLTWH(24.0, 24.0, 80.0, 80.0),
                           size: Size(328.0, 128.0),
@@ -74,14 +73,13 @@ class SavedCardItemXD extends StatelessWidget {
                           pinBottom: true,
                           fixedWidth: false,
                           child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4.0),
-                                child: Image.network(
-                                  savedCardModel.image.toString(),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                            borderRadius: BorderRadius.circular(4.0),
+                            child: Image.network(
+                              savedCardModel.image.toString(),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                        
                         Pinned.fromSize(
                           bounds: Rect.fromLTWH(120.0, 24.0, 328.0, 19.0),
                           size: Size(328.0, 128.0),
@@ -314,7 +312,7 @@ class SavedCardItemXD extends StatelessWidget {
 
                             // review count
                             Pinned.fromSize(
-                              bounds: Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
+                              bounds: Rect.fromLTWH(205.0, 47.0, 35.0, 17.0),
                               size: Size(328.0, 128.0),
                               fixedWidth: false,
                               fixedHeight: true,
@@ -331,7 +329,7 @@ class SavedCardItemXD extends StatelessWidget {
 
                             // star rate
                             Pinned.fromSize(
-                                bounds: Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                bounds: Rect.fromLTWH(141.0, 49.0, 65.0, 12.0),
                                 size: Size(328.0, 128.0),
                                 child: RatingBar(
                                     initialRating: venueModel.rate.toDouble(),
@@ -504,7 +502,7 @@ class SavedCardItemXD extends StatelessWidget {
                                 ),
                                 Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
+                                      Rect.fromLTWH(205.0, 47.0, 35.0, 17.0),
                                   size: Size(328.0, 128.0),
                                   fixedWidth: false,
                                   fixedHeight: true,
@@ -521,7 +519,7 @@ class SavedCardItemXD extends StatelessWidget {
                                 // star rate
                                 Pinned.fromSize(
                                     bounds:
-                                        Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                        Rect.fromLTWH(141.0, 49.0, 65.0, 12.0),
                                     size: Size(328.0, 128.0),
                                     child: RatingBar(
                                         initialRating:
@@ -701,7 +699,7 @@ class SavedCardItemXD extends StatelessWidget {
 
                                 Pinned.fromSize(
                                   bounds:
-                                      Rect.fromLTWH(200.0, 47.0, 26.0, 17.0),
+                                      Rect.fromLTWH(205.0, 47.0, 35.0, 17.0),
                                   size: Size(328.0, 128.0),
                                   fixedWidth: false,
                                   fixedHeight: true,
@@ -719,7 +717,7 @@ class SavedCardItemXD extends StatelessWidget {
                                 // star rate
                                 Pinned.fromSize(
                                     bounds:
-                                        Rect.fromLTWH(141.0, 49.0, 55.0, 12.0),
+                                        Rect.fromLTWH(141.0, 49.0, 65.0, 12.0),
                                     size: Size(328.0, 128.0),
                                     child: RatingBar(
                                         initialRating:
@@ -737,7 +735,7 @@ class SavedCardItemXD extends StatelessWidget {
                                               color: HexColor('#F3BD42'),
                                             ),
                                         onRatingUpdate: null)),
-                                
+
                                 //arrow
                                 Pinned.fromSize(
                                   bounds:
