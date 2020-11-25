@@ -40,6 +40,7 @@ dependencies:
   scroll_to_index: ^1.0.6
   share: ^0.6.5+4
   url_launcher: ^5.7.10
+  websafe_svg: ^1.1.4
 
 dev_dependencies:
   flutter_test:

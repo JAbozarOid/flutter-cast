@@ -24,6 +24,7 @@ import 'package:google_maps_webservice/places.dart' as webservice;
 import 'package:flutter_google_places/flutter_google_places.dart'
     as google_place;
 import "package:google_maps_webservice/geocoding.dart" as geoCode;
+import 'package:websafe_svg/websafe_svg.dart';
 
 class NavigationScreenXD extends StatefulWidget {
   NavigationScreenXD({
@@ -353,9 +354,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           pinTop: true,
                                           fixedWidth: true,
                                           fixedHeight: true,
-                                          child: SvgPicture.string(
+                                          child: WebsafeSvg.string(
                                             _svg_dyx0i8,
-                                            allowDrawingOutsideViewBox: true,
+                                            //allowDrawingOutsideViewBox: true,
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -366,9 +367,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           pinBottom: true,
                                           fixedWidth: true,
                                           fixedHeight: true,
-                                          child: SvgPicture.string(
+                                          child: WebsafeSvg.string(
                                             _svg_2wkjyo,
-                                            allowDrawingOutsideViewBox: true,
+                                            //allowDrawingOutsideViewBox: true,
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -379,9 +380,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           pinLeft: true,
                                           fixedWidth: true,
                                           fixedHeight: true,
-                                          child: SvgPicture.string(
+                                          child: WebsafeSvg.string(
                                             _svg_ame8e,
-                                            allowDrawingOutsideViewBox: true,
+                                            //allowDrawingOutsideViewBox: true,
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -392,9 +393,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                           pinRight: true,
                                           fixedWidth: true,
                                           fixedHeight: true,
-                                          child: SvgPicture.string(
+                                          child: WebsafeSvg.string(
                                             _svg_t68j0u,
-                                            allowDrawingOutsideViewBox: true,
+                                            //allowDrawingOutsideViewBox: true,
                                             fit: BoxFit.fill,
                                           ),
                                         ),
@@ -559,9 +560,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             fixedHeight: true,
                             child:
                                 // Adobe XD layer: 'Icon awesome-search…' (shape)
-                                SvgPicture.string(
-                              _svg_7rozqs,
-                              allowDrawingOutsideViewBox: true,
+                                WebsafeSvg.string(
+                              _svg_7rozqs,width: 30,height: 30,
+                              //allowDrawingOutsideViewBox: true,
                               fit: BoxFit.fill,
                             ),
                           ),
@@ -646,9 +647,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                   pinBottom: true,
                                   child:
                                       // Adobe XD layer: 'Icon feather-bookma…' (shape)
-                                      SvgPicture.string(
+                                      WebsafeSvg.string(
                                     _svg_rzrs7n,
-                                    allowDrawingOutsideViewBox: true,
+                                    //allowDrawingOutsideViewBox: true,
                                     fit: BoxFit.fill,
                                   ),
                                 ),
@@ -744,9 +745,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                         size: Size(18.0, 18.0),
                                         fixedWidth: true,
                                         fixedHeight: true,
-                                        child: SvgPicture.string(
+                                        child: WebsafeSvg.string(
                                           _svg_mi2s4g,
-                                          allowDrawingOutsideViewBox: true,
+                                          //allowDrawingOutsideViewBox: true,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -758,9 +759,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                         pinRight: true,
                                         pinTop: true,
                                         pinBottom: true,
-                                        child: SvgPicture.string(
+                                        child: WebsafeSvg.string(
                                           _svg_d9bj5t,
-                                          allowDrawingOutsideViewBox: true,
+                                          //allowDrawingOutsideViewBox: true,
                                           fit: BoxFit.fill,
                                         ),
                                       ),
