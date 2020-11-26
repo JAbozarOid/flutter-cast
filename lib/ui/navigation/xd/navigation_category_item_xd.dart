@@ -1,6 +1,7 @@
 import 'package:adobe_xd/adobe_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 class NavigationCategoryItemXD extends StatelessWidget {
   final String title;
@@ -63,42 +64,18 @@ class NavigationCategoryItemXD extends StatelessWidget {
                   pinTop: true,
                   pinBottom: true,
                   fixedWidth: true,
-                  child: Stack(
-                    children: <Widget>[
-                      Pinned.fromSize(
-                        bounds: Rect.fromLTWH(0.0, 0.0, 24.0, 24.0),
-                        size: Size(24.0, 24.0),
-                        pinLeft: true,
-                        pinRight: true,
-                        pinTop: true,
-                        pinBottom: true,
-                        child:
-                            // Adobe XD layer: 'Path' (shape)
-                            Container(
-                          color: const Color(0x00000000),
-                        ),
-                      ),
-                      Pinned.fromSize(
-                          bounds: Rect.fromLTWH(3.0, 2.0, 18.0, 20.0),
-                          size: Size(24.0, 24.0),
-                          pinLeft: true,
-                          pinRight: true,
-                          pinTop: true,
-                          pinBottom: true,
-                          child:
-                              // Adobe XD layer: 'Icon' (shape)
-                              /* SvgPicture.string(
-                          icon,
-                          allowDrawingOutsideViewBox: true,
-                          fit: BoxFit.fill,
-                        ), */
-                              SvgPicture.network(
-                            icon,
-                            allowDrawingOutsideViewBox: true,
-                            fit: BoxFit.fill,
-                          )),
-                    ],
-                  ),
+                  child: Pinned.fromSize(
+                      bounds: Rect.fromLTWH(3.0, 2.0, 18.0, 20.0),
+                      size: Size(24.0, 24.0),
+                      pinLeft: true,
+                      pinRight: true,
+                      pinTop: true,
+                      pinBottom: true,
+                      child: WebsafeSvg.network(
+                        icon,
+                        //allowDrawingOutsideViewBox: true,
+                        fit: BoxFit.fill,
+                      )),
                 ),
 
                 // card title

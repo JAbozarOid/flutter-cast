@@ -1,3 +1,4 @@
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
 import 'package:cast/common/map_style.dart';
@@ -19,6 +20,7 @@ class SavedCardMapScreen extends StatefulWidget {
   final Search search;
   final List<SavedVenueListRes> savedList;
   final String pageType;
+  final TravelTimeInfoModel travelTimeInfoModel;
   const SavedCardMapScreen(
       {Key key,
       @required this.venueModel,
@@ -28,6 +30,7 @@ class SavedCardMapScreen extends StatefulWidget {
       this.historyList,
       this.searchList,
       this.savedList,
+      this.travelTimeInfoModel,
       this.pageType,
       this.position})
       : super(key: key);
@@ -190,6 +193,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                           historyModel: historyModel,
                           position: index,
                           onCardTapped: _onCardTapped,
+                          travelTimeInfoModel: widget.travelTimeInfoModel,
                         )
                       : historyList != null
                           ? historyList.map((_) {
@@ -238,7 +242,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
               historyModel: historyModel,
               searchModel: searchModel,
               position: position,
+              travelTimeInfoModel: widget.travelTimeInfoModel,
             )));
-    
   }
 }

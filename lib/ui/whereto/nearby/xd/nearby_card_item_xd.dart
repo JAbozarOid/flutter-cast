@@ -1,4 +1,5 @@
 import 'package:adobe_xd/adobe_xd.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class NearbyCardItemXD extends StatelessWidget {
   final VenueListByLocationResponse venueListByLocationResponse;
+  final TravelTimeInfoModel travelTimeInfoModel;
   final Function onCardTapped;
 
   const NearbyCardItemXD(
-      {Key key, this.venueListByLocationResponse, this.onCardTapped})
+      {Key key,
+      this.venueListByLocationResponse,
+      this.travelTimeInfoModel,
+      this.onCardTapped})
       : super(key: key);
 
   @override
@@ -294,13 +299,14 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   //and kilometers
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(161.0, 64.0, 44.0, 17.0),
+                    bounds: Rect.fromLTWH(150.0, 64.0, 44.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
                     child: Text(
                       //'${nearbyCardModel.kmToPlace} Km',
-                      '2.3 Km',
+                      //'2.3 Km',
+                      '${travelTimeInfoModel.distance} Km',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -312,7 +318,7 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // rate count
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(200.0, 123.0, 26.0, 17.0),
+                    bounds: Rect.fromLTWH(205.0, 123.0, 35.0, 17.0),
                     size: Size(328.0, 334.0),
                     fixedWidth: false,
                     fixedHeight: true,
@@ -330,7 +336,7 @@ class NearbyCardItemXD extends StatelessWidget {
 
                   // stars rate
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(141.0, 125.0, 55.0, 12.0),
+                    bounds: Rect.fromLTWH(141.0, 125.0, 65.0, 12.0),
                     size: Size(328.0, 334.0),
                     child: RatingBar(
                         initialRating:
@@ -751,7 +757,8 @@ class NearbyCardItemXD extends StatelessWidget {
                           fixedHeight: true,
                           child: Text(
                             //'${nearbyCardModel.areaInUse} min',
-                            '${venueListByLocationResponse.avgSpendingTime} min',
+                            //'${venueListByLocationResponse.avgSpendingTime} min',
+                            '${travelTimeInfoModel.timeToArrived} min',
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: 14,

@@ -122,10 +122,10 @@ class _WhereToScreenXDState extends State<WhereToScreenXD> {
                     ),
                   ),
                   Pinned.fromSize(
-                    bounds: Rect.fromLTWH(33.0, 0.0, 360.0, 52.0),
+                    bounds: Rect.fromLTWH(10.0, 0.0, 340.0, 52.0),
                     size: Size(360.0, 52.0),
-                    pinLeft: true,
-                    pinRight: true,
+                    pinLeft: false,
+                    pinRight: false,
                     pinTop: true,
                     pinBottom: true,
                     child:

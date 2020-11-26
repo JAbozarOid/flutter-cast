@@ -20,10 +20,11 @@ class SearchLoading extends SearchState {
 
 class SearchLoaded extends SearchState {
   final List<VenueListByLocationResponse> searchResultRes;
-  const SearchLoaded(this.searchResultRes);
+  final TravelTimeInfoModel travelTimeInfoModel;
+  const SearchLoaded(this.searchResultRes, this.travelTimeInfoModel);
 
   @override
-  List<Object> get props => [searchResultRes];
+  List<Object> get props => [searchResultRes, travelTimeInfoModel];
 }
 
 class SaveLoaded extends SearchState {

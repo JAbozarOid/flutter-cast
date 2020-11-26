@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 class SplashScreenXD extends StatefulWidget {
   SplashScreenXD({
@@ -77,9 +78,9 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
             pinLeft: true,
             pinRight: true,
             fixedHeight: true,
-            child: SvgPicture.string(
+            child: WebsafeSvg.string(
               _svg_ojf9ik,
-              allowDrawingOutsideViewBox: true,
+              //allowDrawingOutsideViewBox: true,
               fit: BoxFit.fill,
             ),
           ),
@@ -89,9 +90,9 @@ class _SplashScreenXDState extends State<SplashScreenXD> {
             fixedWidth: false,
             fixedHeight: true,
             child: Center(
-              child: SvgPicture.string(
+              child: WebsafeSvg.string(
                 _svg_432sia,
-                allowDrawingOutsideViewBox: true,
+                //allowDrawingOutsideViewBox: true,
                 fit: BoxFit.fill,
               ),
             ),

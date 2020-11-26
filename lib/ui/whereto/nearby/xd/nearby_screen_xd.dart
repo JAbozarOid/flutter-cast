@@ -1,8 +1,10 @@
 import 'package:cast/bloc/get_venue_list/get_venue_list_bloc.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
 import 'package:cast/ui/saved/model/saved_card_model.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
+import 'package:cast/ui/settings/xd/settings_screen_xd_2.dart';
 import 'package:cast/ui/whereto/nearby/xd/model/nearby_card_model.dart';
 import 'package:cast/ui/whereto/nearby/xd/nearby_card_item_xd.dart';
 import 'package:flutter/material.dart';
@@ -85,12 +87,15 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                             itemBuilder: (context, position) {
                               VenueListByLocationResponse resModel =
                                   state.venueListByLocationRes[position];
-
+                              TravelTimeInfoModel travelModel =
+                                  state.travelModel;
                               return NearbyCardItemXD(
                                 venueListByLocationResponse: resModel,
+                                travelTimeInfoModel: travelModel,
                                 onCardTapped: () => _onCardTapped(
                                     state.venueListByLocationRes,
                                     resModel,
+                                    travelModel,
                                     position),
                               );
                             },
@@ -458,7 +463,7 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
                         pinTop: true,
                         pinBottom: true,
                         fixedWidth: true,
-                        child: 
+                        child:
                             // Adobe XD layer: 'Icon' (shape)
                             SvgPicture.network(
                           widget.iconURL,
@@ -497,19 +502,23 @@ class _NearbyScreenXDState extends State<NearbyScreenXD> {
     Navigator.of(context).pop();
   }
 
-  void _onCardTapped(List<VenueListByLocationResponse> venueList,
-      VenueListByLocationResponse venueModel, int position) {
+  void _onCardTapped(
+      List<VenueListByLocationResponse> venueList,
+      VenueListByLocationResponse venueModel,
+      TravelTimeInfoModel travelTimeInfoModel,
+      int position) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => SavedCardMapScreen(
               venueModel: venueModel,
               venueList: venueList,
+              travelTimeInfoModel: travelTimeInfoModel,
               position: position,
             )));
   }
 
   void _goToSettingPage() async {
     await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
+        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD2()));
     getVenueListByLocation();
   }
 }

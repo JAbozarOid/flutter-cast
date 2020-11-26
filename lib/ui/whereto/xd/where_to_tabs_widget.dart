@@ -28,7 +28,7 @@ class WhereToTabsWidget extends StatelessWidget {
             Pinned.fromSize(
               bounds: Rect.fromLTWH(0.0, 0.0, 100.0, 52.0),
               size: Size(100.0, 52.0),
-             /*  pinLeft: true,
+              /*  pinLeft: true,
               pinRight: true, */
               pinTop: true,
               pinBottom: true,
@@ -41,22 +41,24 @@ class WhereToTabsWidget extends StatelessWidget {
               ),
             ),
             Pinned.fromSize(
-              bounds: Rect.fromLTWH(17.0, 20.0, 100.0, 17.0),
+              bounds: Rect.fromLTWH(0.0, 20.0, 100.0, 17.0),
               size: Size(100.0, 52.0),
               pinLeft: false,
               fixedWidth: false,
               fixedHeight: true,
-              child: Text(
-                tabTitles,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 14,
-                  color: tappedIndex == position
-                      ? Color(0xff30b79e)
-                      : Color(0xff9EA1A6),
-                  fontWeight: FontWeight.w500,
+              child: Center(
+                child: Text(
+                  tabTitles,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 14,
+                    color: tappedIndex == position
+                        ? Color(0xff30b79e)
+                        : Color(0xff9EA1A6),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.left,
                 ),
-                textAlign: TextAlign.left,
               ),
             ),
             tappedIndex == position

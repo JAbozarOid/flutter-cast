@@ -1,4 +1,5 @@
 import 'package:cast/bloc/get_venue_list/model/badge_model_res.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:hive/hive.dart';
 import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 enum InputedTextState { textEmpty, text }
 enum HistoryLoader { loading, loaded }
@@ -54,6 +56,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
   VenueListByLocationResponse venueModel;
   List<History> historyList = [];
   List<Search> searchList = [];
+
+  TravelTimeInfoModel travelTimeInfoModel;
 
   Widget buildLoading() {
     return Center(
@@ -150,9 +154,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                         pinBottom: true,
                         child:
                             // Adobe XD layer: 'Tool bar bg' (shape)
-                            SvgPicture.string(
+                            WebsafeSvg.string(
                           _svg_lbkd9y,
-                          allowDrawingOutsideViewBox: true,
+                          //allowDrawingOutsideViewBox: true,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -165,9 +169,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                         pinBottom: true,
                         child:
                             // Adobe XD layer: 'Tool bar bg' (shape)
-                            SvgPicture.string(
+                            WebsafeSvg.string(
                           _svg_lbkd9y,
-                          allowDrawingOutsideViewBox: true,
+                          //allowDrawingOutsideViewBox: true,
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -217,9 +221,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     pinBottom: true,
                                     child:
                                         // Adobe XD layer: 'Bounds' (shape)
-                                        SvgPicture.string(
+                                        WebsafeSvg.string(
                                       _svg_p89ba0,
-                                      allowDrawingOutsideViewBox: true,
+                                      //allowDrawingOutsideViewBox: true,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -232,9 +236,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     pinBottom: true,
                                     child:
                                         // Adobe XD layer: 'Icon' (shape)
-                                        SvgPicture.string(
+                                        WebsafeSvg.string(
                                       _svg_ujuf6k,
-                                      allowDrawingOutsideViewBox: true,
+                                      //allowDrawingOutsideViewBox: true,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -321,9 +325,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     pinBottom: true,
                                     child:
                                         // Adobe XD layer: 'Bounds' (shape)
-                                        SvgPicture.string(
+                                        WebsafeSvg.string(
                                       _svg_z3554r,
-                                      allowDrawingOutsideViewBox: true,
+                                      //allowDrawingOutsideViewBox: true,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -336,9 +340,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     pinBottom: true,
                                     child:
                                         // Adobe XD layer: 'Icon' (shape)
-                                        SvgPicture.string(
+                                        WebsafeSvg.string(
                                       _svg_b8klhi,
-                                      allowDrawingOutsideViewBox: true,
+                                      //allowDrawingOutsideViewBox: true,
                                       fit: BoxFit.fill,
                                     ),
                                   ),
@@ -425,7 +429,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                     children: [
                                       Pinned.fromSize(
                                         bounds: Rect.fromLTWH(
-                                            65.0, 0.0, 80.0, 17.0),
+                                            65.0, 0.0, 120.0, 17.0),
                                         size: Size(257.0, 50.0),
                                         pinRight: false,
                                         fixedWidth: false,
@@ -435,7 +439,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                             typeModelSearch.name.length >= 15
                                                 ? typeModelSearch.name
                                                         .substring(0, 15) +
-                                                    "..."
+                                                    "...."
                                                 : typeModelSearch.name,
                                             style: TextStyle(
                                               fontFamily: 'Roboto',
@@ -448,7 +452,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                       ),
                                       Pinned.fromSize(
                                         bounds: Rect.fromLTWH(
-                                            70.0, 0.0, 90.0, 19.0),
+                                            70.0, 0.0, 120.0, 19.0),
                                         size: Size(257.0, 50.0),
                                         pinLeft: true,
                                         pinBottom: true,
@@ -638,9 +642,9 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                           fixedWidth: true,
                           child:
                               // Adobe XD layer: 'Icon ionic-ios-arro…' (shape)
-                              SvgPicture.string(
+                              WebsafeSvg.string(
                             _svg_4joujt,
-                            allowDrawingOutsideViewBox: true,
+                            //allowDrawingOutsideViewBox: true,
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -744,7 +748,8 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                                 itemBuilder: (context, position) {
                                   venueModel = state.searchResultRes[position];
                                   venueList = state.searchResultRes;
-
+                                  travelTimeInfoModel =
+                                      state.travelTimeInfoModel;
                                   if (typeModelSearch == null) {
                                     addHistory(state.searchResultRes[position],
                                         position);
@@ -982,6 +987,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                 venueList: venueList,
                 history: historyModel,
                 historyList: historyList,
+                travelTimeInfoModel: travelTimeInfoModel,
               )));
     } else {
       var bx = await Hive.openBox(searchBox);
@@ -998,6 +1004,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
                 venueList: venueList,
                 search: searchModel,
                 searchList: searchList,
+                travelTimeInfoModel: travelTimeInfoModel,
               )));
     }
   }

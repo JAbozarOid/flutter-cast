@@ -1,3 +1,4 @@
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/common/hex_color.dart';
 import 'package:cast/db/config.dart';
@@ -16,6 +17,7 @@ class SavedCardMapWidget extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
   final History historyModel;
   final Search searchModel;
+  final TravelTimeInfoModel travelTimeInfoModel;
   final int position;
   final Function onCardTapped;
   const SavedCardMapWidget(
@@ -23,6 +25,7 @@ class SavedCardMapWidget extends StatefulWidget {
       @required this.venueModel,
       this.historyModel,
       this.searchModel,
+      this.travelTimeInfoModel,
       this.onCardTapped,
       @required this.position})
       : super(key: key);
@@ -251,7 +254,10 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                           ),
                         ),
                         Text(
-                          '2.3 Km',
+                          //'2.3 Km',
+                          widget.travelTimeInfoModel != null
+                              ? '${widget.travelTimeInfoModel.distance} km'
+                              : '',
                           style: TextStyle(
                               color: HexColor('757575'), fontSize: 14),
                         )

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cast/app/repository/data_repository.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +31,16 @@ class GetVenueListBloc extends Bloc<GetVenueListEvent, GetVenueListState> {
               .map((e) => VenueListByLocationResponse.fromJson(e))
               .toList();
 
-          yield GetVenueListByLocationLoaded(list);
+          yield GetVenueListByLocationLoading();
+
+          TravelTimeInfoModel travelTimeInfoModelRes;
+          final travelTimeInfo = await dataRepository.callGetTravelTimeInfo();
+          if (travelTimeInfo.getEndpointsData.statusCode == 200) {
+            travelTimeInfoModelRes = TravelTimeInfoModel.formJson(
+                travelTimeInfo.getEndpointsData.json['result']);
+          }
+
+          yield GetVenueListByLocationLoaded(list, travelTimeInfoModelRes);
         } else {
           var errorMessage = VenueListByLocationResponse.fromJsonError(
               venueList.getEndpointsData.json);

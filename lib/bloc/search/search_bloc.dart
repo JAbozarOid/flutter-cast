@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:cast/app/repository/data_repository.dart';
+import 'package:cast/bloc/get_venue_list/model/travel_time_info_res.dart';
 import 'package:cast/bloc/get_venue_list/model/venue_list_by_location_res.dart';
 import 'package:cast/bloc/search/model/saved_venue_list_res.dart';
 import 'package:cast/db/saved/saved.dart';
@@ -34,8 +35,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
             List<VenueListByLocationResponse> list = (res as List)
                 .map((e) => VenueListByLocationResponse.fromJson(e))
                 .toList();
+            yield SearchLoading();
 
-            yield SearchLoaded(list);
+            TravelTimeInfoModel travelTimeInfoModelRes;
+            final travelTimeInfo = await dataRepository.callGetTravelTimeInfo();
+            if (travelTimeInfo.getEndpointsData.statusCode == 200) {
+              travelTimeInfoModelRes = TravelTimeInfoModel.formJson(
+                  travelTimeInfo.getEndpointsData.json['result']);
+            }
+            yield SearchLoaded(list, travelTimeInfoModelRes);
           } else {
             var errorMessage = VenueListByLocationResponse.fromJsonError(
                 searchList.getEndpointsData.json);

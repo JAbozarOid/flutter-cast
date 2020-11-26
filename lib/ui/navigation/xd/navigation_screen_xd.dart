@@ -7,11 +7,13 @@ import 'package:cast/bloc/main_category/model/main_category_list_res.dart';
 import 'package:cast/bloc/search/search_bloc.dart';
 import 'package:cast/common/map_style.dart';
 import 'package:cast/location/location_state.dart';
+import 'package:cast/ui/dialog/location_permission_dialog.dart';
 import 'package:cast/ui/navigation/xd/navigation_category_item_xd.dart';
 import 'package:cast/ui/saved/xd/saved_screen_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_type_xd.dart';
 import 'package:cast/ui/search/xd/search_screen_xd.dart';
 import 'package:cast/ui/settings/xd/settings_screen_xd.dart';
+import 'package:cast/ui/settings/xd/settings_screen_xd_2.dart';
 import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
@@ -178,11 +180,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                   key: _key,
                   mapStyle: mapStyle,
                   interactive: true,
-                  //mapType: MapType.none,
-                  //initialPosition: GeoCoord(1.3521, 103.8198),
-                  /* markers: {
-                                  Marker(GeoCoord(1.3521, 103.8198)),
-                                }, */
                   mobilePreferences: MobileMapPreferences(
                     trafficEnabled: false,
                     scrollGesturesEnabled: true,
@@ -237,11 +234,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                 key: _key,
                                 mapStyle: mapStyle,
                                 interactive: true,
-                                //mapType: MapType.none,
                                 initialPosition: GeoCoord(_lat, _lon),
-                                /* markers: {
-                                  Marker(GeoCoord(_lat, _lon)),
-                                }, */
                                 mobilePreferences: MobileMapPreferences(
                                   trafficEnabled: false,
                                   scrollGesturesEnabled: true,
@@ -536,9 +529,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             ),
                           ),
                           Pinned.fromSize(
-                            bounds: Rect.fromLTWH(26.0, 90.0, 96.0, 17.0),
+                            bounds: Rect.fromLTWH(13.0, 90.0, 96.0, 17.0),
                             size: Size(90.0, 80.0),
-                            fixedWidth: true,
+                            fixedWidth: false,
                             fixedHeight: true,
                             child:
                                 // Adobe XD layer: 'You' (text)
@@ -561,7 +554,7 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             child:
                                 // Adobe XD layer: 'Icon awesome-search…' (shape)
                                 WebsafeSvg.string(
-                              _svg_7rozqs,width: 30,height: 30,
+                              _svg_7rozqs,
                               //allowDrawingOutsideViewBox: true,
                               fit: BoxFit.fill,
                             ),
@@ -599,9 +592,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             ),
                           ),
                           Pinned.fromSize(
-                            bounds: Rect.fromLTWH(26.0, 48.0, 38.0, 17.0),
+                            bounds: Rect.fromLTWH(23.0, 48.0, 45.0, 17.0),
                             size: Size(90.0, 80.0),
-                            fixedWidth: true,
+                            fixedWidth: false,
                             fixedHeight: true,
                             child:
                                 // Adobe XD layer: 'You' (text)
@@ -689,9 +682,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             ),
                           ),
                           Pinned.fromSize(
-                            bounds: Rect.fromLTWH(19.0, 48.0, 52.0, 17.0),
+                            bounds: Rect.fromLTWH(17.0, 48.0, 56.0, 17.0),
                             size: Size(90.0, 80.0),
-                            fixedWidth: true,
+                            fixedWidth: false,
                             fixedHeight: true,
                             child:
                                 // Adobe XD layer: 'Program' (text)
@@ -909,9 +902,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
     );
   }
 
-  void _goToSettingsScreenXD() {
+  void _goToSettingsScreenXD() async {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD()));
+        .push(MaterialPageRoute(builder: (_) => SettingsScreenXD2()));
   }
 
   // gettings detail of each category and neaby items
@@ -991,8 +984,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
         _key.currentState.moveCamera(GeoCoord(_lat, _lon),
             animated: true, waitUntilReady: true);
 
-        //_key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
-
         // call main category list api
         getMainCategoryList();
       }
@@ -1005,8 +996,6 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
       _key.currentState.moveCamera(GeoCoord(_lat, _lon),
           animated: true, waitUntilReady: true);
-
-      //_key.currentState.addMarker(Marker(GeoCoord(_lat, _lon)));
 
       // call main category list api
       getMainCategoryList();
