@@ -553,8 +553,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                             fixedHeight: true,
                             child:
                                 // Adobe XD layer: 'Icon awesome-search…' (shape)
-                                WebsafeSvg.string(
-                              _svg_7rozqs,
+                                Image.asset(
+                              'assets/search.png',
+                              //_svg_7rozqs,
                               //allowDrawingOutsideViewBox: true,
                               fit: BoxFit.fill,
                             ),
@@ -640,8 +641,9 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                   pinBottom: true,
                                   child:
                                       // Adobe XD layer: 'Icon feather-bookma…' (shape)
-                                      WebsafeSvg.string(
-                                    _svg_rzrs7n,
+                                      Image.asset(
+                                    'assets/bookmark.png',
+                                    //_svg_rzrs7n,
                                     //allowDrawingOutsideViewBox: true,
                                     fit: BoxFit.fill,
                                   ),
@@ -730,35 +732,11 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                   pinBottom: true,
                                   child:
                                       // Adobe XD layer: 'Icon feather-settin…' (group)
-                                      Stack(
-                                    children: <Widget>[
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(6.5, 6.5, 4.9, 4.9),
-                                        size: Size(18.0, 18.0),
-                                        fixedWidth: true,
-                                        fixedHeight: true,
-                                        child: WebsafeSvg.string(
-                                          _svg_mi2s4g,
-                                          //allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                      Pinned.fromSize(
-                                        bounds:
-                                            Rect.fromLTWH(0.0, 0.0, 18.0, 18.0),
-                                        size: Size(18.0, 18.0),
-                                        pinLeft: true,
-                                        pinRight: true,
-                                        pinTop: true,
-                                        pinBottom: true,
-                                        child: WebsafeSvg.string(
-                                          _svg_d9bj5t,
-                                          //allowDrawingOutsideViewBox: true,
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ],
+                                      Image.asset(
+                                    'assets/settings.png',
+                                    //_svg_mi2s4g,
+                                    //allowDrawingOutsideViewBox: true,
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
                               ],
