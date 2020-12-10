@@ -11,7 +11,8 @@ class API {
   factory API.sandbox() => API(apiKey: APIKeys.castSandboxKey);
 
   //static final String host = '130.185.122.248:5000';
-  static final String host = '130.185.122.248';
+  //static final String host = '130.185.122.248';
+  static final String host = 'cast-application.ir';
 
   static Map<APIVersions, String> apiVersion = {
     APIVersions.version: '/api/v1',

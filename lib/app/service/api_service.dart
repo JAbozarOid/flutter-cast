@@ -15,7 +15,7 @@ class APIService {
       @required String path,
       @required Map<String, String> queryParameters}) async {
     final fullURL =
-        Uri.http(API.host, apiVersion + path, queryParameters ?? {});
+        Uri.https(API.host, apiVersion + path, queryParameters ?? {});
 
     print("request for the api $fullURL");
     print("the api key is ${api.apiKey}");
@@ -44,7 +44,7 @@ class APIService {
       @required Map<String, String> queryParameters,
       @required body}) async {
     final fullURL =
-        Uri.http(API.host, apiVersion + path, queryParameters ?? {});
+        Uri.https(API.host, apiVersion + path, queryParameters ?? {});
 
     print("request for the api $fullURL");
     print("the api key is ${api.apiKey}");
