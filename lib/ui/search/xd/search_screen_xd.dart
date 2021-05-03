@@ -119,7 +119,7 @@ class _SearchScreenXDState extends State<SearchScreenXD> {
     return Scaffold(
       backgroundColor: const Color(0xffffffff),
       // this property avoid screen to resize when keyboard is open
-      resizeToAvoidBottomPadding: false,
+      //resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
           // search bar
