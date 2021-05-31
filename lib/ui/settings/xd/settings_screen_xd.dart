@@ -185,7 +185,7 @@ class _SettingsScreenXDState extends State<SettingsScreenXD> {
                   showTicks: true,
                   showLabels: true,
                   activeColor: const Color(0xff43c7ae),
-                  showTooltip: true,
+                  // showTooltip: true,
                   onChanged: (dynamic value) {
                     setState(() {
                       _value = value;

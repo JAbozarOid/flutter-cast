@@ -183,10 +183,10 @@ class _NearbyCardWidgetState extends State<NearbyCardWidget> {
                                 direction: Axis.horizontal,
                                 unratedColor: Colors.blueGrey,
                                 glowColor: HexColor('#F3BD42'),
-                                itemBuilder: (context, _) => Icon(
+                                /* itemBuilder: (context, _) => Icon(
                                   Icons.star,
                                   color: Colors.amber,
-                                ),
+                                ), */ ratingWidget: null,
                               ),
                             ),
                             Text('(${savedCardModel.rateCount})')
@@ -336,10 +336,11 @@ class _NearbyCardWidgetState extends State<NearbyCardWidget> {
                               direction: Axis.horizontal,
                               unratedColor: Colors.blueGrey,
                               glowColor: HexColor('#F3BD42'),
-                              itemBuilder: (context, _) => Icon(
+                              /* itemBuilder: (context, _) => Icon(
                                 Icons.star,
                                 color: Colors.amber,
-                              ),
+                              ), */
+                               ratingWidget: null,
                             ),
                           ),
                           Text('(${savedCardModel.rateCount})')

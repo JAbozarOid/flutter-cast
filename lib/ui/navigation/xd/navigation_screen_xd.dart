@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cast/app/repository/data_repository.dart';
 import 'package:cast/app/service/api.dart';
 import 'package:cast/app/service/api_service.dart';
@@ -18,8 +20,9 @@ import 'package:cast/ui/whereto/xd/where_to_screen_xd.dart';
 import 'package:flutter/material.dart';
 import 'package:adobe_xd/pinned.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_google_maps/flutter_google_maps.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:google_maps_webservice/places.dart' as webservice;
@@ -38,7 +41,9 @@ class NavigationScreenXD extends StatefulWidget {
 }
 
 class _NavigationScreenXDState extends State<NavigationScreenXD> {
-  GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+  //GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+
+  Completer<GoogleMapController> _controller = Completer();
 
   // location properties
   bool _serviceEnabled;
@@ -172,11 +177,12 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
             // *** impl google map
             // *** this google map created before user granted or deny location
             Positioned(
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: GoogleMap(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child:
+                  /* GoogleMap(
                   key: _key,
                   mapStyle: mapStyle,
                   interactive: true,
@@ -187,7 +193,18 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
                   ),
-                )),
+                ) */
+                  GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(35.7847828, 51.4939886),
+                  zoom: 14.4746,
+                ),
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+            ),
 
             // this stream builder handle build screen base on user location permission
             StreamBuilder<LocationState>(
@@ -226,11 +243,12 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                         children: [
                           // *** impl google map
                           Positioned(
-                              top: 0,
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: GoogleMap(
+                            top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child:
+                                /* GoogleMap(
                                 key: _key,
                                 mapStyle: mapStyle,
                                 interactive: true,
@@ -242,7 +260,18 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
                                   myLocationButtonEnabled: false,
                                   zoomControlsEnabled: false,
                                 ),
-                              )),
+                              ) */
+                                GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(_lat, _lon),
+                                zoom: 14.4746,
+                              ),
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller.complete(controller);
+                              },
+                            ),
+                          ),
 
                           // *** category item
                           // *** handle response of GetMainCategoryList
@@ -929,9 +958,17 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
   }
 
   // from every where on the map go to user current location
-  void _goToUserCurrentLocation() {
-    _key.currentState
-        .moveCamera(GeoCoord(_lat, _lon), animated: true, waitUntilReady: true);
+  void _goToUserCurrentLocation() async {
+    /* _key.currentState
+        .moveCamera(GeoCoord(_lat, _lon), animated: true, waitUntilReady: true); */
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        target: LatLng(_lat, _lon),
+        zoom: 14.4746,
+      ),
+    ));
   }
 
   // get user current location
@@ -959,8 +996,16 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
         _onLocationState.add(LocationState.granted);
 
-        _key.currentState.moveCamera(GeoCoord(_lat, _lon),
-            animated: true, waitUntilReady: true);
+        /*  _key.currentState.moveCamera(GeoCoord(_lat, _lon),
+            animated: true, waitUntilReady: true); */
+
+        final GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(_lat, _lon),
+            zoom: 14.4746,
+          ),
+        ));
 
         // call main category list api
         getMainCategoryList();
@@ -972,8 +1017,16 @@ class _NavigationScreenXDState extends State<NavigationScreenXD> {
 
       _onLocationState.add(LocationState.granted);
 
-      _key.currentState.moveCamera(GeoCoord(_lat, _lon),
-          animated: true, waitUntilReady: true);
+      /* _key.currentState.moveCamera(GeoCoord(_lat, _lon),
+          animated: true, waitUntilReady: true); */
+          
+      final GoogleMapController controller = await _controller.future;
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(_lat, _lon),
+          zoom: 14.4746,
+        ),
+      ));
 
       // call main category list api
       getMainCategoryList();

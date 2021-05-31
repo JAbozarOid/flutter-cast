@@ -7,14 +7,14 @@ import 'package:cast/db/setting/setting.dart';
 import 'package:cast/ui/splash/xd/splash_screen_xd.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_maps/flutter_google_maps.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 //import 'package:google_maps_webservice/places.dart' as webservice;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  GoogleMap.init('AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18');
+  // GoogleMap.init('AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18');
   // webservice.GoogleMapsPlaces(apiKey: "AIzaSyBYEjB8rBxdcQY7-06dVaIQZFYFzsjFF18");
 
   if (!kIsWeb) {

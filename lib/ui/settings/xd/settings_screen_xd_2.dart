@@ -235,7 +235,7 @@ class _SettingsScreenXD2State extends State<SettingsScreenXD2> {
                             showTicks: true,
                             showLabels: true,
                             activeColor: const Color(0xff43c7ae),
-                            showTooltip: true,
+                            // showTooltip: true,
                             onChanged: (dynamic value) {
                               setState(() {
                                 _value = value;
@@ -1138,7 +1138,7 @@ class _SettingsScreenXD2State extends State<SettingsScreenXD2> {
                             showTicks: true,
                             showLabels: true,
                             activeColor: const Color(0xff43c7ae),
-                            showTooltip: true,
+                            // showTooltip: true,
                             onChanged: (dynamic value) {
                               setState(() {
                                 _value = value;

@@ -8,7 +8,7 @@ import 'package:cast/db/history/history.dart';
 import 'package:cast/db/saved/saved.dart';
 import 'package:cast/db/search/search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_maps/flutter_google_maps.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
@@ -37,7 +37,7 @@ class DetailFull extends StatefulWidget {
 }
 
 class _DetailFullState extends State<DetailFull> {
-  GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+  // GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
 
   VenueListByLocationResponse get venueModel => widget.venueModel;
   History get historyModel => widget.historyModel;
@@ -63,7 +63,8 @@ class _DetailFullState extends State<DetailFull> {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: GoogleMap(
+                    child: Container()
+                    /* GoogleMap(
                       key: _key,
                       interactive: true,
                       mapStyle: mapStyle,
@@ -81,7 +82,7 @@ class _DetailFullState extends State<DetailFull> {
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
                           zoomControlsEnabled: false),
-                    ),
+                    ), */
                   ))
               : historyModel != null
                   ? Container(
@@ -91,7 +92,8 @@ class _DetailFullState extends State<DetailFull> {
                           bottom: 0,
                           left: 0,
                           right: 0,
-                          child: GoogleMap(
+                          child: Container()
+                          /* GoogleMap(
                             key: _key,
                             interactive: true,
                             //mapType: MapType.roadmap,
@@ -108,7 +110,8 @@ class _DetailFullState extends State<DetailFull> {
                                 myLocationEnabled: true,
                                 myLocationButtonEnabled: false,
                                 zoomControlsEnabled: false),
-                          )),
+                          ) */
+                          ),
                     )
                   : searchModel != null
                       ? Container(
@@ -118,7 +121,8 @@ class _DetailFullState extends State<DetailFull> {
                               bottom: 0,
                               left: 0,
                               right: 0,
-                              child: GoogleMap(
+                              child: Container() 
+                              /* GoogleMap(
                                 key: _key,
                                 interactive: true,
                                 //mapType: MapType.roadmap,
@@ -135,9 +139,11 @@ class _DetailFullState extends State<DetailFull> {
                                     myLocationEnabled: true,
                                     myLocationButtonEnabled: false,
                                     zoomControlsEnabled: false),
-                              )),
+                              ) */
+                              ),
                         )
-                      : GoogleMap(
+                      : Container(),
+                      /* GoogleMap(
                           key: _key,
                           interactive: true,
                           //mapType: MapType.roadmap,
@@ -154,7 +160,7 @@ class _DetailFullState extends State<DetailFull> {
                               myLocationEnabled: true,
                               myLocationButtonEnabled: false,
                               zoomControlsEnabled: false),
-                        ),
+                        ), */
           Positioned(
             height: 660,
             bottom: -80,
@@ -424,11 +430,11 @@ class _DetailFullState extends State<DetailFull> {
                                       itemCount: 5,
                                       itemPadding:
                                           EdgeInsets.symmetric(horizontal: 1.0),
-                                      itemBuilder: (context, _) => Icon(
+                                      /* itemBuilder: (context, _) => Icon(
                                             Icons.star,
                                             color: HexColor('#F3BD42'),
-                                          ),
-                                      onRatingUpdate: null),
+                                          ), */
+                                      onRatingUpdate: null, ratingWidget: null,),
                                 ),
                                 Text(
                                     '(${widget.venueModel != null ? widget.venueModel.reviewCount : widget.historyModel != null ? widget.historyModel.reviewCount : widget.searchModel != null ? widget.searchModel.reviewCount : ''})')

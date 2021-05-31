@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cast/ui/navigation/navigation_destination.dart';
 import 'package:cast/ui/navigation/navigation_destination_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_maps/flutter_google_maps.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 
 import '../search/search_category_widget.dart';
 
@@ -12,7 +15,14 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   int _currentIndex = 1;
-  GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+
+  // GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+
+  Completer<GoogleMapController> _controller = Completer();
+  static final CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(1.3521, 103.8198),
+    zoom: 14.4746,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -74,11 +84,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
             // setup google map and properties
             Positioned(
-                top: 0,
-                left: 0,
-                bottom: 0,
-                right: 0,
-                child: GoogleMap(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child:
+                  /* GoogleMap(
                   key: _key,
                   interactive: true,
                   mapType: MapType.roadmap,
@@ -92,7 +103,15 @@ class _NavigationScreenState extends State<NavigationScreen> {
                     myLocationEnabled: true,
                     myLocationButtonEnabled: true,
                   ),
-                )),
+                ) */
+                  GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: _kGooglePlex,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+              ),
+            ),
             Positioned(
               top: 20,
               left: 25,

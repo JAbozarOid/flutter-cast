@@ -289,11 +289,11 @@ class _SavedCardMapWidgetState extends State<SavedCardMapWidget> {
                                 itemCount: 5,
                                 itemPadding:
                                     EdgeInsets.symmetric(horizontal: 1.0),
-                                itemBuilder: (context, _) => Icon(
+                                /* itemBuilder: (context, _) => Icon(
                                       Icons.star,
                                       color: HexColor('#F3BD42'),
-                                    ),
-                                onRatingUpdate: null),
+                                    ), */
+                                onRatingUpdate: null, ratingWidget: null,),
                           ),
                           Text(
                               '(${widget.venueModel != null ? widget.venueModel.reviewCount : widget.historyModel != null ? widget.historyModel.reviewCount : widget.searchModel != null ? widget.searchModel.reviewCount : ''})')

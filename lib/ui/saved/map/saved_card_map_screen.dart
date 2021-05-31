@@ -8,7 +8,7 @@ import 'package:cast/ui/saved/map/saved_card_map_widget.dart';
 import 'package:cast/ui/saved/xd/detail_full.dart';
 import 'package:cast/ui/saved/xd/full_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_google_maps/flutter_google_maps.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 
 class SavedCardMapScreen extends StatefulWidget {
   final VenueListByLocationResponse venueModel;
@@ -52,7 +52,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
 
   String get pageType => widget.pageType;
 
-  GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+  // GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
   var pageController = PageController();
 
   @override
@@ -77,7 +77,8 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: GoogleMap(
+                    child: Container()
+                    /* GoogleMap(
                       key: _key,
                       interactive: true,
                       mapStyle: mapStyle,
@@ -95,14 +96,16 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
                           zoomControlsEnabled: false),
-                    ))
+                    ) */
+                    )
                 : historyModel != null
                     ? Positioned(
                         top: 0,
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        child: GoogleMap(
+                        child: Container()
+                        /* GoogleMap(
                           key: _key,
                           interactive: true,
                           //mapType: MapType.roadmap,
@@ -119,14 +122,16 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                               myLocationEnabled: true,
                               myLocationButtonEnabled: false,
                               zoomControlsEnabled: false),
-                        ))
+                        ) */
+                        )
                     : searchModel != null
                         ? Positioned(
                             top: 0,
                             bottom: 0,
                             left: 0,
                             right: 0,
-                            child: GoogleMap(
+                            child: Container()
+                            /* GoogleMap(
                               key: _key,
                               interactive: true,
                               //mapType: MapType.roadmap,
@@ -143,8 +148,10 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                                   myLocationEnabled: true,
                                   myLocationButtonEnabled: false,
                                   zoomControlsEnabled: false),
-                            ))
-                        : GoogleMap(
+                            ) */
+                            )
+                        : Container(),
+                        /* GoogleMap(
                             key: _key,
                             interactive: true,
                             //mapType: MapType.roadmap,
@@ -161,7 +168,7 @@ class _SavedCardMapScreenState extends State<SavedCardMapScreen> {
                                 myLocationEnabled: true,
                                 myLocationButtonEnabled: false,
                                 zoomControlsEnabled: false),
-                          ),
+                          ), */
             Positioned(
               height: 300,
               bottom: -20,
