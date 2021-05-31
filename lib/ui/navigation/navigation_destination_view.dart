@@ -25,11 +25,11 @@ class _NavigationDestinationViewState extends State<NavigationDestinationView> {
           builder: (BuildContext context) {
             switch (widget.destination.title) {
               case 'Settings':
-                return SettingsScreen(destination: widget.destination);
+                //return SettingsScreen(destination: widget.destination);
               case 'Search':
                 return SearchScreen(destination: widget.destination);
               case 'Saved':
-                return SavedScreen(destination: widget.destination);
+                //return SavedScreen(destination: widget.destination);
             }
           },
         );

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "390685368154",
+    "firebase_url": "https://cast-a9eca.firebaseio.com",
+    "project_id": "cast-a9eca",
+    "storage_bucket": "cast-a9eca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390685368154:android:51a2cf9fdcef4f5552dd63",
+        "android_client_info": {
+          "package_name": "com.example.cast"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390685368154-078r3mvtpr9kl60ff5rqnuo5gdl3qfgm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwuQ41RarYJxpMAIhReQcLL_-pd16Xpbg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390685368154-078r3mvtpr9kl60ff5rqnuo5gdl3qfgm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

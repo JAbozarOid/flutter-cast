@@ -1,0 +1,1 @@
+enum LocationState { deny, granted, loading }

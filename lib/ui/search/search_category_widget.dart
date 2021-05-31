@@ -11,23 +11,23 @@ class SearchCategoryWidget extends StatelessWidget {
         children: [
           SearchCategoryItem(
             title: 'Restaurant',
-            icon: 'images/restaurant.png',
+            icon: 'assets/restaurant.png',
           ),
           SearchCategoryItem(
             title: 'Gas',
-            icon: 'images/restaurant.png',
+            icon: 'assets/restaurant.png',
           ),
           SearchCategoryItem(
             title: 'Groceries',
-            icon: 'images/restaurant.png',
+            icon: 'assets/restaurant.png',
           ),
           SearchCategoryItem(
             title: 'Coffe',
-            icon: 'images/restaurant.png',
+            icon: 'assets/restaurant.png',
           ),
           SearchCategoryItem(
             title: 'Bank',
-            icon: 'images/restaurant.png',
+            icon: 'assets/restaurant.png',
           ),
         ],
       ),
