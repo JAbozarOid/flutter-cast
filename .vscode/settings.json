@@ -1,0 +1,9 @@
+{
+    "rest-client.environmentVariables": {
+        "sandbox": {
+            "baseUrl": "http://130.185.122.248:5000/api/v1",
+            "sessionToken" : "c02e5231a8bc40c0a00765592989d3b3"
+        },
+        "production": {}
+    }
+}
