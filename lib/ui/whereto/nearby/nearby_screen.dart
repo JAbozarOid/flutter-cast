@@ -1,3 +1,6 @@
+import 'package:cast/ui/saved/map/saved_card_map_screen.dart';
+import 'package:cast/ui/saved/model/saved_card_model.dart';
+import 'package:cast/ui/whereto/nearby/nearby_card_widget.dart';
 import 'package:flutter/material.dart';
 
 class NearbyScreen extends StatefulWidget {
@@ -32,7 +35,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                     Container(
                         width: 50,
                         height: 50,
-                        child: Image.asset('images/rounded.png')),
+                        child: Image.asset('assets/rounded.png')),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -47,7 +50,7 @@ class _NearbyScreenState extends State<NearbyScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
                             'best on your criteria',
-                            style: TextStyle(fontSize: 13,color: Colors.grey),
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
                           ),
                         ),
                       ],
@@ -56,9 +59,34 @@ class _NearbyScreenState extends State<NearbyScreen> {
                 ),
               ),
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: 100,
+              left: 16,
+              right: 16,
+            ),
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: savedCardsValues.length,
+              itemBuilder: (context, position) {
+                SavedCardModel savedCardModel = savedCardsValues[position];
+                return NearbyCardWidget(
+                  savedCardModel: savedCardModel,
+                  onCardTapped: _onCardTapped,
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  void _onCardTapped(SavedCardModel savedCardModel) async {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => SavedCardMapScreen(
+              venueModel: null,
+            )));
   }
 }

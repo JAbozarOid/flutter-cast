@@ -2,6 +2,7 @@ import 'package:cast/ui/navigation/navigation_destination.dart';
 import 'package:cast/ui/search/search_category_widget.dart';
 import 'package:cast/ui/whereto/where_to_screen.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_google_maps/flutter_google_maps.dart';
 
 class SearchScreen extends StatefulWidget {
   final NavigationDestination destination;
@@ -12,12 +13,33 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  // GlobalKey<GoogleMapStateBase> _key = GlobalKey<GoogleMapStateBase>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Stack(
           children: [
+            // setup google map and properties
+            Positioned(
+                child: Container()
+                 /* GoogleMap(
+              key: _key,
+              interactive: true,
+              mapType: MapType.roadmap,
+              initialPosition: GeoCoord(1.3521, 103.8198),
+              markers: {
+                Marker(GeoCoord(1.3521, 103.8198)),
+              },
+              mobilePreferences: MobileMapPreferences(
+                trafficEnabled: true,
+                scrollGesturesEnabled: true,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+              ),
+            ) */
+            ),
             Positioned(
               top: 20,
               left: 25,
@@ -35,7 +57,25 @@ class _SearchScreenState extends State<SearchScreen> {
                           'From: Sobhan, Madani Street',
                           style: TextStyle(fontSize: 10),
                         ),
-                        Text('Where to?', style: TextStyle(fontSize: 18))
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            // create a green bullet
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: new BoxDecoration(
+                                color: Colors.green,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                child: Text('Where to?',
+                                    style: TextStyle(fontSize: 18)))
+                          ],
+                        ),
                       ],
                     ),
                   ),
